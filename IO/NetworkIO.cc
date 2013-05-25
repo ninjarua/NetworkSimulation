@@ -24,6 +24,9 @@ void NetworkIO::WriteNetworkToFile(Network network, string filename)
 {
 	ofstream graphFile;
 	graphFile.open(filename.c_str(), ios::out);
+
+	graphFile << network;
+
 	graphFile.close();
 }
 

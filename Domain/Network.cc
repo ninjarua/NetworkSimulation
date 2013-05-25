@@ -18,20 +18,18 @@ Network::Network() {
 Network::~Network() {
 	sequenceId = 0;
 }
-//
-//vector<Node*>* Network::GetNodes()
-//{
-//	return _nodes;
-//}
-//
-//vector<Message*>* Network::GetMessage()
-//{
-//	return _messages;
-//}
-//vector<Message*>* Network::GetNewMessage()
-//{
-//	return _newMessages;
-//}
+
+ostream& operator<<(ostream& os, const Network& network)
+{
+	os << "Network";
+	return os;
+}
+
+istream& operator>>(istream& is, const Network& network)
+{
+	is >> network;
+	return is;
+}
 
 Node* Network::AddNode(Node* node)
 {

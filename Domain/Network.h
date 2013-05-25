@@ -11,6 +11,7 @@
 #include "stdafx.h"
 
 #include <string>
+#include <iostream>
 #include "Message.h"
 #include "NetworkInfo.h"
 
@@ -26,6 +27,8 @@ public:
 	Network();
 	virtual ~Network();
 	Node* AddNode(Node* node);
+	friend ostream& operator<<(ostream& os, const Network& network);
+	friend istream& operator>>(istream& os, const Network& network);
 
     float transRange;
     int sequenceId;
