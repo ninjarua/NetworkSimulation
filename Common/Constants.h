@@ -14,7 +14,8 @@ using namespace std;
 
 class Constants{
 public:
-	static char separator = '\t';
+	static char tab = '\t';
+	static char endline = '\r\n';
 };
 
 #endif

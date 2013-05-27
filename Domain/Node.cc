@@ -43,14 +43,14 @@ void Node::CreateLists()
 
 ostream& operator<<(ostream& os, const Node& node)
 {
-	os << node.id << Constants::separator << node.posX
-				<< Constants::separator << node.posY << Constants::separator;
+	os << node.id << Constants::tab << node.posX
+				<< Constants::tab << node.posY << Constants::tab;
 	list<Node*>::iterator it = node.neighbors->begin();
 	while (it != node.neighbors->end())
 	{
-		os << it->id << "\t";
+		os << it->id << Constants::tab;
 	}
-	os << "\n";
+	os << Constants::endline;
 	return os;
 }
 

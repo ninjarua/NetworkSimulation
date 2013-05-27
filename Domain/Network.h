@@ -31,6 +31,7 @@ public:
 	Network();
 	virtual ~Network();
 	Node* AddNode(Node* node);
+	void CreateEmptyNodes(int n);
 
 	friend ostream& operator<<(ostream& os, const Network& network);
 	friend istream& operator>>(istream& os, const Network& network);
