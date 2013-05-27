@@ -11,11 +11,12 @@
 using namespace std;
 #include <vector>
 #include <list>
+#include <string>
 
 class Constants{
 public:
-	static char tab = '\t';
-	static char endline = '\r\n';
+	static string tab;
+	static string endline;
 };
 
 #endif

@@ -11,6 +11,8 @@
 #include "stdafx.h"
 #include "Constants.h"
 #include <set>
+#include <string>
+#include <sstream>
 
 namespace domain {
 enum NodeState {Sane = 0, Infected = 1, Detector = 2, Inactive = 3};
@@ -32,8 +34,10 @@ public:
 	Node(double posX, double posY);
 	virtual ~Node();
 
+	//void Reset();
+
 	friend ostream& operator<<(ostream& os, const Node& node);
-	friend istream& operator>>(istream& os, const Node& node);
+	friend istringstream& operator>>(istringstream& os, Node& node);
 
 private:
 	void CreateLists();

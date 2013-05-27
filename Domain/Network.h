@@ -12,6 +12,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 #include "Message.h"
 #include "NetworkInfo.h"
 
@@ -34,7 +35,7 @@ public:
 	void CreateEmptyNodes(int n);
 
 	friend ostream& operator<<(ostream& os, const Network& network);
-	friend istream& operator>>(istream& os, const Network& network);
+	friend istream& operator>>(istream& os, Network& network);
 };
 
 } /* namespace domain */

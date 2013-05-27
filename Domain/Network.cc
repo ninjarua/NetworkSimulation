@@ -22,33 +22,31 @@ Network::~Network() {
 ostream& operator<<(ostream& os, const Network& network)
 {
 	os << network.nodes->size() << Constants::endline;
-	for (int i = 0; i < network.nodes->size(); i++)
+	for (unsigned int i = 0; i < network.nodes->size(); i++)
 		os << network.nodes->at(i);
 	return os;
 }
 
 void Network::CreateEmptyNodes(int n)
 {
-	delete []nodes;
-	delete nodes;
 	nodes = new vector<Node*>();
 	for(int i = 0; i<n; i++)
 	{
+		//delete nodes[i];
 		nodes->push_back(new Node());
 	}
 }
 
-istream& operator>>(istream& is, const Network& network)
+istream& operator>>(istream& is, Network& network)
 {
-//	ifstream fs = (istream)is;
-	string line = "";
+	string line("");
 	getline(is, line);
-	int n = atoi(line.c_str());
 
+	int i = 0;
 	while (!is.eof())
 	{
-		istream li = basic_istream(line);
-		li >> network.nodes[0];
+		istringstream iss(line);
+		iss >> *network.nodes->at(i);
 	}
 	return is;
 }

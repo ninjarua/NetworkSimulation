@@ -14,6 +14,7 @@ using namespace std;
 using namespace simulators;
 
 #include <iostream>
+#include <sstream>
 
 int main(int argc, char* argv[])
 {

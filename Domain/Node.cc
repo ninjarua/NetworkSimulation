@@ -41,22 +41,39 @@ void Node::CreateLists()
 	disconnectedNodes = new set<Node*>();
 }
 
+void Reset(Node& node)
+{
+	node.neighbors->clear();
+	node.detectedByzantines->clear();
+	node.disconnectedNodes->clear();
+}
+
 ostream& operator<<(ostream& os, const Node& node)
 {
-	os << node.id << Constants::tab << node.posX
-				<< Constants::tab << node.posY << Constants::tab;
+	//os << node.id << Constants::tab << node.posX
+	//			<< Constants::tab << node.posY << Constants::tab;
 	list<Node*>::iterator it = node.neighbors->begin();
 	while (it != node.neighbors->end())
 	{
-		os << it->id << Constants::tab;
+		//os << it->id << Constants::tab;
 	}
 	os << Constants::endline;
 	return os;
 }
 
-istream& operator>>(istream& os, const Node& node)
+istringstream& operator>>(istringstream& is, Node& node)
 {
-
+	//Node n = Node();
+	Reset(node);
+	is >> node.id;
+	is >> node.posX;
+	is >> node.posY;
+	int id;
+	while (is >> id)
+	{
+		//node.neighbors->push_back(node.OwnerNetwork->nodes->at(id));
+	}
+	return is;
 }
 
 } /* namespace domain */
