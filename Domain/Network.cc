@@ -21,7 +21,9 @@ Network::~Network() {
 
 ostream& operator<<(ostream& os, const Network& network)
 {
-	os << "Network";
+	os << network.nodes->size();
+	for (int i = 0; i < network.nodes->size(); i++)
+		os << network.nodes->at(i);
 	return os;
 }
 

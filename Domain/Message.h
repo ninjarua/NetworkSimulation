@@ -14,15 +14,15 @@ namespace domain {
 enum MessageStatus { Created = 0, Sending = 1, Stopped = 2, Expired = 3 };
 class Message {
 public:
-	Message();
-	Message(Node* sender, Node* receiver, int timeSlot);
-	virtual ~Message();
-public:
 	int creationTime;
 	Node* sender;
 	Node* receiver;
-	void (*receivingAction)(Node*, Node*, Message*);
 	MessageStatus status;
+
+	Message();
+	Message(Node* sender, Node* receiver, int timeSlot);
+	virtual ~Message();
+	void (*receivingAction)(Node*, Node*, Message*);
 };
 
 } /* namespace domain */

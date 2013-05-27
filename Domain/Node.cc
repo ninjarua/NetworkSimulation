@@ -41,4 +41,22 @@ void Node::CreateLists()
 	disconnectedNodes = new set<Node*>();
 }
 
+ostream& operator<<(ostream& os, const Node& node)
+{
+	os << node.id << Constants::separator << node.posX
+				<< Constants::separator << node.posY << Constants::separator;
+	list<Node*>::iterator it = node.neighbors->begin();
+	while (it != node.neighbors->end())
+	{
+		os << it->id << "\t";
+	}
+	os << "\n";
+	return os;
+}
+
+istream& operator>>(istream& os, const Node& node)
+{
+
+}
+
 } /* namespace domain */

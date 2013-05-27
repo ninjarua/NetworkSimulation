@@ -19,7 +19,11 @@ namespace domain {
 
 class Network {
 public:
-	vector<Node*>* nodes;
+    float transRange;
+    int sequenceId;
+    int currentTimeSlot;
+
+    vector<Node*>* nodes;
     vector<Message*>* messages;
     vector<Message*>* newMessages;
 	NetworkInfo info;
@@ -27,12 +31,9 @@ public:
 	Network();
 	virtual ~Network();
 	Node* AddNode(Node* node);
+
 	friend ostream& operator<<(ostream& os, const Network& network);
 	friend istream& operator>>(istream& os, const Network& network);
-
-    float transRange;
-    int sequenceId;
-    int currentTimeSlot;
 };
 
 } /* namespace domain */

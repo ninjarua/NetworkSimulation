@@ -9,6 +9,7 @@
 #define NODE_H_
 
 #include "stdafx.h"
+#include "Constants.h"
 #include <set>
 
 namespace domain {
@@ -16,12 +17,8 @@ enum NodeState {Sane = 0, Infected = 1, Detector = 2, Inactive = 3};
 class Network;
 class Node {
 public:
-	Node();
-	Node(double posX, double posY);
-	virtual ~Node();
 	int id;
 	Network* OwnerNetwork;
-public:
 	double posX;
 	double posY;
 	Network* ownerNetwork;
@@ -30,6 +27,14 @@ public:
 	set<Node*>* detectedByzantines;
 	set<Node*>* disconnectedNodes;
 	int connectedAreaNumber;
+
+	Node();
+	Node(double posX, double posY);
+	virtual ~Node();
+
+	friend ostream& operator<<(ostream& os, const Node& node);
+	friend istream& operator>>(istream& os, const Node& node);
+
 private:
 	void CreateLists();
 	void Initialize();
