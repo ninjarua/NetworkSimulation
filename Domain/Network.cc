@@ -19,6 +19,16 @@ Network::~Network() {
 	sequenceId = 0;
 }
 
+void Network::CreateEmptyNodes(int n)
+{
+	nodes = new vector<Node*>();
+	for (int i=nodes->size() -1; i>=0; i--)
+		delete nodes->at(i);
+	nodes->clear();
+	for (int i=0; i<n; i++)
+		nodes->push_back(new Node());
+}
+
 ostream& operator<<(ostream& os, const Network& network)
 {
 	os << network.nodes->size() << Constants::endline;
@@ -27,26 +37,18 @@ ostream& operator<<(ostream& os, const Network& network)
 	return os;
 }
 
-void Network::CreateEmptyNodes(int n)
-{
-	nodes = new vector<Node*>();
-	for(int i = 0; i<n; i++)
-	{
-		//delete nodes[i];
-		nodes->push_back(new Node());
-	}
-}
-
 istream& operator>>(istream& is, Network& network)
 {
 	string line("");
 	getline(is, line);
+	network.CreateEmptyNodes(atoi(line.c_str()));
 
 	int i = 0;
-	while (!is.eof())
+	while (!getline(is, line).eof())
 	{
 		istringstream iss(line);
 		iss >> *network.nodes->at(i);
+		i++;
 	}
 	return is;
 }
