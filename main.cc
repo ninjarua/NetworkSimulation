@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	{
 		ByzantineSimulator* sim = new ByzantineSimulator();
 		sim->GetParameters(FixedRange, 1000, 330, 3000, 7500, 10, false);
-		sim->DeployNetwork(false);
+		sim->DeployNetwork(1000, false);
 		cout << "finish";
 	}
 	catch (exception& ex)

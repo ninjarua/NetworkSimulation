@@ -34,7 +34,7 @@ public:
 	Node(double posX, double posY);
 	virtual ~Node();
 
-	//void Reset();
+	void Reset();
 
 	friend ostream& operator<<(ostream& os, const Node& node);
 	friend istringstream& operator>>(istringstream& os, Node& node);
