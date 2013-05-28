@@ -13,6 +13,7 @@
 #include <set>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 namespace domain {
 enum NodeState {Sane = 0, Infected = 1, Detector = 2, Inactive = 3};
@@ -36,7 +37,7 @@ public:
 
 	void Reset();
 
-	friend ostream& operator<<(ostream& os, const Node& node);
+	friend ofstream& operator<<(ofstream& os, const Node& node);
 	friend istringstream& operator>>(istringstream& os, Node& node);
 
 private:

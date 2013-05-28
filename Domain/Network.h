@@ -13,6 +13,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include "Message.h"
 #include "NetworkInfo.h"
 
@@ -34,7 +35,7 @@ public:
 	Node* AddNode(Node* node);
 	void CreateEmptyNodes(int n);
 
-	friend ostream& operator<<(ostream& os, const Network& network);
+	friend ofstream& operator<<(ofstream& os, const Network& network);
 	friend istream& operator>>(istream& os, Network& network);
 };
 

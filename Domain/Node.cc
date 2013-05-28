@@ -48,7 +48,7 @@ void Node::Reset()
 	disconnectedNodes->clear();
 }
 
-ostream& operator<<(ostream& os, const Node& node)
+ofstream& operator<<(ofstream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
 				<< Constants::tab << node.posY << Constants::tab;
@@ -56,6 +56,7 @@ ostream& operator<<(ostream& os, const Node& node)
 	while (it != node.neighbors->end())
 	{
 		os << (*it)->id << Constants::tab;
+		it++;
 	}
 	os << Constants::endline;
 	return os;

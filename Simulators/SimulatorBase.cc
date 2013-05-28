@@ -23,7 +23,7 @@ SimulatorBase::SimulatorBase() {
 }
 
 SimulatorBase::~SimulatorBase() {
-	// TODO Auto-generated destructor stub
+
 }
 
 void SimulatorBase::SetDeployment(DeployingType type)
@@ -64,7 +64,7 @@ void SimulatorBase::GetParameters(DeployingType deployment, int numberOfNodes, i
 string GetFilename(int id)
 {
 	char number[9];
-	sprintf(number, "%4d.out", id + 1);
+	sprintf(number, "%04d.out", id);
 	string filename("graph_");
 	filename = filename + number;
 	return filename;
@@ -75,7 +75,7 @@ string GetFailureString(int count)
 	char number[5];
 	string results("Cannot create all graphs!\n");
 	results = results + "Only create";
-	sprintf(number, "%4d", count + 1);
+	sprintf(number, "%04d", count);
 	results = results + number;
 	return results;
 }
@@ -85,15 +85,17 @@ string SimulatorBase::DeployNetwork(int times, bool drawNetwork)
 	for (int i = 0; i < times; i++)
 	{
 		_hasTopology = _deploying->RunDeploy(_network);
-		if (_hasTopology && drawNetwork)
+		if (_hasTopology)
 		{
 			ofstream f(GetFilename(i + 1).c_str(), ofstream::out);
-			f << *_network;
+			Network network = *_network;
+			f << network;
 			f.close();
+			//if (drawNetwork)
 		}
 		else
 		{
-			return GetFailureString(i);
+			return GetFailureString(i + 1);
 		}
 	}
 	return "Success";

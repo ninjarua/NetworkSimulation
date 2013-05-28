@@ -29,11 +29,12 @@ void Network::CreateEmptyNodes(int n)
 		nodes->push_back(new Node());
 }
 
-ostream& operator<<(ostream& os, const Network& network)
+ofstream& operator<<(ofstream& os, const Network& network)
 {
-	os << network.nodes->size() << Constants::endline;
+	os << network.nodes->size();
+	os << Constants::endline;
 	for (unsigned int i = 0; i < network.nodes->size(); i++)
-		os << network.nodes->at(i);
+		os << (*network.nodes->at(i));
 	return os;
 }
 

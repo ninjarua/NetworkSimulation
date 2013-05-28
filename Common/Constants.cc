@@ -8,4 +8,4 @@
 #include "Constants.h"
 
 string Constants::tab = "\t";
-string Constants::endline = "\r\n";
+string Constants::endline = "\n";
