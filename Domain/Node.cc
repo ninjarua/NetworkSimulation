@@ -16,6 +16,15 @@ Node::Node() {
     CreateLists();
 }
 
+Node::Node(Network* network) {
+    // Constructor
+	Initialize();
+    posX = 0;
+    posY = 0;
+    CreateLists();
+    ownerNetwork = network;
+}
+
 Node::~Node() {
 }
 
@@ -51,11 +60,11 @@ void Node::Reset()
 ofstream& operator<<(ofstream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
-				<< Constants::tab << node.posY << Constants::tab;
+				<< Constants::tab << node.posY;
 	list<Node*>::iterator it = node.neighbors->begin();
 	while (it != node.neighbors->end())
 	{
-		os << (*it)->id << Constants::tab;
+		os << Constants::tab << (*it)->id;
 		it++;
 	}
 	os << Constants::endline;
@@ -67,9 +76,11 @@ istringstream& operator>>(istringstream& is, Node& node)
 	node.Reset();
 	is >> node.id >> node.posX >> node.posY;
 	int id;
-	while (is >> id)
+	while (!is.fail())
 	{
-		node.neighbors->push_back(node.OwnerNetwork->nodes->at(id));
+		is >> id;
+		Node* neighbor = node.OwnerNetwork->nodes->at(id);
+		node.neighbors->push_back(neighbor);
 	}
 	return is;
 }

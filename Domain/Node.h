@@ -32,6 +32,7 @@ public:
 	int connectedAreaNumber;
 
 	Node();
+	Node(Network* network);
 	Node(double posX, double posY);
 	virtual ~Node();
 

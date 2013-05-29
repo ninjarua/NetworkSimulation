@@ -23,8 +23,8 @@ int main(int argc, char* argv[])
 	{
 		ByzantineSimulator* sim = new ByzantineSimulator();
 		sim->GetParameters(FixedRange, 1000, 330, 3000, 7500, 10, false);
-		sim->DeployNetwork(1000, false);
-		cout << "finish";
+		//cout << sim->DeployNetwork(10, false);
+		cout << sim->GenerateNetworkFromFile(10, false);
 	}
 	catch (exception& ex)
 	{

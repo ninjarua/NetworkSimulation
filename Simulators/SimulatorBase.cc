@@ -70,6 +70,15 @@ string GetFilename(int id)
 	return filename;
 }
 
+string GetVerifyFilename(int id)
+{
+	char number[18];
+	sprintf(number, "%04d_verified.out", id);
+	string filename("graph_");
+	filename = filename + number;
+	return filename;
+}
+
 string GetFailureString(int count)
 {
 	char number[5];
@@ -88,8 +97,7 @@ string SimulatorBase::DeployNetwork(int times, bool drawNetwork)
 		if (_hasTopology)
 		{
 			ofstream f(GetFilename(i + 1).c_str(), ofstream::out);
-			Network network = *_network;
-			f << network;
+			f << (*_network);
 			f.close();
 			//if (drawNetwork)
 		}
@@ -100,4 +108,20 @@ string SimulatorBase::DeployNetwork(int times, bool drawNetwork)
 	}
 	return "Success";
 }
+
+string SimulatorBase::GenerateNetworkFromFile(int times, bool drawNetwork)
+{
+	for (int i = 0; i < times; i++)
+	{
+		ifstream f(GetFilename(i + 1).c_str(), ifstream::in);
+		f >> (*_network);
+		f.close();
+
+		ofstream fo(GetVerifyFilename(i + 1).c_str(), ofstream::out);
+		fo << (*_network);
+		fo.close();
+	}
+	return "Success";
+}
+
 } /* namespace deployment */

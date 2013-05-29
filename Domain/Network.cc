@@ -21,12 +21,17 @@ Network::~Network() {
 
 void Network::CreateEmptyNodes(int n)
 {
-	nodes = new vector<Node*>();
-	for (int i=nodes->size() -1; i>=0; i--)
-		delete nodes->at(i);
-	nodes->clear();
+	if (nodes->size() > 0)
+	{
+		for (int i=nodes->size()-1; i>=0; i--)
+			delete nodes->at(i);
+		nodes->clear();
+		//delete []nodes;
+	}
+	//nodes = new vector<Node*>();
+	sequenceId = 0;
 	for (int i=0; i<n; i++)
-		nodes->push_back(new Node());
+		AddNode(new Node(this));
 }
 
 ofstream& operator<<(ofstream& os, const Network& network)
