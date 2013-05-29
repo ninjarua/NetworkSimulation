@@ -76,11 +76,9 @@ istringstream& operator>>(istringstream& is, Node& node)
 	node.Reset();
 	is >> node.id >> node.posX >> node.posY;
 	int id;
-	while (!is.fail())
+	while (is >> id)
 	{
-		is >> id;
-		Node* neighbor = node.OwnerNetwork->nodes->at(id);
-		node.neighbors->push_back(neighbor);
+		node.neighbors->push_back(node.OwnerNetwork->nodes->at(id));
 	}
 	return is;
 }
