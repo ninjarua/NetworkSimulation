@@ -10,42 +10,41 @@
 namespace protocols {
 
 NetworkProtocol::NetworkProtocol() {
-	// TODO Auto-generated constructor stub
 
 }
 
 NetworkProtocol::~NetworkProtocol() {
-	// TODO Auto-generated destructor stub
+
 }
 
-void NetworkProtocol::BroadcastMessage(Node* sender, void (*action)(Node*, Node*, Message*))
+void NetworkProtocol::BroadcastMessage(Node* sender, void (*receivingAction)(void*, Node*, Node*, Message*))
 {
 	list<Node*>::iterator it;
     for (it = sender->neighbors->begin(); it != sender->neighbors->end(); it++)// Node neighbor in sender.Neighbors)
     {
         if ((*it)->state != Inactive)
         {
-            Message* message = new Message(sender, *it, sender->ownerNetwork->currentTimeSlot);
-            message->receivingAction = action;
-            sender->ownerNetwork->newMessages->push_back(message);
+            Message* message = new Message(sender, *it, sender->OwnerNetwork->currentTimeSlot);
+            message->receivingAction = receivingAction;
+            sender->OwnerNetwork->newMessages->push_back(message);
         }
     }
 }
 
-void NetworkProtocol::SendMessage(Node* sender, Node* receiver, void (*action)(Node*, Node*, Message*))
+void NetworkProtocol::SendMessage(Node* sender, Node* receiver, void (*receivingAction)(void*, Node*, Node*, Message*))
 {
     if (receiver->state == Inactive)
         return;
-    Message* message = new Message(sender, receiver, sender->ownerNetwork->currentTimeSlot);
-    message->receivingAction = action;
-    sender->ownerNetwork->newMessages->push_back(message);
+    Message* message = new Message(sender, receiver, sender->OwnerNetwork->currentTimeSlot);
+    message->receivingAction = receivingAction;
+    sender->OwnerNetwork->newMessages->push_back(message);
 }
 
-void NetworkProtocol::SendMessage(Node* sender, Node* receiver, void (*action)(Node*, Node*, Message*), Message* message)
+void NetworkProtocol::SendMessage(Node* sender, Node* receiver, void (*receivingAction)(void*, Node*, Node*, Message*), Message* message)
 {
-    message->creationTime = sender->ownerNetwork->currentTimeSlot;
-    message->receivingAction = action;
-    sender->ownerNetwork->newMessages->push_back(message);
+    message->creationTime = sender->OwnerNetwork->currentTimeSlot;
+    message->receivingAction = receivingAction;
+    sender->OwnerNetwork->newMessages->push_back(message);
 }
 
 void NetworkProtocol::Initialize(Network* network)
@@ -60,18 +59,13 @@ void NetworkProtocol::Reset(Network* network)
     network->currentTimeSlot = 0;
 }
 
-void NetworkProtocol::RunNetwork(Network* network, void (*startAction)(), bool (*pCondition)(Network))
+void NetworkProtocol::RunNetwork(Network* network, void (*startAction)(Network*), bool (*networkCondition)(Network*))
 {
-    (*startAction)();
-    while (!(*pCondition)(*network))
+    (*startAction)(network);
+    while (!(*networkCondition)(network))
     {
         RunNetworkStep(network);
     }
-}
-
-bool isExpired(Message* m)
-{
-	return m->status == Expired;
 }
 
 void NetworkProtocol::RunNetworkStep(Network* network)
@@ -83,14 +77,18 @@ void NetworkProtocol::RunNetworkStep(Network* network)
     for (unsigned int i = 0; i < messages->size(); i++)
     {
         if ((*messages)[i]->status == Sending && (*messages)[i]->creationTime < network->currentTimeSlot)
-        	(*messages)[i]->receivingAction((*messages)[i]->sender, (*messages)[i]->receiver, (*messages)[i]);
+        {
+        	(*messages)[i]->receivingAction(this, (*messages)[i]->sender, (*messages)[i]->receiver, (*messages)[i]);
+        }
     }
-    Tools::RemoveWithUnaryPredicate(*network->messages, isExpired);
+    Tools::RemoveWithPredicate(*network->messages, &Message::isMessageExpired);
     network->currentTimeSlot++;
 }
 
 void NetworkProtocol::CreateReportString(Network* network)
 {
+	string report = "";
+	reportString  = report;
 }
 
 } /* namespace protocols */

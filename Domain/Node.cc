@@ -22,7 +22,7 @@ Node::Node(Network* network) {
     posX = 0;
     posY = 0;
     CreateLists();
-    ownerNetwork = network;
+    OwnerNetwork = network;
 }
 
 Node::~Node() {
@@ -41,6 +41,21 @@ Node::Node(double x, double y)
     posX = x;
     posY = y;
     CreateLists();
+}
+
+bool Node::isConnectedAreaNumberZero(Node* node)
+{
+	return node->connectedAreaNumber == 0;
+}
+
+bool Node::isConnectedAreaNumberEqual(Node* node, int number)
+{
+	return node->connectedAreaNumber == number;
+}
+
+bool Node::isNodeState(Node* node, NodeState state)
+{
+	return node->state == state;
 }
 
 void Node::CreateLists()

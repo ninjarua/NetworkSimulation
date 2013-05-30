@@ -28,12 +28,13 @@ public:
     vector<Node*>* nodes;
     vector<Message*>* messages;
     vector<Message*>* newMessages;
-	NetworkInfo info;
+	NetworkInfo* info;
 
 	Network();
 	virtual ~Network();
 	Node* AddNode(Node* node);
 	void CreateEmptyNodes(int n);
+	bool static noNewMessageInNetwork(Network* network);
 
 	friend ofstream& operator<<(ofstream& os, const Network& network);
 	friend istream& operator>>(istream& os, Network& network);

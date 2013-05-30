@@ -10,6 +10,7 @@ namespace domain {
 
 Network::Network() {
 	currentTimeSlot = 0;
+	info = new NetworkInfo();
 	nodes = new vector<Node*>();
 	messages = new vector<Message*>();
 	newMessages = new vector<Message*>();
@@ -19,15 +20,15 @@ Network::~Network() {
 	sequenceId = 0;
 }
 
+bool Network::noNewMessageInNetwork(Network* network)
+{
+	return network->newMessages->size() == 0;
+}
+
 void Network::CreateEmptyNodes(int n)
 {
 	if (nodes->size() > 0)
-	{
-		for (int i=nodes->size()-1; i>=0; i--)
-			delete nodes->at(i);
-		nodes->clear();
-		//delete []nodes;
-	}
+		nodes->erase(nodes->begin(), nodes->end());
 	//nodes = new vector<Node*>();
 	sequenceId = 0;
 	for (int i=0; i<n; i++)

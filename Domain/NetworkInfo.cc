@@ -9,20 +9,20 @@
 namespace domain{
 
 NetworkInfo::NetworkInfo() {
-	_listInfectedNodes = vector<Node*>();
-	_listDetectors = vector<Node*>();
+	listInfectedNodes = new vector<Node*>();
+	listDetectors = new vector<Node*>();
 }
 
 NetworkInfo::~NetworkInfo() {
 }
-
-vector<Node*> NetworkInfo::GetInfectedNodes()
-{
-	return _listInfectedNodes;
-}
-
-vector<Node*> NetworkInfo::GetDetectors()
-{
-	return _listDetectors;
-}
+//
+//vector<Node*> NetworkInfo::GetInfectedNodes()
+//{
+//	return listInfectedNodes;
+//}
+//
+//vector<Node*> NetworkInfo::GetDetectors()
+//{
+//	return listDetectors;
+//}
 }

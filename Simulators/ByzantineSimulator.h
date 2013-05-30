@@ -9,13 +9,35 @@
 #define PROPAGATIONSIMULATOR_H_
 
 #include "SimulatorBase.h"
+#include "ByzantineReport.h"
+
+using namespace protocols;
 
 namespace simulators {
 
 class ByzantineSimulator: public SimulatorBase {
+private:
+	ByzantineProtocol* _fault;
 public:
 	ByzantineSimulator();
 	virtual ~ByzantineSimulator();
+
+	TypeOfTolerance ToleranceType;
+
+	NetworkInfo* GetNetworkInfo();
+	virtual void SetTolerance(TypeOfTolerance toleranceType);
+	void InitializeSimulator(double byzantineProb, double nothingProb, TypeOfTolerance toleranceType, bool draw = false);
+	bool RunSimulationStep(bool draw = false);
+	void DrawNetwork();
+	void AddOneStepReport();
+	ByzantineReport* FinishReport();
+	bool StopPrediction(ByzantineReport* report);
+	void RunSimulationByInterval(int times);
+	void RunSimulation(int times, double intervalByz, double intervalNothing,
+                        TypeOfTolerance toleranceType, void (*output)(ByzantineReport),
+                        double startingNothing = 0, double startingByzantine = 0,
+                        double endNothing = 1, double endByzantine = 1);
+	void RunOneStep(void (*output)(ByzantineReport), double byzantineProb, double nothingProb, int times);
 };
 
 } /* namespace deployment */

@@ -15,13 +15,11 @@
 namespace domain {
 
 class NetworkInfo {
-	vector<Node*> _listInfectedNodes;
-	vector<Node*> _listDetectors;
 public:
 	NetworkInfo();
 	virtual ~NetworkInfo();
-	vector<Node*> GetInfectedNodes();
-	vector<Node*> GetDetectors();
+	vector<Node*>* listInfectedNodes;
+	vector<Node*>* listDetectors;
 };
 }
 #endif /* NETWORKINFO_H_ */

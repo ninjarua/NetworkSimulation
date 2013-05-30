@@ -23,7 +23,7 @@ enum DeployingType { Ring = 0, TorusGrid = 1,
 					Grid = 2, ER_Random = 3,
 					FixedRange = 4, ScaleFree = 5};
 
-typedef bool (*pCondition)(Node*);
+typedef bool (*pNodeCondition)(Node*);
 
 class Deploying {
 public:
@@ -42,17 +42,17 @@ public:
         virtual double GetPosX(int nodeSequenceId);
         virtual double GetPosY(int nodeSequenceId);
 	public:
-        int FindMaximumConnectedArea(Network* network, bool (*pCondition)(Node*));
+        int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(Node*, NodeState), NodeState state);
         bool RunDeploy(Network* network);
         virtual bool ObtainTopology(Network* network);
 	private:
-        void ConnectedAreaSpreading(Node* seed, int spreadingValue, pCondition nodeCondition);
+        void ConnectedAreaSpreading(Node* seed, int spreadingValue, bool (*nodeCondition)(Node*, NodeState), NodeState state);
         void NeighborInitialization(Network* network);
-        stack<Node*>* LookingForNode(list<Node*>* listInput, pCondition nodeCondition);
-        void AddingNewNodesWithFilter(stack<Node*>* stack, Node* consideringNode, pCondition nodeCondition, int number,
-        							bool (*filter)(Node* n1, Node* n2, int number));
+        stack<Node*>* LookingForNode(list<Node*>* listInput, bool (*nodeCondition)(Node*, NodeState), NodeState state);
+        void AddingNewNodesWithFilter(stack<Node*>* stack, Node* consideringNode, bool (*nodeCondition)(Node*, NodeState),
+        		NodeState state, int number, bool (*filter)(Node* n1, Node* n2, int number));
         bool static FilterDisconnectedNodeAndDifferentConnectedAreaNumber(Node* n1, Node* n2, int number);
-        vector<Node*> FilterNode(vector<Node*> listInput, pCondition nodeCondition);
+        vector<Node*> FilterNode(vector<Node*> listInput, pNodeCondition nodeCondition);
 };
 
 } /* namespace deployment */

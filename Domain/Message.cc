@@ -10,18 +10,23 @@
 namespace domain {
 
 Message::Message() {
-	// TODO Auto-generated constructor stub
-
+	//receivingAction = NULL;
 }
 
 Message::Message(Node* s, Node* r, int t) {
 	sender = s;
 	receiver = r;
 	creationTime = t;
+	//receivingAction = NULL;
 }
 
 Message::~Message() {
 	// TODO Auto-generated destructor stub
+}
+
+bool Message::isMessageExpired(Message* m)
+{
+	return m->status == Expired;
 }
 
 } /* namespace domain */

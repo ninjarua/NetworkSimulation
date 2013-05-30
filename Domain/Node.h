@@ -24,7 +24,6 @@ public:
 	Network* OwnerNetwork;
 	double posX;
 	double posY;
-	Network* ownerNetwork;
 	NodeState state;
 	list<Node*>* neighbors;
 	set<Node*>* detectedByzantines;
@@ -38,6 +37,9 @@ public:
 
 	void Reset();
 
+	bool static isConnectedAreaNumberZero(Node* node);
+	bool static isConnectedAreaNumberEqual(Node* node, int number);
+	bool static isNodeState(Node* node, NodeState state);
 	friend ofstream& operator<<(ofstream& os, const Node& node);
 	friend istringstream& operator>>(istringstream& os, Node& node);
 

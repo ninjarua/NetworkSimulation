@@ -22,15 +22,16 @@ public:
 	virtual ~NetworkProtocol();
 public:
 	string reportString;
+	//typedef void (NetworkProtocol::*receivingMessage)(Node*, Node*, Message*);
 
-	void BroadcastMessage(Node* sender, void (*action)(Node*, Node*, Message*));//, object content);
-	void SendMessage(Node* sender, Node* receiver, void (*action)(Node*, Node*, Message*));//, string content);
-	void SendMessage(Node* sender, Node* receiver, void (*action)(Node*, Node*, Message*), Message* message);
+	static void BroadcastMessage(Node* sender, void (*receivingAction)(void*, Node*, Node*, Message*));//, object content);
+	static void SendMessage(Node* sender, Node* receiver, void (*receivingAction)(void*, Node*, Node*, Message*));//, string content);
+	static void SendMessage(Node* sender, Node* receiver, void (*receivingAction)(void*, Node*, Node*, Message*), Message* message);
 
 	virtual void Initialize(Network* network);
 	virtual void Reset(Network* network);
 
-	virtual void RunNetwork(Network* network, void (*startAction)(), bool (*pCondition)(Network));
+	virtual void RunNetwork(Network* network, void (*startAction)(Network*), bool (*networkCondition)(Network*));
 	virtual void RunNetworkStep(Network* network);
 
 protected:
