@@ -10,23 +10,23 @@
 
 #include "stdafx.h"
 #include <string>
+#include <fstream>
 #include "Network.h"
+#include "ByzantineReport.h"
 
 using namespace domain;
 
 namespace protocols {
-
 class NetworkProtocol {
 public:
 	NetworkProtocol();
 	virtual ~NetworkProtocol();
-public:
-	string reportString;
+	ByzantineReport* report;
 	//typedef void (NetworkProtocol::*receivingMessage)(Node*, Node*, Message*);
 
-	static void BroadcastMessage(Node* sender, void (*receivingAction)(void*, Node*, Node*, Message*));//, object content);
-	static void SendMessage(Node* sender, Node* receiver, void (*receivingAction)(void*, Node*, Node*, Message*));//, string content);
-	static void SendMessage(Node* sender, Node* receiver, void (*receivingAction)(void*, Node*, Node*, Message*), Message* message);
+	static void BroadcastMessage(Node* sender, MessageReaction receivingAction);//, object content);
+	static void SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction);//, string content);
+	static void SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction, Message* message);
 
 	virtual void Initialize(Network* network);
 	virtual void Reset(Network* network);
@@ -35,6 +35,8 @@ public:
 	virtual void RunNetworkStep(Network* network);
 
 protected:
+	string logFile;
+	string resultFile;
 	void CreateReportString(Network* network);
 };
 

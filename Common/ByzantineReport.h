@@ -12,16 +12,14 @@
 #include <list>
 #include "StatisticSummary.h"
 
-namespace simulators {
-
 class ByzantineReport {
 public:
 	ByzantineReport();
 	virtual ~ByzantineReport();
 private:
-	static ByzantineReport* _report;
+	//static ByzantineReport* _report;
 public:
-	static ByzantineReport* Default();
+	//static ByzantineReport* Default();
 	long size;
 	double nothingProbability;
 	double byzantineProbability;
@@ -53,5 +51,4 @@ public:
 	ByzantineReport* Summarize(double significance);
 };
 
-} /* namespace simulators */
 #endif /* BYZANTINEREPORT_H_ */

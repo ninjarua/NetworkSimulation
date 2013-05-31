@@ -17,12 +17,12 @@ ToleranceBase::~ToleranceBase() {
 
 }
 
-ToleranceBase ToleranceBase::GetBase()
-{
-    if (_instance == NULL)
-        _instance = new ToleranceBase();
-    return _instance;
-}
+//ToleranceBase ToleranceBase::GetBase()
+//{
+//    if (_instance == NULL)
+//        _instance = new ToleranceBase();
+//    return _instance;
+//}
 
 void ToleranceBase::TolerateNode(Node* node, Node* byzantine)
 {

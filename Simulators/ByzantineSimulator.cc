@@ -10,7 +10,7 @@
 namespace simulators {
 
 ByzantineSimulator::ByzantineSimulator() : SimulatorBase() {
-	_fault = ByzantineProtocol::GetInstance(0.5, 0.5);
+	_byzantine = new ByzantineProtocol(0.5, 0.5);
 }
 
 ByzantineSimulator::~ByzantineSimulator() {
@@ -27,7 +27,11 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	switch(toleranceType)
 	{
 	case K01:
-		_fault->tolerance = ToleranceBase::GetBase();
+		//_fault->tolerance = ToleranceBase::GetBase();
+		_byzantine->tolerance = new ToleranceBase();
+		break;
+	default:
+		_byzantine->tolerance = new ToleranceBase();
 		break;
 	}
 }
@@ -35,14 +39,14 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 void ByzantineSimulator::InitializeSimulator(double byzantineProb, double nothingProb, TypeOfTolerance toleranceType, bool draw)
 {
 	SetTolerance(toleranceType);
-	_fault->Initialize(_network, byzantineProb, nothingProb);
+	_byzantine->Initialize(_network, byzantineProb, nothingProb);
 //	if (draw)
 //		_networkGraphics.DrawNetwork(_network, false, false, true);
 }
 
 bool ByzantineSimulator::RunSimulationStep(bool draw)
 {
-	bool stop = _fault->RunStepCheckFinish(_network, &Network::noNewMessageInNetwork);
+	bool stop = _byzantine->RunStepCheckFinish(_network, &Network::noNewMessageInNetwork);
 	//_networkGraphics.DrawNetwork(_network, false, false, true);
 	return stop;
 }
@@ -57,21 +61,21 @@ void ByzantineSimulator::AddOneStepReport()
 	long byzantines = Tools::CountAll(*_network->nodes, &Node::isNodeState, Infected);
 	long inactives = Tools::CountAll(*_network->nodes, &Node::isNodeState, Inactive);
 	long detectors = Tools::CountAll(*_network->nodes, &Node::isNodeState, Detector);
-	ByzantineReport::Default()->byzantineProbability = _fault->byzantineProb;
-	ByzantineReport::Default()->AddByzantineValue(byzantines);
-	ByzantineReport::Default()->AddSacrificeValue(inactives);
-	ByzantineReport::Default()->AddDetectorValue(detectors);
-	ByzantineReport::Default()->AddNormalValue(_network->nodes->size() - byzantines - inactives - detectors);
-	ByzantineReport::Default()->AddLargestConnectedAreaValue(
+	_byzantine->report->byzantineProbability = _byzantine->byzantineProb;
+	_byzantine->report->AddByzantineValue(byzantines);
+	_byzantine->report->AddSacrificeValue(inactives);
+	_byzantine->report->AddDetectorValue(detectors);
+	_byzantine->report->AddNormalValue(_network->nodes->size() - byzantines - inactives - detectors);
+	_byzantine->report->AddLargestConnectedAreaValue(
 			_deploying->FindMaximumConnectedArea(_network, &Node::isNodeState, Sane));
 }
 
 ByzantineReport* ByzantineSimulator::FinishReport()
 {
-	ByzantineReport::Default()->Clear();
+	_byzantine->report->Clear();
 	AddOneStepReport();
-	ByzantineReport::Default()->Summarize(0.05);
-	return ByzantineReport::Default();
+	_byzantine->report->Summarize(0.05);
+	return _byzantine->report;
 }
 
 bool ByzantineSimulator::StopPrediction(ByzantineReport* report)
@@ -83,21 +87,21 @@ bool ByzantineSimulator::StopPrediction(ByzantineReport* report)
 
 void ByzantineSimulator::RunSimulationByInterval(int times)
 {
-	ByzantineReport::Default()->Clear();
-	ByzantineReport::Default()->nothingProbability = _fault->nothingProb;
+	_byzantine->report->Clear();
+	_byzantine->report->nothingProbability = _byzantine->nothingProb;
 	int prediction = 500;
 	int count = 0;
 	while (count < times)
 	{
 		while (count < prediction)
 		{
-			_fault->Refresh(_network);
-			_fault->RunFault(_network);
+			_byzantine->Refresh(_network);
+			_byzantine->RunFault(_network);
 			AddOneStepReport();
 			count++;
 		}
-		ByzantineReport::Default()->Summarize(0.05);
-		if (StopPrediction(ByzantineReport::Default()))
+		_byzantine->report->Summarize(0.05);
+		if (StopPrediction(_byzantine->report))
 			times = prediction;	// reduce the running time and quit
 		else
 			prediction += 100;
@@ -136,9 +140,9 @@ void ByzantineSimulator::RunSimulation(int times, double intervalByz, double int
 
 void ByzantineSimulator::RunOneStep(void (*output)(ByzantineReport), double byzantineProb, double nothingProb, int times)
 {
-	_fault->Initialize(_network, byzantineProb, nothingProb);
+	_byzantine->Initialize(_network, byzantineProb, nothingProb);
 	RunSimulationByInterval(times);
-	output(ByzantineReport::Default());
+	output(ByzantineReport());
 }
 
 } /* namespace deployment */

@@ -7,8 +7,6 @@
 
 #include "ByzantineReport.h"
 
-namespace simulators {
-
 ByzantineReport::ByzantineReport() {
 	numberOfByzantines = new list<long>();
 	numberOfDetectors = new list<long>();
@@ -21,13 +19,13 @@ ByzantineReport::~ByzantineReport() {
 	// TODO Auto-generated destructor stub
 }
 
-ByzantineReport* ByzantineReport::_report = NULL;
-ByzantineReport* ByzantineReport::Default()
-{
-	if (_report == NULL)
-		_report = new ByzantineReport();
-	return _report;
-}
+//ByzantineReport* ByzantineReport::_report = NULL;
+//ByzantineReport* ByzantineReport::Default()
+//{
+//	if (_report == NULL)
+//		_report = new ByzantineReport();
+//	return _report;
+//}
 
 void ByzantineReport::Clear()
 {
@@ -83,5 +81,3 @@ ByzantineReport* ByzantineReport::Summarize(double significance)
 	size = StatisticSummary::GetInstance()->length;
 	return this;
 }
-
-} /* namespace simulators */

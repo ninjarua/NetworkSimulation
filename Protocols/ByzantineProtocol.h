@@ -23,7 +23,7 @@ namespace protocols {
 
 class ByzantineProtocol : public NetworkProtocol {
 private:
-	static ByzantineProtocol* _fault;
+	//static ByzantineProtocol* _fault;
 public:
 	ToleranceBase* tolerance;
 	double byzantineProb;
@@ -31,7 +31,7 @@ public:
 	ByzantineProtocol();
 	ByzantineProtocol(double byzantineProb, double detectingProb);
 	virtual ~ByzantineProtocol();
-	static ByzantineProtocol* GetInstance(double byzantineProb, double dectectingProb);
+	//static ByzantineProtocol* GetInstance(double byzantineProb, double dectectingProb);
 
 	static NetworkInfo* GetNetworkInfo(Network* network);
 	void Initialize(Network* network, double byzantineProb, double nothingProb);

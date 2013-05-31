@@ -17,7 +17,7 @@ namespace simulators {
 
 class ByzantineSimulator: public SimulatorBase {
 private:
-	ByzantineProtocol* _fault;
+	ByzantineProtocol* _byzantine;
 public:
 	ByzantineSimulator();
 	virtual ~ByzantineSimulator();

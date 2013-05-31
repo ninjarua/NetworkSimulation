@@ -10,14 +10,14 @@
 namespace protocols {
 
 NetworkProtocol::NetworkProtocol() {
-
+	report = new ByzantineReport();
 }
 
 NetworkProtocol::~NetworkProtocol() {
 
 }
 
-void NetworkProtocol::BroadcastMessage(Node* sender, void (*receivingAction)(void*, Node*, Node*, Message*))
+void NetworkProtocol::BroadcastMessage(Node* sender, MessageReaction receivingAction)
 {
 	list<Node*>::iterator it;
     for (it = sender->neighbors->begin(); it != sender->neighbors->end(); it++)// Node neighbor in sender.Neighbors)
@@ -31,7 +31,7 @@ void NetworkProtocol::BroadcastMessage(Node* sender, void (*receivingAction)(voi
     }
 }
 
-void NetworkProtocol::SendMessage(Node* sender, Node* receiver, void (*receivingAction)(void*, Node*, Node*, Message*))
+void NetworkProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction)
 {
     if (receiver->state == Inactive)
         return;
@@ -40,7 +40,7 @@ void NetworkProtocol::SendMessage(Node* sender, Node* receiver, void (*receiving
     sender->OwnerNetwork->newMessages->push_back(message);
 }
 
-void NetworkProtocol::SendMessage(Node* sender, Node* receiver, void (*receivingAction)(void*, Node*, Node*, Message*), Message* message)
+void NetworkProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction, Message* message)
 {
     message->creationTime = sender->OwnerNetwork->currentTimeSlot;
     message->receivingAction = receivingAction;
@@ -87,8 +87,7 @@ void NetworkProtocol::RunNetworkStep(Network* network)
 
 void NetworkProtocol::CreateReportString(Network* network)
 {
-	string report = "";
-	reportString  = report;
+
 }
 
 } /* namespace protocols */

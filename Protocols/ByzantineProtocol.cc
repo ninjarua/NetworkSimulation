@@ -9,13 +9,13 @@
 
 namespace protocols {
 
-ByzantineProtocol* ByzantineProtocol::_fault = NULL;
-ByzantineProtocol* ByzantineProtocol::GetInstance(double byzantineProb, double dectectingProb)
-{
-    if (_fault == NULL)
-        _fault = new ByzantineProtocol(byzantineProb, dectectingProb);
-    return _fault;
-}
+//ByzantineProtocol* ByzantineProtocol::_fault = NULL;
+//ByzantineProtocol* ByzantineProtocol::GetInstance(double byzantineProb, double dectectingProb)
+//{
+//    if (_fault == NULL)
+//        _fault = new ByzantineProtocol(byzantineProb, dectectingProb);
+//    return _fault;
+//}
 
 ByzantineProtocol::ByzantineProtocol() {
 
