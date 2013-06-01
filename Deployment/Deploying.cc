@@ -19,7 +19,7 @@ Deploying::~Deploying() {
 bool Deploying::ObtainTopology(Network* network)
 {
 	network->sequenceId = 0;
-	network->nodes->clear();
+	network->nodes.clear();
 	return true;
 }
 
@@ -38,27 +38,32 @@ double Deploying::GetCellLength()
 	return 0;
 }
 
-bool Deploying::IsValidDistance(Node node, Node neighbor)
+bool Deploying::IsValidDistance(const Node& node, const Node& neighbor)
 {
 	double Xdist, Ydist, dist;
 	Xdist = node.posX - neighbor.posX;
 	Ydist = node.posY - neighbor.posY;
 	// distance between a given pair of nodes
 	dist = pow((Xdist * Xdist + Ydist * Ydist), 0.5);
-	return (dist >= networkTopology->D0);
+	return (dist >= networkTopology.D0);
 }
 
-bool Deploying::IsAllDistanceValid(Network network, Node node)
+bool Deploying::IsAllDistanceValid(const Network& network, const Node& node)
 {
-	int size = network.nodes->size();
+	int size = network.nodes.size();
 	for (int j = 0; j < size - 1; j = j + 1)
 	{
-		if (!IsValidDistance(node, *network.nodes->at(j)))
+		if (!IsValidDistance(node, *network.nodes.at(j)))
 		{
 			return false;
 		}
 	}
 	return true;
+}
+
+string Deploying::GetDeployingName()
+{
+	return "General";
 }
 
 bool Deploying::RunDeploy(Network* network)
@@ -73,14 +78,14 @@ bool Deploying::RunDeploy(Network* network)
 
 void Deploying::NeighborInitialization(Network* network)
 {
-	for (unsigned int i = 0; i < network->nodes->size() - 1; i++)
+	for (unsigned int i = 0; i < network->nodes.size() - 1; i++)
 	{
-		for (unsigned int j = i + 1; j < network->nodes->size(); j++)
+		for (unsigned int j = i + 1; j < network->nodes.size(); j++)
 		{
-			if (IsNeighbors(*network, *(*network->nodes)[i], *(*network->nodes)[j]))
+			if (IsNeighbors(*network, *network->nodes[i], *network->nodes[j]))
 			{
-				(*network->nodes)[i]->neighbors->push_back((*network->nodes)[j]);
-				(*network->nodes)[j]->neighbors->push_back((*network->nodes)[i]);
+				(network->nodes[i])->neighbors.push_back(network->nodes[j]);
+				(network->nodes[j])->neighbors.push_back(network->nodes[i]);
 			}
 		}
 	}
@@ -89,9 +94,10 @@ void Deploying::NeighborInitialization(Network* network)
 
 void Deploying::CreateInformationOfGraph(Network* network)
 {
+
 }
 
-bool Deploying::IsNeighbors(Network network, Node node, Node neighbor)
+bool Deploying::IsNeighbors(const Network& network, const Node& node, const Node& neighbor)
 {
 	// test for commit
 	double Xdist = node.posX - neighbor.posX;
@@ -100,69 +106,5 @@ bool Deploying::IsNeighbors(Network network, Node node, Node neighbor)
 	return pow((Xdist * Xdist + Ydist * Ydist), 0.5) <= network.transRange;
 }
 
-int Deploying::FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(Node*, NodeState), NodeState state)
-{
-	vector<Node*> checkNodes = Tools::FindAllToVector(*network->nodes, (*nodeCondition), state);
-	vector<Node*> spreadingNodes = Tools::FindAllToVector(checkNodes, &Node::isConnectedAreaNumberZero);
-	int spreadingValue = 0;
-	int max = 0;
-	while (spreadingNodes.size() > 0)
-	{
-		spreadingValue++;
-		Node* begin = *spreadingNodes.begin();
-		ConnectedAreaSpreading(begin, spreadingValue, (*nodeCondition), state);
-		int count = Tools::RemoveWithPredicate(spreadingNodes, &Node::isConnectedAreaNumberEqual, spreadingValue);
-		if (count > max)
-			max = count;
-	}
-	return max;
 }
-
-stack<Node*>* Deploying::LookingForNode(list<Node*>* listInput, bool (*nodeCondition)(Node*, NodeState), NodeState state)
-{
-	stack<Node*>* results = new stack<Node*>();
-	list<Node*>::iterator it = listInput->begin();
-	while(it != listInput->end())
-	{
-		if (nodeCondition(*it, state))
-		{
-			results->push(*it);
-		}
-	}
-	return results;
-}
-
-void Deploying::AddingNewNodesWithFilter(stack<Node*>* stack, Node* consideringNode, bool (*nodeCondition)(Node*, NodeState),
-				NodeState state, int number, bool (*filter)(Node* n1, Node* n2, int number))
-{
-	list<Node*>::iterator it = consideringNode->neighbors->begin();
-	while(it != consideringNode->neighbors->end())
-	{
-		Node* node = *it;
-		if (nodeCondition(node, state) && filter(node, consideringNode, number))
-		{
-			stack->push(node);
-		}
-	}
-}
-
-
-bool Deploying::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(Node* n1, Node* n2, int number)
-{
-	return n1->connectedAreaNumber != number && n2->disconnectedNodes->find(n1) != n2->disconnectedNodes->end()
-			&& n1->disconnectedNodes->find(n2) != n1->disconnectedNodes->end();
-}
-
-void Deploying::ConnectedAreaSpreading(Node* seed, int spreadingValue, bool (*nodeCondition)(Node*, NodeState), NodeState state)
-{
-	seed->connectedAreaNumber = spreadingValue;
-	stack<Node*>* stackNodes = LookingForNode(seed->neighbors, nodeCondition, state);
-	while (stackNodes->size() != 0)
-	{
-		Node* node = stackNodes->top();
-		stackNodes->pop();
-		node->connectedAreaNumber = spreadingValue;
-		AddingNewNodesWithFilter(stackNodes, node, nodeCondition, state, spreadingValue, &FilterDisconnectedNodeAndDifferentConnectedAreaNumber);
-	}
-}
-} /* namespace deployment */
+/* namespace deployment */

@@ -14,11 +14,14 @@ namespace domain {
 
 class ByzantineMessage: public domain::Message {
 public:
-	ByzantineMessage(Node* sender, Node* receiver, int timeSlot, double byzantineProb, double nothingProb);
-	virtual ~ByzantineMessage();
-
 	double byzantineProb;
 	double nothingProb;
+
+public:
+	ByzantineMessage(Node* sender, Node* receiver, const int& timeSlot, double byzantineProb, double nothingProb);
+	virtual ~ByzantineMessage();
+
+	string GetMessageName() const;
 };
 
 } /* namespace domain */

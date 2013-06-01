@@ -8,7 +8,11 @@
 #ifndef MESSAGE_H_
 #define MESSAGE_H_
 
+#include "stdafx.h"
 #include "Node.h"
+#include <fstream>
+#include <iostream>
+
 namespace domain {
 enum MessageStatus { Created = 0, Sending = 1, Stopped = 2, Expired = 3 };
 class Message;
@@ -21,10 +25,13 @@ public:
 	MessageStatus status;
 
 	Message();
-	Message(Node* sender, Node* receiver, int timeSlot);
+	Message(Node* sender, Node* receiver, const int& timeSlot);
 	virtual ~Message();
-	bool static isMessageExpired(Message* m);
+	bool static isMessageExpired(const Message& m);
 	MessageReaction receivingAction;
+	virtual string GetMessageName() const;
+	friend ofstream& operator<<(ofstream& ofs, const Message& message);
+	friend ostream& operator<<(ostream& ofs, const Message& message);
 	//void (*receivingAction)(Node*, Node*, Message*);
 };
 

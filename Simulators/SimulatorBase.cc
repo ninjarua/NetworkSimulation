@@ -14,10 +14,10 @@
 namespace simulators {
 
 SimulatorBase::SimulatorBase() {
-	_deploying = new Deploying();
+	_deploying = Deploying();
 	//NetworkGraphics _networkGraphics;
 	_network = new Network();
-	_topology = new Topology();
+	_topology = Topology();
 	_hasTopology = false;
 	_currentTimeslot = 1;
 }
@@ -34,12 +34,12 @@ void SimulatorBase::SetDeployment(DeployingType type)
 		break;
 	case TorusGrid:
 	case Grid:
-		_deploying = new GridDeploying();
+		_deploying = GridDeploying();
 		break;
 	case ER_Random:
 	case ScaleFree:
 	case FixedRange:
-		_deploying = new FixedRangeRandomDeploying();
+		_deploying = FixedRangeRandomDeploying();
 		break;
 	default:
 		break;
@@ -48,14 +48,14 @@ void SimulatorBase::SetDeployment(DeployingType type)
 
 void SimulatorBase::GetParameters(DeployingType deployment, int numberOfNodes, int transRange, float xTerr, float yTerr, float d0, bool checkConflict)
 {
-    _topology->NumNodes = numberOfNodes;
-    _topology->XTerr = xTerr;
-    _topology->YTerr = yTerr;
-    _topology->D0 = d0;
-    _topology->Distance = transRange;
+    _topology.NumNodes = numberOfNodes;
+    _topology.XTerr = xTerr;
+    _topology.YTerr = yTerr;
+    _topology.D0 = d0;
+    _topology.Distance = transRange;
 
     SetDeployment(deployment);
-    _deploying->networkTopology = _topology;
+    _deploying.networkTopology = _topology;
 
     _network->transRange = transRange;
     //_network.collisionChecking = checkConflict;
@@ -93,12 +93,10 @@ string SimulatorBase::DeployNetwork(int times, bool drawNetwork)
 {
 	for (int i = 0; i < times; i++)
 	{
-		_hasTopology = _deploying->RunDeploy(_network);
+		_hasTopology = _deploying.RunDeploy(_network);
 		if (_hasTopology)
 		{
-			ofstream f(GetFilename(i + 1).c_str(), ofstream::out);
-			f << (*_network);
-			f.close();
+			Logger::Write(_network, GetFilename(i + 1));
 			//if (drawNetwork)
 		}
 		else
@@ -109,18 +107,11 @@ string SimulatorBase::DeployNetwork(int times, bool drawNetwork)
 	return "Success";
 }
 
-string SimulatorBase::GenerateNetworkFromFile(int times, bool drawNetwork)
+string SimulatorBase::GenerateNetworkFromFile(int index, bool drawNetwork)
 {
-	for (int i = 0; i < times; i++)
-	{
-		ifstream f(GetFilename(i + 1).c_str(), ifstream::in);
-		f >> (*_network);
-		f.close();
-
-		ofstream fo(GetVerifyFilename(i + 1).c_str(), ofstream::out);
-		fo << (*_network);
-		fo.close();
-	}
+	ifstream f(GetFilename(index + 1).c_str(), ifstream::in);
+	f >> (*_network);
+	f.close();
 	return "Success";
 }
 

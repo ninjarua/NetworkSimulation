@@ -10,7 +10,6 @@
 
 #include "stdafx.h"
 #include <math.h>
-#include <stack>
 
 #include "Topology.h"
 #include "Network.h"
@@ -31,28 +30,23 @@ public:
 	virtual ~Deploying();
 
 	public:
-		Topology* networkTopology;
+		Topology networkTopology;
 
     protected:
         virtual void CreateInformationOfGraph(Network* network);
-        virtual bool IsNeighbors(Network network, Node node, Node neighbor);
-        virtual bool IsAllDistanceValid(Network network, Node node);
-        virtual bool IsValidDistance(Node node, Node neighbor);
+        virtual bool IsNeighbors(const Network& network, const Node& node, const Node& neighbor);
+        virtual bool IsAllDistanceValid(const Network& network, const Node& node);
+        virtual bool IsValidDistance(const Node& node, const Node& neighbor);
         virtual double GetCellLength();
         virtual double GetPosX(int nodeSequenceId);
         virtual double GetPosY(int nodeSequenceId);
 	public:
-        int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(Node*, NodeState), NodeState state);
         bool RunDeploy(Network* network);
+        virtual string GetDeployingName();
         virtual bool ObtainTopology(Network* network);
 	private:
-        void ConnectedAreaSpreading(Node* seed, int spreadingValue, bool (*nodeCondition)(Node*, NodeState), NodeState state);
         void NeighborInitialization(Network* network);
-        stack<Node*>* LookingForNode(list<Node*>* listInput, bool (*nodeCondition)(Node*, NodeState), NodeState state);
-        void AddingNewNodesWithFilter(stack<Node*>* stack, Node* consideringNode, bool (*nodeCondition)(Node*, NodeState),
-        		NodeState state, int number, bool (*filter)(Node* n1, Node* n2, int number));
-        bool static FilterDisconnectedNodeAndDifferentConnectedAreaNumber(Node* n1, Node* n2, int number);
-        vector<Node*> FilterNode(vector<Node*> listInput, pNodeCondition nodeCondition);
+        //vector<Node*> FilterNode(vector<Node*> listInput, pNodeCondition nodeCondition);
 };
 
 } /* namespace deployment */

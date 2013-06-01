@@ -20,13 +20,13 @@ NetworkProtocol::~NetworkProtocol() {
 void NetworkProtocol::BroadcastMessage(Node* sender, MessageReaction receivingAction)
 {
 	list<Node*>::iterator it;
-    for (it = sender->neighbors->begin(); it != sender->neighbors->end(); it++)// Node neighbor in sender.Neighbors)
+    for (it = sender->neighbors.begin(); it != sender->neighbors.end(); it++)// Node neighbor in sender.Neighbors)
     {
         if ((*it)->state != Inactive)
         {
-            Message* message = new Message(sender, *it, sender->OwnerNetwork->currentTimeSlot);
+            Message* message = new Message(sender, *it, sender->ownerNetwork->currentTimeSlot);
             message->receivingAction = receivingAction;
-            sender->OwnerNetwork->newMessages->push_back(message);
+            sender->ownerNetwork->newMessages.push_back(message);
         }
     }
 }
@@ -35,16 +35,16 @@ void NetworkProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction 
 {
     if (receiver->state == Inactive)
         return;
-    Message* message = new Message(sender, receiver, sender->OwnerNetwork->currentTimeSlot);
+    Message* message = new Message(sender, receiver, sender->ownerNetwork->currentTimeSlot);
     message->receivingAction = receivingAction;
-    sender->OwnerNetwork->newMessages->push_back(message);
+    sender->ownerNetwork->newMessages.push_back(message);
 }
 
 void NetworkProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction, Message* message)
 {
-    message->creationTime = sender->OwnerNetwork->currentTimeSlot;
+    message->creationTime = sender->ownerNetwork->currentTimeSlot;
     message->receivingAction = receivingAction;
-    sender->OwnerNetwork->newMessages->push_back(message);
+    sender->ownerNetwork->newMessages.push_back(message);
 }
 
 void NetworkProtocol::Initialize(Network* network)
@@ -54,15 +54,15 @@ void NetworkProtocol::Initialize(Network* network)
 
 void NetworkProtocol::Reset(Network* network)
 {
-    network->messages->clear();
-    network->newMessages->clear();
+    network->messages.clear();
+    network->newMessages.clear();
     network->currentTimeSlot = 0;
 }
 
-void NetworkProtocol::RunNetwork(Network* network, void (*startAction)(Network*), bool (*networkCondition)(Network*))
+void NetworkProtocol::RunNetwork(Network* network, void (*startAction)(void* ptr, Network*), bool (*networkCondition)(const Network&))
 {
-    (*startAction)(network);
-    while (!(*networkCondition)(network))
+    (*startAction)(this, network);
+    while (!(*networkCondition)(*network))
     {
         RunNetworkStep(network);
     }
@@ -70,22 +70,29 @@ void NetworkProtocol::RunNetwork(Network* network, void (*startAction)(Network*)
 
 void NetworkProtocol::RunNetworkStep(Network* network)
 {
-    network->messages->insert(network->messages->end(),
-    		network->newMessages->begin(), network->newMessages->end());
-	vector<Message*>* messages = network->messages;
-    network->newMessages->clear();
-    for (unsigned int i = 0; i < messages->size(); i++)
+    network->messages.insert(network->messages.end(),
+    		network->newMessages.begin(), network->newMessages.end());
+    network->newMessages.clear();
+    vector<Message*>::iterator it = network->messages.begin();
+    while (it != network->messages.end())
     {
-        if ((*messages)[i]->status == Sending && (*messages)[i]->creationTime < network->currentTimeSlot)
+        if ((*it)->status == Sending && (*it)->creationTime < network->currentTimeSlot)
         {
-        	(*messages)[i]->receivingAction(this, (*messages)[i]->sender, (*messages)[i]->receiver, (*messages)[i]);
+        	(*it)->receivingAction(this, (*it)->sender, (*it)->receiver, (*it));
+			//Logger::Write(*(*it), GetLogFilename(), ofstream::out | ofstream::app);
         }
+        it++;
     }
-    Tools::RemoveWithPredicate(*network->messages, &Message::isMessageExpired);
+    Tools::RemoveWithPredicate(network->messages, &Message::isMessageExpired);
     network->currentTimeSlot++;
 }
 
-void NetworkProtocol::CreateReportString(Network* network)
+string NetworkProtocol::GetLogFilename()
+{
+	return "base.txt";
+}
+
+void NetworkProtocol::CreateReportString(Network& network)
 {
 
 }

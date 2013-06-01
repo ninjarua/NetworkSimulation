@@ -15,14 +15,14 @@ StatisticSummary::StatisticSummary() {
 StatisticSummary::~StatisticSummary() {
 
 }
-
-StatisticSummary* StatisticSummary::_instance = NULL;
-StatisticSummary* StatisticSummary::GetInstance()
-{
-	if (_instance == NULL)
-		_instance = new StatisticSummary();
-	return _instance;
-}
+//
+//StatisticSummary* StatisticSummary::_instance = NULL;
+//StatisticSummary* StatisticSummary::GetInstance()
+//{
+//	if (_instance == NULL)
+//		_instance = new StatisticSummary();
+//	return _instance;
+//}
 
 void StatisticSummary::Reset()
 {
@@ -38,21 +38,21 @@ double StatisticSummary::GetConfidenceInterval(double significance)
 	return delta * standardDeviation / sqrt(length);
 }
 
-double Sum(list<long>* values)
+double Sum(const list<long>& values)
 {
 	double sum = 0;
-	list<long>::iterator it = values->begin();
-	while (it != values->end())
+	list<long>::const_iterator it = values.begin();
+	for (; it != values.end(); it++)
 	{
 		sum += (double)(*it);
 	}
 	return sum;
 }
 
-StatisticSummary* StatisticSummary::Summarize(list<long>* elements)
+StatisticSummary* StatisticSummary::Summarize(const list<long>& elements)
 {
 	Reset();
-	length = elements->size();
+	length = elements.size();
 	//list<double> doubleValues = elements.ConvertAll<double>(c => Convert.ToDouble(c));
 	sum = Sum(elements);
 	// mean value
@@ -60,8 +60,8 @@ StatisticSummary* StatisticSummary::Summarize(list<long>* elements)
 
 	// variance
 	variance = 0;
-	list<long>::iterator it = elements->begin();
-	while (it != elements->end())
+	list<long>::const_iterator it = elements.begin();
+	for (; it != elements.end(); it++)
 	{
 		variance += (*it - mean) * (*it - mean);
 	}

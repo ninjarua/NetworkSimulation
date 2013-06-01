@@ -9,6 +9,7 @@
 #define TOOLS_H_
 
 using namespace std;
+#include <iostream>
 #include <vector>
 #include <list>
 
@@ -17,122 +18,191 @@ public:
 	Tools(){};
 	virtual ~Tools();
 
-	template<class T>
-	static vector<T> FindAllToVector(vector<T> listInput, bool (*pCondition)(T))
+	template<typename T>
+	static void EraseAll(list<T*>& listInput)
 	{
-		vector<T> result = vector<T>();
-		for(unsigned int i = 0; i < listInput.size(); i++)
+		list<T*> result = list<T*>();
+		typename list<T*>::iterator it = listInput.begin();
+		while(it != listInput.end())
 		{
-			if ((*pCondition)(listInput[i]))
-				result.push_back(listInput[i]);
+			delete *it;
+			it = listInput.erase(it);
 		}
-		return result;
+		listInput.clear();
 	}
 
-	template<class T, typename U>
-	static vector<T> FindAllToVector(vector<T> listInput, bool (*pCondition)(T, U), U condition)
-	{
-		vector<T> result = vector<T>();
-		for(unsigned int i = 0; i < listInput.size(); i++)
-		{
-			if ((*pCondition)(listInput[i], condition))
-				result.push_back(listInput[i]);
-		}
-		return result;
-	}
-
-	template<class T>
-	static long CountAll(vector<T> listInput, bool (*pCondition)(T))
-	{
-		long count = 0;
-		for(unsigned int i = 0; i < listInput.size(); i++)
-		{
-			if ((*pCondition)(listInput[i]))
-				count++;
-		}
-		return count;
-	}
-
-	template<class T, typename U>
-	static long CountAll(vector<T> listInput, bool (*pCondition)(T, U), U condition)
-	{
-		long count = 0;
-		for(unsigned int i = 0; i < listInput.size(); i++)
-		{
-			if ((*pCondition)(listInput[i], condition))
-				count++;
-		}
-		return count;
-	}
-
-	template<class T>
-	static list<T> FindAllToList(vector<T> listInput, bool (*pCondition)(T))
+	template<typename T>
+	static void EraseAll(list<T>& listInput)
 	{
 		list<T> result = list<T>();
-		for(int i = 0; i < listInput.size(); i++)
+		typename list<T>::iterator it = listInput.begin();
+		while(it != listInput.end())
 		{
-			if ((*pCondition)(listInput[i]))
-				result.push_back(listInput[i]);
+			it = listInput.erase(it);
 		}
-		return result;
+		listInput.clear();
 	}
 
 	template<class T>
-	static list<T> ToList(vector<T> vectorInput)
+	static void FindAllToVector(const vector<T*>& inputVector, vector<T*>& outputVector, bool (*pCondition)(const T&))
 	{
-		list<T> result = list<T>();
-		for(int i = 0; i < vectorInput.size(); i++)
+		typename vector<T*>::const_iterator it = inputVector.begin();
+		while(it != inputVector.end())
 		{
-			result.push_back(vectorInput[i]);
+			if ((*pCondition)(*(*it)))
+				outputVector.push_back(*it);
+			it++;
 		}
-		return result;
 	}
 
 	template<class T, typename U>
-	static int RemoveWithPredicate(vector<T>& vectorInput, bool (*pCondition)(T, U), U condition)
+	static void FindAllToVector(const vector<T*>& inputVector, vector<T*>& outputVector, bool (*pCondition)(const T&, const U&), const U& condition)
+	{
+		typename vector<T*>::const_iterator it = inputVector.begin();
+		while(it != inputVector.end())
+		{
+			if ((*pCondition)(*(*it), condition))
+				outputVector.push_back(*it);
+			it++;
+		}
+	}
+
+	template<class T>
+	static long CountAll(const vector<T*>& listInput, bool (*pCondition)(const T&))
+	{
+		long count = 0;
+//		for(unsigned int i = 0; i < listInput.size(); i++)
+		typename vector<T*>::const_iterator it = listInput.begin();
+		while(it != listInput.end())
+		{
+			if ((*pCondition)(*(*it)))
+				count++;
+			it++;
+		}
+		return count;
+	}
+
+	template<class T, typename U>
+	static long CountAll(const vector<T*>& listInput, bool (*pCondition)(const T&, const U&), const U& condition)
+	{
+		long count = 0;
+		typename vector<T*>::const_iterator it = listInput.begin();
+		while(it != listInput.end())
+		{
+			if ((*pCondition)(*(*it), condition))
+				count++;
+			it++;
+		}
+		return count;
+	}
+
+//	template<class T>
+//	static list<T> FindAllToList(const vector<T>& listInput, bool (*pCondition)(T))
+//	{
+//		list<T> result = list<T>();
+//		typename vector<T>::const_iterator it = listInput.begin();
+//		while(it != listInput.end())
+//		{
+//			if ((*pCondition)(*it))
+//				result.push_back(*it);
+//			it++;
+//		}
+//		return result;
+//	}
+//
+//	template<class T>
+//	static list<T> ToList(const vector<T>& vectorInput)
+//	{
+//		list<T> result = list<T>();
+//		typename vector<T>::const_iterator it = vectorInput.begin();
+//		while(it != vectorInput.end())
+//		{
+//			result.push_back(*it);
+//			it++;
+//		}
+//		return result;
+//	}
+
+	template<class T, typename U>
+	static int DetachWithPredicate(vector<T*>& vectorInput, bool (*pCondition)(const T&, U), U condition)
 	{
 		int count = 0;
-		for(int i = vectorInput.size() - 1; i >= 0; i--)
-			if ((*pCondition)(vectorInput[i], condition))
+		typename vector<T*>::iterator it = vectorInput.begin();
+		while(it != vectorInput.end())
+		{
+			if ((*pCondition)(*(*it), condition))
 			{
-				vectorInput.erase(vectorInput.begin() + i);
+				it = vectorInput.erase(it);
 				count++;
 			}
+			else
+				it++;
+		}
+		return count;
+	}
+
+//	template<class T, typename U>
+//	static int RemoveWithPredicate(vector<T*>& vectorInput, bool (*pCondition)(const T&, U), U condition)
+//	{
+//		int count = 0;
+//		typename vector<T*>::iterator it = vectorInput.begin();
+//		while(it != vectorInput.end())
+//		{
+//			if ((*pCondition)(*(*it), condition))
+//			{
+//				delete *it;
+//				it = vectorInput.erase(it);
+//				count++;
+//			}
+//			else
+//				it++;
+//		}
+//		return count;
+//	}
+
+	template<class T>
+	static int RemoveWithPredicate(vector<T*>& vectorInput, bool (*pCondition)(const T&))
+	{
+		int count = 0;
+		typename vector<T*>::iterator it = vectorInput.begin();
+		while(it != vectorInput.end())
+		{
+			if ((*pCondition)(*(*it)))
+			{
+				delete *it;
+				it = vectorInput.erase(it);
+				count++;
+			}
+			else
+				it++;
+		}
 		return count;
 	}
 
 	template<class T>
-	static int RemoveWithPredicate(vector<T>& vectorInput, bool (*pCondition)(T))
+	static bool Remove(vector<T>& vectorInput, T& item)
 	{
-		int count = 0;
-		for(int i = vectorInput.size() - 1; i >= 0; i--)
-			if ((*pCondition)(vectorInput[i]))
+		typename vector<T>::iterator it = vectorInput.begin();
+		while(it != vectorInput.end())
+		{
+			if ((*it) == item)
 			{
-				vectorInput.erase(vectorInput.begin() + i);
-				count++;
-			}
-		return count;
-	}
-
-	template<class T>
-	static bool Remove(vector<T>& vectorInput, T item)
-	{
-		for(int i = vectorInput.size() - 1; i >= 0; i--)
-			if (vectorInput[i] == item)
-			{
-				vectorInput.erase(vectorInput.begin() + i);
+				delete *it;
+				it = vectorInput.erase(it);
 				return true;
 			}
+			it++;
+		}
 		return false;
 	}
 
 	template<class T>
-	static bool Exists(list<T>& listInput, bool (*pCondition)(T))
+	static bool Exists(const list<T*>& listInput, bool (*pCondition)(const T&))
 	{
-		typename list<T>::iterator it = listInput.begin();
+		typename list<T*>::const_iterator it = listInput.begin();
 		while(it != listInput.end())
 		{
-			if ((*pCondition)(*it))
+			if ((*pCondition)(*(*it)))
 				return true;
 			it++;
 		}
@@ -140,12 +210,12 @@ public:
 	}
 
 	template<class T, typename U>
-	static bool Exists(list<T>& listInput, bool (*pCondition)(T, U), U condition)
+	static bool Exists(const list<T*>& listInput, bool (*pCondition)(const T&, const U&), const U& condition)
 	{
-		typename list<T>::iterator it = listInput.begin();
+		typename list<T*>::const_iterator it = listInput.begin();
 		while(it != listInput.end())
 		{
-			if ((*pCondition)(*it, condition))
+			if ((*pCondition)(*(*it), condition))
 				return true;
 			it++;
 		}

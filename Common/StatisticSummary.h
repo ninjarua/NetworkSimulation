@@ -13,14 +13,9 @@
 #include <boost/math/distributions/normal.hpp>
 
 class StatisticSummary {
-private:
-	static StatisticSummary* _instance;
-
 public:
 	StatisticSummary();
 	virtual ~StatisticSummary();
-
-	static StatisticSummary* GetInstance();
 
 	int x;
 	double variance;
@@ -32,7 +27,7 @@ public:
 
 	void Reset();
 	double GetConfidenceInterval(double significance);
-	StatisticSummary* Summarize(list<long>* elements);
+	StatisticSummary* Summarize(const list<long>& elements);
 };
 
 #endif /* STATISTICSUMMARY_H_ */

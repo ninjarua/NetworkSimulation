@@ -21,13 +21,13 @@ class Network;
 class Node {
 public:
 	int id;
-	Network* OwnerNetwork;
+	Network* ownerNetwork;
 	double posX;
 	double posY;
 	NodeState state;
-	list<Node*>* neighbors;
-	set<Node*>* detectedByzantines;
-	set<Node*>* disconnectedNodes;
+	list<Node*> neighbors;
+	set<Node*> detectedByzantines;
+	set<Node*> disconnectedNodes;
 	int connectedAreaNumber;
 
 	Node();
@@ -37,12 +37,15 @@ public:
 
 	void Reset();
 
-	bool static isConnectedAreaNumberZero(Node* node);
-	bool static isConnectedAreaNumberEqual(Node* node, int number);
-	bool static isNodeState(Node* node, NodeState state);
+	bool static isConnectedAreaNumberZero(const Node& node);
+	bool static isConnectedAreaNumberEqual(const Node& node, int number);
+	bool static isNodeState(const Node& node, const NodeState& state);
+	friend bool operator==(const Node& n1, const Node& n2);
+	friend bool operator<(const Node& n1, const Node& n2);
+	friend bool operator>(const Node& n1, const Node& n2);
+	friend ostream& operator<<(ostream& os, const Node& node);
 	friend ofstream& operator<<(ofstream& os, const Node& node);
 	friend istringstream& operator>>(istringstream& os, Node& node);
-
 private:
 	void CreateLists();
 	void Initialize();

@@ -17,6 +17,11 @@ ToleranceBase::~ToleranceBase() {
 
 }
 
+string ToleranceBase::GetToleranceName()
+{
+	return "K1";
+}
+
 //ToleranceBase ToleranceBase::GetBase()
 //{
 //    if (_instance == NULL)
@@ -27,18 +32,18 @@ ToleranceBase::~ToleranceBase() {
 void ToleranceBase::TolerateNode(Node* node, Node* byzantine)
 {
 	node->state = Detector;
-	node->OwnerNetwork->info->listDetectors->push_back(node);
-	node->detectedByzantines->insert(byzantine);
-	node->disconnectedNodes->insert(byzantine);
+	node->ownerNetwork->info.listDetectors.push_back(node);
+	node->detectedByzantines.insert(byzantine);
+	node->disconnectedNodes.insert(byzantine);
 }
 
-void ToleranceBase::CallbackReceiveDeactivateMessage(void* ptr, Node* sender, Node* receiver, Message* message)
+void ToleranceBase::CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message)
 {
 	ToleranceBase* basePtr = (ToleranceBase*)ptr;
 	basePtr->ReceiveDeactivateMessage(sender, receiver, message);
 }
 
-void ToleranceBase::ReceiveDeactivateMessage(Node* sender, Node* receiver, Message* message)
+void ToleranceBase::ReceiveDeactivateMessage(Node& sender, Node& receiver, Message& message)
 {
 
 }

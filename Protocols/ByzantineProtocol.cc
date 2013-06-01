@@ -25,15 +25,11 @@ ByzantineProtocol::ByzantineProtocol(double byzantineP, double nothingP)
 {
 	byzantineProb = byzantineP;
 	nothingProb = nothingP;
+	statisticInfo = new NetworkStatistic();
 }
 
 ByzantineProtocol::~ByzantineProtocol() {
 
-}
-
-NetworkInfo* ByzantineProtocol::GetNetworkInfo(Network* network)
-{
-    return network->info;
 }
 
 void ByzantineProtocol::Initialize(Network* network, double byzantineP, double nothingP)
@@ -53,24 +49,25 @@ void ByzantineProtocol::Refresh(Network* network)
 void ByzantineProtocol::Reset(Network* network)
 {
     NetworkProtocol::Reset(network);
-    vector<Node*>::iterator it = network->nodes->begin();
-    while(it != network->nodes->end())
+    vector<Node*>::iterator it = network->nodes.begin();
+    while(it != network->nodes.end())
     {
         (*it)->state = Sane;
-        (*it)->detectedByzantines->clear();
-        (*it)->disconnectedNodes->clear();
+        (*it)->detectedByzantines.clear();
+        (*it)->disconnectedNodes.clear();
         (*it)->connectedAreaNumber = 0;
+        it++;
     }
-    GetNetworkInfo(network)->listInfectedNodes->clear();
-    GetNetworkInfo(network)->listDetectors->clear();
-    Tools::RemoveWithPredicate(*network->nodes, &Node::isNodeState, Inactive);
+    network->info.listInfectedNodes.clear();
+    network->info.listDetectors.clear();
+    statisticInfo->Reset();
 }
 
 void ByzantineProtocol::RandomByzantine(Network* network)
 {
-    int seed = rand() % network->nodes->size();
-    network->nodes->at(seed)->state = Infected;
-    GetNetworkInfo(network)->listInfectedNodes->push_back(network->nodes->at(seed));
+    int seed = rand() % network->nodes.size();
+    network->nodes.at(seed)->state = Infected;
+    network->info.listInfectedNodes.push_back(network->nodes.at(seed));
     PropagateFault(network);
 }
 
@@ -83,7 +80,7 @@ void ByzantineProtocol::CallbackReceiveByzantineMessage(void* ptr, Node* sender,
 void ByzantineProtocol::ReceiveByzantineMessage(Node* sender, Node* receiver, Message* message)
 {
     double next = (double)rand()/RAND_MAX;
-    if (receiver->state == Infected || receiver->disconnectedNodes->find(sender) != receiver->disconnectedNodes->end())
+    if (receiver->state == Infected || receiver->disconnectedNodes.find(sender) != receiver->disconnectedNodes.end())
     {
         message->status = Expired;
         return;
@@ -93,8 +90,12 @@ void ByzantineProtocol::ReceiveByzantineMessage(Node* sender, Node* receiver, Me
         if (receiver->state != Inactive)
         {
             receiver->state = Infected;
-            Tools::Remove(*receiver->OwnerNetwork->info->listDetectors, receiver);
-            Tools::Remove(*receiver->OwnerNetwork->info->listInfectedNodes, receiver);
+            std::remove(receiver->ownerNetwork->info.listDetectors.begin(),
+            			receiver->ownerNetwork->info.listDetectors.end(),
+            			receiver);
+            std::remove(receiver->ownerNetwork->info.listInfectedNodes.begin(),
+						receiver->ownerNetwork->info.listInfectedNodes.end(),
+						receiver);
             // Send byzantine message to attack its neighbors
             BroadcastMessage(receiver, CallbackReceiveByzantineMessage);
         }
@@ -114,60 +115,110 @@ void ByzantineProtocol::ReceiveByzantineMessage(Node* sender, Node* receiver, Me
     message->status = Expired;
 }
 
-bool ByzantineProtocol::RunStepCheckFinish(Network* network, bool (*stopCondition)(Network*))
+bool ByzantineProtocol::RunStepCheckFinish(Network* network, bool (*stopCondition)(const Network&))
 {
-	vector<Node*>* listDetectors = GetNetworkInfo(network)->listDetectors;
-
-	for (vector<Node*>::iterator it = listDetectors->begin(); it != listDetectors->end(); it++)//network.GetNodes())
-	{
-		(*it)->state = Inactive;
-	}
-	GetNetworkInfo(network)->listDetectors->clear();
 	RunNetworkStep(network);
-	bool stop = (*stopCondition)(network);
-	if (stop)
-		Finalize(network); ;
-	return stop;
-	return true;
+	if (stopCondition(*network))
+	{
+		Finalize(network);
+		return true;
+	}
+	return false;
+}
+
+string ByzantineProtocol::GetReportFilename()
+{
+	string filename = tolerance->GetToleranceName() + "_";
+	char* number = new char[15];
+	sprintf(number, "%.2f_%.2f_report.out", nothingProb, byzantineProb);
+	filename += number;
+	return filename;
+}
+
+string ByzantineProtocol::GetLogFilename()
+{
+	string filename = tolerance->GetToleranceName() + "_";
+	char* number = new char[15];
+	sprintf(number, "%.2f_%.2f.log", nothingProb, byzantineProb);
+	filename += number;
+	return filename;
 }
 
 void ByzantineProtocol::Finalize(Network* network)
 {
-	vector<Node*>::iterator it;
-    for (it = GetNetworkInfo(network)->listDetectors->begin(); it != GetNetworkInfo(network)->listDetectors->end(); it++)
-        (*it)->state = Inactive;
+	vector<Node*>::iterator it = network->info.listDetectors.begin();
+	for(; it != network->info.listDetectors.end(); it++)
+	{
+		(*it)->state = Inactive;
+	}
+    statisticInfo->infections = Tools::CountAll(network->nodes, &Node::isNodeState, Infected);
+    statisticInfo->inactives = Tools::CountAll(network->nodes, &Node::isNodeState, Inactive);
+    statisticInfo->detectors = Tools::CountAll(network->nodes, &Node::isNodeState, Detector);
+    statisticInfo->sanes = network->nodes.size() - statisticInfo->infections - statisticInfo->inactives - statisticInfo->detectors;
+    statisticInfo->lca = Network::FindMaximumConnectedArea(network, &Node::isNodeState, Sane);
+	//Logger::Write(*statisticInfo, GetReportFilename(), ofstream::out | ofstream::app);
 }
 
-void ByzantineProtocol::RunNetwork(Network* network, void (*startAction)(Network*), bool (*stopCondition)(Network*))
+void ByzantineProtocol::BroadcastMessage(Node* sender, MessageReaction receivingAction)
 {
-    (*startAction)(network);
+	list<Node*>::iterator it = sender->neighbors.begin();
+    for (; it != sender->neighbors.end(); it++)// Node neighbor in sender.Neighbors)
+    {
+        if ((*it)->state != Inactive)
+        {
+            Message* message = new ByzantineMessage(sender, *it, sender->ownerNetwork->currentTimeSlot, byzantineProb, nothingProb);
+            message->receivingAction = receivingAction;
+            sender->ownerNetwork->newMessages.push_back(message);
+        }
+    }
+}
+
+void ByzantineProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction)
+{
+    if (receiver->state == Inactive)
+        return;
+    Message* message = new ByzantineMessage(sender, receiver, sender->ownerNetwork->currentTimeSlot, byzantineProb, nothingProb);
+    message->receivingAction = receivingAction;
+    sender->ownerNetwork->newMessages.push_back(message);
+}
+
+void ByzantineProtocol::RunNetwork(Network* network, void (*startAction)(void* ptr, Network*), bool (*networkCondition)(const Network&))
+{
+    (*startAction)(this, network);
     do
     {
-        for (vector<Node*>::iterator it = GetNetworkInfo(network)->listDetectors->begin();
-        		it != GetNetworkInfo(network)->listDetectors->end(); it++)
+    	vector<Node*>::iterator it = network->info.listDetectors.begin();
+        for (; it != network->info.listDetectors.end(); it++)
         {
             (*it)->state = Inactive;
         }
-        GetNetworkInfo(network)->listDetectors->clear();
-    } while (!RunStepCheckFinish(network, (*stopCondition)));
+        network->info.listDetectors.clear();
+    } while (!RunStepCheckFinish(network, (*networkCondition)));
             //&& network.CheckCollision(network.CollisionChecking));
-    Finalize(network);
+    //Finalize(network);
 }
 
 void ByzantineProtocol::RunFault(Network* network)
 {
-	RunNetwork(network, &PropagateFault, &Network::noNewMessageInNetwork);
+	RunNetwork(network, &CallbackPropagateFault, &Network::noNewMessageInNetwork);
+}
+
+void ByzantineProtocol::CallbackPropagateFault(void* ptr, Network* network)
+{
+	ByzantineProtocol* instance = static_cast<ByzantineProtocol*>(ptr);
+	instance->PropagateFault(network);
 }
 
 void ByzantineProtocol::PropagateFault(Network* network)
 {
-	for (vector<Node*>::iterator it = GetNetworkInfo(network)->listInfectedNodes->begin();
-			it != GetNetworkInfo(network)->listInfectedNodes->end(); it++)
+	for (vector<Node*>::iterator it = network->info.listInfectedNodes.begin();
+			it != network->info.listInfectedNodes.end(); it++)
 	{
-		if (Tools::Exists(*(*it)->neighbors, &Node::isNodeState, Sane))
+		if (Tools::Exists((*it)->neighbors, &Node::isNodeState, Sane))
 			BroadcastMessage(*it, CallbackReceiveByzantineMessage);
 	}
 	network->currentTimeSlot++;
 }
 
-} /* namespace protocols */
+}
+/* namespace protocols */

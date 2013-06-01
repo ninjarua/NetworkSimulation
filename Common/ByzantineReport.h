@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include <list>
+#include <fstream>
 #include "StatisticSummary.h"
 
 class ByzantineReport {
@@ -21,8 +22,8 @@ private:
 public:
 	//static ByzantineReport* Default();
 	long size;
-	double nothingProbability;
-	double byzantineProbability;
+	double nothingProb;
+	double byzantineProb;
 
 	double averageOfByzantines;
 	double averageOfSacrifices;
@@ -36,11 +37,11 @@ public:
 	double ciOfNormals;
 	double ciOfLargestConnectedAreas;
 
-	list<long>* numberOfByzantines;
-	list<long>* numberOfDetectors;
-	list<long>* numberOfNormals;
-	list<long>* numberOfSacrifices;
-	list<long>* largestConnectedAreas;
+	list<long> numberOfByzantines;
+	list<long> numberOfDetectors;
+	list<long> numberOfNormals;
+	list<long> numberOfSacrifices;
+	list<long> largestConnectedAreas;
 
 	void Clear();
 	void AddByzantineValue(long value);
@@ -49,6 +50,7 @@ public:
 	void AddSacrificeValue(long value);
 	void AddLargestConnectedAreaValue(long value);
 	ByzantineReport* Summarize(double significance);
+	friend ofstream& operator<<(ofstream& ofs, const ByzantineReport& report);
 };
 
 #endif /* BYZANTINEREPORT_H_ */

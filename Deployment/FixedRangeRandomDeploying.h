@@ -23,6 +23,9 @@ class FixedRangeRandomDeploying : public Deploying {
 public:
 	FixedRangeRandomDeploying();
 	virtual ~FixedRangeRandomDeploying();
+
+	string GetDeployingName();
+
 	bool ObtainTopology(Network* network);
 	double GetPosX(int nodeSequenceId);
 

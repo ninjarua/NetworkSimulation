@@ -8,12 +8,16 @@
 #ifndef K1TOLERANCE_H_
 #define K1TOLERANCE_H_
 
-namespace domain {
+#include "stdafx.h"
+#include "ToleranceBase.h"
 
-class K03Tolerance {
+namespace protocols {
+
+class K03Tolerance : ToleranceBase{
 public:
 	K03Tolerance();
 	virtual ~K03Tolerance();
+	string GetToleranceName();
 };
 
 } /* namespace domain */

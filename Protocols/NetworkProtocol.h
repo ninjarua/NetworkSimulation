@@ -13,31 +13,33 @@
 #include <fstream>
 #include "Network.h"
 #include "ByzantineReport.h"
+#include "Logger.h"
 
 using namespace domain;
 
 namespace protocols {
 class NetworkProtocol {
 public:
+	ByzantineReport* report;
+
 	NetworkProtocol();
 	virtual ~NetworkProtocol();
-	ByzantineReport* report;
 	//typedef void (NetworkProtocol::*receivingMessage)(Node*, Node*, Message*);
-
-	static void BroadcastMessage(Node* sender, MessageReaction receivingAction);//, object content);
-	static void SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction);//, string content);
-	static void SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction, Message* message);
+	virtual void BroadcastMessage(Node* sender, MessageReaction receivingAction);//, object content);
+	virtual void SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction);//, string content);
+	virtual void SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction, Message* message);
 
 	virtual void Initialize(Network* network);
 	virtual void Reset(Network* network);
 
-	virtual void RunNetwork(Network* network, void (*startAction)(Network*), bool (*networkCondition)(Network*));
+	virtual void RunNetwork(Network* network, void (*startAction)(void* ptr, Network*), bool (*networkCondition)(const Network&));
 	virtual void RunNetworkStep(Network* network);
+	virtual string GetLogFilename();
 
 protected:
 	string logFile;
 	string resultFile;
-	void CreateReportString(Network* network);
+	void CreateReportString(Network& network);
 };
 
 } /* namespace protocols */

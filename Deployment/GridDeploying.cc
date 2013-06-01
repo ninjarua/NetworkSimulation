@@ -17,42 +17,47 @@ GridDeploying::~GridDeploying() {
 
 }
 
+string GridDeploying::GetDeployingName()
+{
+	return "Grid";
+}
+
 bool GridDeploying::ObtainTopology(Network* network)
 {
 	Deploying::ObtainTopology(network);
-	if (networkTopology->Distance < networkTopology->D0)
+	if (networkTopology.Distance < networkTopology.D0)
 	{
 		//Logger.GetInstance().Debug("Error: value of GRID_UNIT must be greater than D0");
 		return false;
 	}
-	int sqrtNumNodes = (int)sqrt(networkTopology->NumNodes);
-	if (sqrtNumNodes != sqrt(networkTopology->NumNodes))
+	int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
+	if (sqrtNumNodes != sqrt(networkTopology.NumNodes))
 	{
 		//Logger.GetInstance().Debug("Error: on GRID topology, NUMBER_OF_NODES should be the square of a natural number");
 		return false;
 	}
-	for (int i = 0; i < networkTopology->NumNodes; i++)
+	for (int i = 0; i < networkTopology.NumNodes; i++)
 	{
 		network->AddNode(new Node(GetPosX(i), GetPosY(i)));
 	}
-	networkTopology->XTerr = networkTopology->Distance * (sqrt(networkTopology->NumNodes) - 1);
-	networkTopology->YTerr = networkTopology->Distance * (sqrt(networkTopology->NumNodes) - 1);
+	networkTopology.XTerr = networkTopology.Distance * (sqrt(networkTopology.NumNodes) - 1);
+	networkTopology.YTerr = networkTopology.Distance * (sqrt(networkTopology.NumNodes) - 1);
 	return true;
 }
 
 double GridDeploying::GetPosX(int nodeSequenceId)
 {
-	int sqrtNumNodes = (int)sqrt(networkTopology->NumNodes);
-	return (nodeSequenceId % sqrtNumNodes) * networkTopology->Distance;
+	int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
+	return (nodeSequenceId % sqrtNumNodes) * networkTopology.Distance;
 }
 
 double GridDeploying::GetPosY(int nodeSequenceId)
 {
-	int sqrtNumNodes = (int)sqrt(networkTopology->NumNodes);
-	return (nodeSequenceId / sqrtNumNodes) * networkTopology->Distance;
+	int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
+	return (nodeSequenceId / sqrtNumNodes) * networkTopology.Distance;
 }
 
-bool GridDeploying::IsNeighbors(Network network, Node node, Node neighbor)
+bool GridDeploying::IsNeighbors(const Network& network, const Node& node, const Node& neighbor)
 {
 	double Xdist = node.posX - neighbor.posX;
 	double Ydist = node.posY - neighbor.posY;

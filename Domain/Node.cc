@@ -22,7 +22,7 @@ Node::Node(Network* network) {
     posX = 0;
     posY = 0;
     CreateLists();
-    OwnerNetwork = network;
+    ownerNetwork = network;
 }
 
 Node::~Node() {
@@ -43,41 +43,70 @@ Node::Node(double x, double y)
     CreateLists();
 }
 
-bool Node::isConnectedAreaNumberZero(Node* node)
+bool Node::isConnectedAreaNumberZero(const Node& node)
 {
-	return node->connectedAreaNumber == 0;
+	return node.connectedAreaNumber == 0;
 }
 
-bool Node::isConnectedAreaNumberEqual(Node* node, int number)
+bool Node::isConnectedAreaNumberEqual(const Node& node, int number)
 {
-	return node->connectedAreaNumber == number;
+	return node.connectedAreaNumber == number;
 }
 
-bool Node::isNodeState(Node* node, NodeState state)
+bool Node::isNodeState(const Node& node, const NodeState& state)
 {
-	return node->state == state;
+	return node.state == state;
 }
 
 void Node::CreateLists()
 {
-	neighbors = new list<Node*>();
-	detectedByzantines = new set<Node*>();
-	disconnectedNodes = new set<Node*>();
+	neighbors = list<Node*>();
+	detectedByzantines = set<Node*>();
+	disconnectedNodes = set<Node*>();
 }
 
 void Node::Reset()
 {
-	neighbors->clear();
-	detectedByzantines->clear();
-	disconnectedNodes->clear();
+	neighbors.clear();
+	detectedByzantines.clear();
+	disconnectedNodes.clear();
+}
+
+bool operator==(const Node& n1, const Node& n2)
+{
+	return n1.id == n2.id;
+}
+
+bool operator<(const Node& n1, const Node& n2)
+{
+	return n1.id < n2.id;
+}
+
+bool operator>(const Node& n1, const Node& n2)
+{
+	return n1.id > n2.id;
 }
 
 ofstream& operator<<(ofstream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
 				<< Constants::tab << node.posY;
-	list<Node*>::iterator it = node.neighbors->begin();
-	while (it != node.neighbors->end())
+	list<Node*>::const_iterator it = node.neighbors.begin();
+	while (it != node.neighbors.end())
+	{
+		os << Constants::tab << (*it)->id;
+		it++;
+	}
+	os << Constants::endline;
+	return os;
+}
+
+ostream& operator<<(ostream& os, const Node& node)
+{
+	os << node.id << Constants::tab << node.posX
+				<< Constants::tab << node.posY;
+	list<Node*>::const_iterator it = node.neighbors.begin();
+	while (it != node.neighbors.end())
 	{
 		os << Constants::tab << (*it)->id;
 		it++;
@@ -93,7 +122,7 @@ istringstream& operator>>(istringstream& is, Node& node)
 	int id;
 	while (is >> id)
 	{
-		node.neighbors->push_back(node.OwnerNetwork->nodes->at(id));
+		node.neighbors.push_back(node.ownerNetwork->nodes.at(id));
 	}
 	return is;
 }

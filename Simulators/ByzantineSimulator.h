@@ -17,14 +17,14 @@ namespace simulators {
 
 class ByzantineSimulator: public SimulatorBase {
 private:
-	ByzantineProtocol* _byzantine;
+	ByzantineProtocol _byzantine;
 public:
 	ByzantineSimulator();
 	virtual ~ByzantineSimulator();
 
 	TypeOfTolerance ToleranceType;
 
-	NetworkInfo* GetNetworkInfo();
+//	NetworkInfo* GetNetworkInfo();
 	virtual void SetTolerance(TypeOfTolerance toleranceType);
 	void InitializeSimulator(double byzantineProb, double nothingProb, TypeOfTolerance toleranceType, bool draw = false);
 	bool RunSimulationStep(bool draw = false);
@@ -33,11 +33,12 @@ public:
 	ByzantineReport* FinishReport();
 	bool StopPrediction(ByzantineReport* report);
 	void RunSimulationByInterval(int times);
+	string GetResultFilename();
 	void RunSimulation(int times, double intervalByz, double intervalNothing,
-                        TypeOfTolerance toleranceType, void (*output)(ByzantineReport),
+                        TypeOfTolerance toleranceType, void (*output)(ByzantineReport&, string),
                         double startingNothing = 0, double startingByzantine = 0,
                         double endNothing = 1, double endByzantine = 1);
-	void RunOneStep(void (*output)(ByzantineReport), double byzantineProb, double nothingProb, int times);
+	void RunOneStep(void (*output)(ByzantineReport&, string), double byzantineProb, double nothingProb, int times);
 };
 
 } /* namespace deployment */

@@ -9,7 +9,7 @@
 
 namespace domain {
 
-ByzantineMessage::ByzantineMessage(Node* sender, Node* receiver, int timeSlot, double byzantinePb, double nothingPb)
+ByzantineMessage::ByzantineMessage(Node* sender, Node* receiver, const int& timeSlot, double byzantinePb, double nothingPb)
 	: Message(sender, receiver, timeSlot)
 {
 	byzantineProb = byzantinePb;
@@ -18,6 +18,11 @@ ByzantineMessage::ByzantineMessage(Node* sender, Node* receiver, int timeSlot, d
 
 ByzantineMessage::~ByzantineMessage() {
 	// TODO Auto-generated destructor stub
+}
+
+string ByzantineMessage::GetMessageName() const
+{
+	return "Byzantine message";
 }
 
 } /* namespace domain */

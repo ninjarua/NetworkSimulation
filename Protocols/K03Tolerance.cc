@@ -7,7 +7,7 @@
 
 #include "K03Tolerance.h"
 
-namespace domain {
+namespace protocols {
 
 K03Tolerance::K03Tolerance() {
 	// TODO Auto-generated constructor stub
@@ -16,6 +16,11 @@ K03Tolerance::K03Tolerance() {
 
 K03Tolerance::~K03Tolerance() {
 	// TODO Auto-generated destructor stub
+}
+
+string K03Tolerance::GetToleranceName()
+{
+	return "K3";
 }
 
 } /* namespace domain */

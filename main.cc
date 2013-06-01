@@ -7,14 +7,21 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include "stdafx.h"
 #include "ByzantineSimulator.h"
 #include "nsException.h"
+#include "Logger.h"
 
 using namespace std;
 using namespace simulators;
 
 #include <iostream>
-#include <sstream>
+#include <fstream>
+
+static void PrintToFile(ByzantineReport& report, string filename)
+{
+	Logger::Write(report, filename, ofstream::out | ofstream::app);
+}
 
 int main(int argc, char* argv[])
 {
@@ -24,11 +31,11 @@ int main(int argc, char* argv[])
 		ByzantineSimulator* sim = new ByzantineSimulator();
 		sim->GetParameters(FixedRange, 1000, 330, 3000, 7500, 10, false);
 		//cout << sim->DeployNetwork(10, false);
-		cout << sim->GenerateNetworkFromFile(10, false);
+		cout << sim->GenerateNetworkFromFile(0, false);
+		sim->RunSimulation(10000, 0.01, 0.01, K01, &PrintToFile, 0, 0, 0.1, 0.2);
 	}
 	catch (exception& ex)
 	{
 		cout << "Got " << ex.what() << endl;
 	}
-
 }
