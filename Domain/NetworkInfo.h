@@ -18,8 +18,8 @@ class NetworkInfo {
 public:
 	NetworkInfo();
 	virtual ~NetworkInfo();
-	vector<Node*> listInfectedNodes;
-	vector<Node*> listDetectors;
+	vector<NodePtr> listInfectedNodes;
+	vector<NodePtr> listDetectors;
 };
 }
 #endif /* NETWORKINFO_H_ */

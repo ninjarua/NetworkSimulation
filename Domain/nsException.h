@@ -15,7 +15,7 @@ using namespace std;
 
 namespace domain{
 
-struct nsException : public exception{
+struct nsException : public std::exception{
 	string _message;
 	nsException(string message) : _message(message) {}
 	virtual ~nsException() throw() {}

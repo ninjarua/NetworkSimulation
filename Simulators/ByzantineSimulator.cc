@@ -35,6 +35,7 @@ void ByzantineSimulator::InitializeSimulator(double byzantineProb, double nothin
 {
 	SetTolerance(toleranceType);
 	_byzantine.Initialize(_network, byzantineProb, nothingProb);
+	_byzantine.Refresh(_network);
 //	if (draw)
 //		_networkGraphics.DrawNetwork(_network, false, false, true);
 }
@@ -103,7 +104,7 @@ void ByzantineSimulator::RunSimulationByInterval(int times)
 
 string ByzantineSimulator::GetResultFilename()
 {
-	string filename = _deploying.GetDeployingName();
+	string filename = _deploying->GetDeployingName();
 	filename += "_";
 	filename += _byzantine.tolerance->GetToleranceName();
 	filename += ".out";
@@ -114,8 +115,8 @@ void ByzantineSimulator::RunSimulation(int times, double intervalByz, double int
 		void (*output)(ByzantineReport&, string), double startingNothing, double startingByzantine, double endingNothing, double endingByzantine)
 {
 	SetTolerance(toleranceType);
-	int nothingSteps = (int)(1 / intervalNothing); // ex: 1000
-	int byzSteps = (int)(1 / intervalByz); // ex: 10
+	int nothingSteps = (int)(100 / (int)(intervalNothing * 100)); // ex: 1000
+	int byzSteps = (int)(100 / (int)(intervalByz * 100)); // ex: 10
 	int nothingStart = (int)(startingNothing / intervalNothing);
 	int nothingEnd = (int)(endingNothing / intervalNothing);
 	int byzantineStart = (int)(startingByzantine / intervalNothing);
@@ -129,14 +130,14 @@ void ByzantineSimulator::RunSimulation(int times, double intervalByz, double int
 	}
 	else
 	{
-		for (int j = byzantineStart; j < (int)((nothingSteps - nothingStart)/ratio); j++)
+		for (int j = byzantineStart; j <= (int)((nothingSteps - nothingStart)/ratio); j++)
 			RunOneStep(output, j * intervalByz, nothingStart * intervalNothing, times);
 		for (int i = nothingStart + 1; i < nothingEnd && i < nothingSteps; i++)
 		{
-			for (int j = 0; j < (int)((nothingSteps - i) / ratio); j++)
+			for (int j = 0; j <= (int)((nothingSteps - i) / ratio); j++)
 				RunOneStep(output, j * intervalByz, i * intervalNothing, times);
 		}
-		for (int j = 0; j <= byzantineEnd && j < (int)((nothingSteps - nothingEnd) / ratio); j++)
+		for (int j = 0; j <= byzantineEnd && j <= (int)((nothingSteps - nothingEnd) / ratio); j++)
 			RunOneStep(output, j * intervalByz, nothingEnd * intervalNothing, times);
 	}
 }

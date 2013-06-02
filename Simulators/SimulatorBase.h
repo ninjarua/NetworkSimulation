@@ -29,7 +29,7 @@ public:
 	SimulatorBase();
 	virtual ~SimulatorBase();
 protected:
-	Deploying _deploying;
+	Deploying* _deploying;
 	//NetworkGraphics _networkGraphics;
 	Network* _network;
 	Topology _topology;
@@ -43,8 +43,9 @@ public:
 	//void (*Writer)(Network*, string);
 	void GetParameters(DeployingType deployingType, int numberOfNodes, int transRange, float xTerr, float yTerr, float d0, bool checkConflict);
 	//void CreateGraphic(Graphics graphic, float width, float height, float margin, Color backColor);
+	string GetFilenameByDeployment(int number);
 	string DeployNetwork(int times, bool drawNetwork);
-	string GenerateNetworkFromFile(int index, bool drawNetwork);
+	string GenerateNetworkFromFile(int fileNumber, bool drawNetwork);
 };
 
 } /* namespace deployment */

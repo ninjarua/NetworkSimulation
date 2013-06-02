@@ -12,9 +12,9 @@ Network::Network() {
 	sequenceId = 0;
 	currentTimeSlot = 0;
 	info = NetworkInfo();
-	nodes = vector<Node*>();
-	messages = vector<Message*>();
-	newMessages = vector<Message*>();
+	nodes = vector<NodePtr>();
+	messages = list<Message*>();
+	newMessages = list<Message*>();
 }
 
 Network::~Network() {
@@ -31,8 +31,8 @@ void Network::CreateEmptyNodes(int n)
 	sequenceId = 0;
 	for (int i=0; i<n; i++)
 	{
-		//Node newNode = Node();
-		AddNode(new Node());
+		NodePtr newNode(new Node());
+		AddNode(newNode);
 	}
 }
 
@@ -40,8 +40,9 @@ ofstream& operator<<(ofstream& os, const Network& network)
 {
 	os << network.nodes.size();
 	os << Constants::endline;
-	for (unsigned int i = 0; i < network.nodes.size(); i++)
-		os << network.nodes.at(i);
+	vector<NodePtr>::const_iterator it = network.nodes.begin();
+	for (; it != network.nodes.end(); it++)
+		os << *(*it);
 	return os;
 }
 
@@ -51,18 +52,17 @@ istream& operator>>(istream& is, Network& network)
 	getline(is, line);
 	network.CreateEmptyNodes(atoi(line.c_str()));
 
-	int i = 0;
-	//int size = network.nodes.size();
+	vector<NodePtr>::const_iterator it = network.nodes.begin();
 	while (!getline(is, line).eof())
 	{
 		istringstream iss(line);
-		iss >> *network.nodes.at(i);
-		i++;
+		iss >> *(*it);
+		it++;
 	}
 	return is;
 }
 
-void Network::AddNode(Node* node)
+void Network::AddNode(NodePtr node)
 {
 	node->id = sequenceId++;
 	node->ownerNetwork = this;
@@ -75,10 +75,10 @@ bool Network::noNewMessageInNetwork(const Network& network)
 	return network.newMessages.size() == 0;
 }
 
-stack<Node*> Network::LookingForNode(const list<Node*>& listInput, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
+stack<NodePtr> Network::LookingForNode(const list<NodePtr>& listInput, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
 {
-	stack<Node*> results = stack<Node*>();
-	list<Node*>::const_iterator it = listInput.begin();
+	stack<NodePtr> results = stack<NodePtr>();
+	list<NodePtr>::const_iterator it = listInput.begin();
 	for (; it != listInput.end(); it++)
 	{
 		if (nodeCondition(*(*it), state))
@@ -89,62 +89,68 @@ stack<Node*> Network::LookingForNode(const list<Node*>& listInput, bool (*nodeCo
 	return results;
 }
 
-void Network::AddingNewNodesWithFilter(stack<Node*>& stack, Node* consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
-				const NodeState& state, int number, bool (*filter)(Node* n1, Node* n2, int number))
+void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
+				const NodeState& state, int number, bool (*filter)(NodePtr n1, NodePtr n2, int number))
 {
-	list<Node*>::const_iterator it = consideringNode->neighbors.begin();
+	list<NodePtr>::const_iterator it = consideringNode->neighbors.begin();
+	string prefix = "Next according to: ";
 	for(; it != consideringNode->neighbors.end(); it++)
 	{
-		if (nodeCondition(*(*it), state) && filter(*it, consideringNode, number))
+		bool isSameState = nodeCondition(*(*it), state);
+		if (isSameState && filter(*it, consideringNode, number))
 		{
+//			Logger::Write(*(*it), &DebugString, prefix, "debug.out", ofstream::out|ofstream::app);
 			stack.push(*it);
 		}
 	}
 }
 
-
-bool Network::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(Node* n1, Node* n2, int number)
+bool Network::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(NodePtr n1, NodePtr n2, int number)
 {
-	return n1->connectedAreaNumber != number && n2->disconnectedNodes.find(n1) != n2->disconnectedNodes.end()
-			&& n1->disconnectedNodes.find(n2) != n1->disconnectedNodes.end();
+	return n1->connectedAreaNumber != number && n2->disconnectedNodes.find(n1) == n2->disconnectedNodes.end()
+			&& n1->disconnectedNodes.find(n2) == n1->disconnectedNodes.end();
 }
 
-void Network::ConnectedAreaSpreading(Node* seed, int spreadingValue, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
+string Network::DebugString(const Node& node, string original)
+{
+	string out(Node::printNodeWithConnectedAreaNumber(node));
+	out = original + out + "\n";
+	return out;
+}
+
+void Network::ConnectedAreaSpreading(NodePtr seed, int spreadingValue, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
 {
 	seed->connectedAreaNumber = spreadingValue;
-	stack<Node*> stackNodes = LookingForNode(seed->neighbors, nodeCondition, state);
-	while (stackNodes.size() != 0)
+	stack<NodePtr> stackNodes = LookingForNode(seed->neighbors, nodeCondition, state);
+	int size = stackNodes.size();
+	while (size > 0)
 	{
-		Node* node = stackNodes.top();
+		NodePtr node = stackNodes.top();
 		stackNodes.pop();
 		node->connectedAreaNumber = spreadingValue;
+//		Logger::Write(*node, &DebugString, "Seed spread: ", "debug.out", ofstream::out|ofstream::app);
 		AddingNewNodesWithFilter(stackNodes, node, nodeCondition, state, spreadingValue, &FilterDisconnectedNodeAndDifferentConnectedAreaNumber);
+		size = stackNodes.size();
 	}
 }
 
 int Network::FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
 {
-	vector<Node*> checkNodes;
-	vector<Node*> spreadingNodes;
+	list<NodePtr> checkNodes;
+	list<NodePtr> spreadingNodes;
 	Tools::FindAllToVector(network->nodes, checkNodes, (*nodeCondition), state);
-	int checkCount = checkNodes.size();
 	Tools::FindAllToVector(checkNodes, spreadingNodes, &Node::isConnectedAreaNumberZero);
-	int spreadCount = spreadingNodes.size();
 	int spreadingValue = 0;
 	int max = 0;
 	while (spreadingNodes.size() > 0)
 	{
 		spreadingValue++;
-		Node* begin = *spreadingNodes.begin();
+		NodePtr begin(*spreadingNodes.begin());
 		ConnectedAreaSpreading(begin, spreadingValue, (*nodeCondition), state);
 		int count = Tools::DetachWithPredicate(spreadingNodes, &Node::isConnectedAreaNumberEqual, spreadingValue);
 		if (count > max)
 			max = count;
 	}
-//	checkNodes.clear();
-//	delete checkNodes;
-//	spreadingNodes.clear();
-//	delete spreadingNodes;
 	return max;
 }
 

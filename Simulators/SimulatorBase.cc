@@ -8,13 +8,14 @@
 #include "SimulatorBase.h"
 #include "GridDeploying.h"
 #include "FixedRangeRandomDeploying.h"
+#include "TorusGridDeploying.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 namespace simulators {
 
 SimulatorBase::SimulatorBase() {
-	_deploying = Deploying();
+	_deploying = new Deploying();
 	//NetworkGraphics _networkGraphics;
 	_network = new Network();
 	_topology = Topology();
@@ -33,13 +34,15 @@ void SimulatorBase::SetDeployment(DeployingType type)
 	case Ring:
 		break;
 	case TorusGrid:
+		_deploying = new TorusGridDeploying();
+		break;
 	case Grid:
-		_deploying = GridDeploying();
+		_deploying = new GridDeploying();
 		break;
 	case ER_Random:
 	case ScaleFree:
 	case FixedRange:
-		_deploying = FixedRangeRandomDeploying();
+		_deploying = new FixedRangeRandomDeploying();
 		break;
 	default:
 		break;
@@ -55,7 +58,7 @@ void SimulatorBase::GetParameters(DeployingType deployment, int numberOfNodes, i
     _topology.Distance = transRange;
 
     SetDeployment(deployment);
-    _deploying.networkTopology = _topology;
+    _deploying->networkTopology = _topology;
 
     _network->transRange = transRange;
     //_network.collisionChecking = checkConflict;
@@ -89,14 +92,19 @@ string GetFailureString(int count)
 	return results;
 }
 
+string SimulatorBase::GetFilenameByDeployment(int number)
+{
+	return _deploying->GetDeployingName() + "_" + GetFilename(number);
+}
+
 string SimulatorBase::DeployNetwork(int times, bool drawNetwork)
 {
 	for (int i = 0; i < times; i++)
 	{
-		_hasTopology = _deploying.RunDeploy(_network);
+		_hasTopology = _deploying->RunDeploy(_network);
 		if (_hasTopology)
 		{
-			Logger::Write(_network, GetFilename(i + 1));
+			Logger::Write(_network, GetFilenameByDeployment(i + 1));
 			//if (drawNetwork)
 		}
 		else
@@ -107,9 +115,9 @@ string SimulatorBase::DeployNetwork(int times, bool drawNetwork)
 	return "Success";
 }
 
-string SimulatorBase::GenerateNetworkFromFile(int index, bool drawNetwork)
+string SimulatorBase::GenerateNetworkFromFile(int fileNumber, bool drawNetwork)
 {
-	ifstream f(GetFilename(index + 1).c_str(), ifstream::in);
+	ifstream f(GetFilenameByDeployment(fileNumber).c_str(), ifstream::in);
 	f >> (*_network);
 	f.close();
 	return "Success";

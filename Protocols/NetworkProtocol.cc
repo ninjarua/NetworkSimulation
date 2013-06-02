@@ -17,9 +17,9 @@ NetworkProtocol::~NetworkProtocol() {
 
 }
 
-void NetworkProtocol::BroadcastMessage(Node* sender, MessageReaction receivingAction)
+void NetworkProtocol::BroadcastMessage(NodePtr sender, MessageReaction receivingAction)
 {
-	list<Node*>::iterator it;
+	list<NodePtr>::iterator it;
     for (it = sender->neighbors.begin(); it != sender->neighbors.end(); it++)// Node neighbor in sender.Neighbors)
     {
         if ((*it)->state != Inactive)
@@ -31,7 +31,7 @@ void NetworkProtocol::BroadcastMessage(Node* sender, MessageReaction receivingAc
     }
 }
 
-void NetworkProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction)
+void NetworkProtocol::SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction)
 {
     if (receiver->state == Inactive)
         return;
@@ -40,7 +40,7 @@ void NetworkProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction 
     sender->ownerNetwork->newMessages.push_back(message);
 }
 
-void NetworkProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction, Message* message)
+void NetworkProtocol::SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction, Message* message)
 {
     message->creationTime = sender->ownerNetwork->currentTimeSlot;
     message->receivingAction = receivingAction;
@@ -73,7 +73,7 @@ void NetworkProtocol::RunNetworkStep(Network* network)
     network->messages.insert(network->messages.end(),
     		network->newMessages.begin(), network->newMessages.end());
     network->newMessages.clear();
-    vector<Message*>::iterator it = network->messages.begin();
+    list<Message*>::iterator it = network->messages.begin();
     while (it != network->messages.end())
     {
         if ((*it)->status == Sending && (*it)->creationTime < network->currentTimeSlot)

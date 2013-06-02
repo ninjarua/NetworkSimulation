@@ -42,10 +42,11 @@ bool FixedRangeRandomDeploying::ObtainTopology(Network* network)
 	}
 	// Node 0 is the sink node that is located in the center of the network
 	//Node node = Node(networkTopology.XTerr / 2, networkTopology.YTerr / 2);
-	network->AddNode(new Node(networkTopology.XTerr / 2, networkTopology.YTerr / 2));
+	NodePtr firstNode(new Node(networkTopology.XTerr / 2, networkTopology.YTerr / 2));
+	network->AddNode(firstNode);
 	for (int i = 1; i < networkTopology.NumNodes; i++)
 	{
-		Node* newNode = new Node(GetPosX(i), GetPosY(i));
+		NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
 		network->AddNode(newNode);
 		while (!IsAllDistanceValid(*network, *newNode))
 		{

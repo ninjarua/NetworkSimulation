@@ -14,8 +14,14 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <boost/smart_ptr/shared_ptr.hpp>
+
+using namespace boost;
 
 namespace domain {
+class Node;
+typedef shared_ptr<Node> NodePtr;
+
 enum NodeState {Sane = 0, Infected = 1, Detector = 2, Inactive = 3};
 class Network;
 class Node {
@@ -25,9 +31,9 @@ public:
 	double posX;
 	double posY;
 	NodeState state;
-	list<Node*> neighbors;
-	set<Node*> detectedByzantines;
-	set<Node*> disconnectedNodes;
+	list<NodePtr> neighbors;
+	set<NodePtr> detectedByzantines;
+	set<NodePtr> disconnectedNodes;
 	int connectedAreaNumber;
 
 	Node();
@@ -46,6 +52,7 @@ public:
 	friend ostream& operator<<(ostream& os, const Node& node);
 	friend ofstream& operator<<(ofstream& os, const Node& node);
 	friend istringstream& operator>>(istringstream& os, Node& node);
+	static string printNodeWithConnectedAreaNumber(const Node& node);
 private:
 	void CreateLists();
 	void Initialize();

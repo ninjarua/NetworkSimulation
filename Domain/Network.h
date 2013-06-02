@@ -16,9 +16,11 @@
 #include <fstream>
 #include <stack>
 #include <list>
+#include <vector>
 #include "Message.h"
 #include "NetworkInfo.h"
 #include "NetworkStatistic.h"
+#include "Logger.h"
 
 namespace domain {
 
@@ -28,9 +30,9 @@ public:
     int sequenceId;
     int currentTimeSlot;
 
-    vector<Node*> nodes;
-    vector<Message*> messages;
-    vector<Message*> newMessages;
+    vector<NodePtr> nodes;
+    list<Message*> messages;
+    list<Message*> newMessages;
 	NetworkInfo info;
 
 	Network();
@@ -39,17 +41,18 @@ public:
 	friend ofstream& operator<<(ofstream& os, const Network& network);
 	friend istream& operator>>(istream& os, Network& network);
 
-	void AddNode(Node* node);
+	void AddNode(NodePtr node);
 	void CreateEmptyNodes(int n);
 	static bool noNewMessageInNetwork(const Network& network);
 	static int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 
 private:
-	static void ConnectedAreaSpreading(Node* seed, int spreadingValue, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
-	static stack<Node*> LookingForNode(const list<Node*>& listInput, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
-	static void AddingNewNodesWithFilter(stack<Node*>& stack, Node* consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
-    		const NodeState& state, int number, bool (*filter)(Node* n1, Node* n2, int number));
-	static bool FilterDisconnectedNodeAndDifferentConnectedAreaNumber(Node* n1, Node* n2, int number);
+	static void ConnectedAreaSpreading(NodePtr seed, int spreadingValue, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
+	static stack<NodePtr> LookingForNode(const list<NodePtr>& listInput, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
+	static void AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
+    		const NodeState& state, int number, bool (*filter)(NodePtr n1, NodePtr n2, int number));
+	static bool FilterDisconnectedNodeAndDifferentConnectedAreaNumber(NodePtr n1, NodePtr n2, int number);
+	static string DebugString(const Node& node, string original);
 };
 
 } /* namespace domain */

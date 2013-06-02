@@ -9,8 +9,8 @@
 namespace domain{
 
 NetworkInfo::NetworkInfo() {
-	listInfectedNodes = vector<Node*>();
-	listDetectors = vector<Node*>();
+	listInfectedNodes = vector<NodePtr>();
+	listDetectors = vector<NodePtr>();
 }
 
 NetworkInfo::~NetworkInfo() {

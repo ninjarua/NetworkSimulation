@@ -29,12 +29,13 @@ int main(int argc, char* argv[])
 	try
 	{
 		ByzantineSimulator* sim = new ByzantineSimulator();
-		sim->GetParameters(FixedRange, 1000, 330, 3000, 7500, 10, false);
-		//cout << sim->DeployNetwork(10, false);
-		cout << sim->GenerateNetworkFromFile(0, false);
+//		sim->GetParameters(FixedRange, 1000, 330, 3000, 7500, 10, false);
+		sim->GetParameters(TorusGrid, 900, 10, 100, 100, 10, false);
+		//cout << sim->DeployNetwork(1, false);
+		cout << sim->GenerateNetworkFromFile(1, false);
 		sim->RunSimulation(10000, 0.01, 0.01, K01, &PrintToFile, 0, 0, 0.1, 0.2);
 	}
-	catch (exception& ex)
+	catch (std::exception& ex)
 	{
 		cout << "Got " << ex.what() << endl;
 	}

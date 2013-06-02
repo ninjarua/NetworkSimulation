@@ -18,7 +18,7 @@ public:
 	double nothingProb;
 
 public:
-	ByzantineMessage(Node* sender, Node* receiver, const int& timeSlot, double byzantineProb, double nothingProb);
+	ByzantineMessage(NodePtr sender, NodePtr receiver, const int& timeSlot, double byzantineProb, double nothingProb);
 	virtual ~ByzantineMessage();
 
 	string GetMessageName() const;

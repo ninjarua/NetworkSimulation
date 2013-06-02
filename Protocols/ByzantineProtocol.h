@@ -35,8 +35,8 @@ public:
 	virtual ~ByzantineProtocol();
 	//static ByzantineProtocol* GetInstance(double byzantineProb, double dectectingProb);
 	string GetLogFilename();
-	void BroadcastMessage(Node* sender, MessageReaction receivingAction);//, object content);
-	void SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction);//, string content);
+	void BroadcastMessage(NodePtr sender, MessageReaction receivingAction);//, object content);
+	void SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction);//, string content);
 	void Reset(Network* network);
 	void RunNetwork(Network* network, void (*startAction)(void* ptr, Network*), bool (*networkCondition)(const Network&));
 
@@ -44,8 +44,8 @@ public:
 	void Initialize(Network* network, double byzantineProb, double nothingProb);
 	void Refresh(Network* network);
 	void RandomByzantine(Network* network);
-	void ReceiveByzantineMessage(Node* sender, Node* receiver, Message* message);
-	static void CallbackReceiveByzantineMessage(void* ptr, Node* sender, Node* receiver, Message* message);
+	void ReceiveByzantineMessage(NodePtr sender, NodePtr receiver, Message* message);
+	static void CallbackReceiveByzantineMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message);
 	bool RunStepCheckFinish(Network* network, bool (*stopCondition)(const Network&));
 	void Finalize(Network* network);
 	void RunFault(Network* network);

@@ -25,7 +25,7 @@ public:
 //	static ToleranceBase GetBase();
 	ToleranceBase();
 	virtual ~ToleranceBase();
-	virtual void TolerateNode(Node* node, Node* byzantine);
+	virtual void TolerateNode(NodePtr node, NodePtr byzantine);
 	virtual string GetToleranceName();
 	static void CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message);
 	virtual void ReceiveDeactivateMessage(Node& sender, Node& receiver, Message& message);

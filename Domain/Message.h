@@ -16,16 +16,16 @@
 namespace domain {
 enum MessageStatus { Created = 0, Sending = 1, Stopped = 2, Expired = 3 };
 class Message;
-typedef void (*MessageReaction)(void*, Node*, Node*, Message*);
+typedef void (*MessageReaction)(void*, NodePtr, NodePtr, Message*);
 class Message {
 public:
 	int creationTime;
-	Node* sender;
-	Node* receiver;
+	NodePtr sender;
+	NodePtr receiver;
 	MessageStatus status;
 
 	Message();
-	Message(Node* sender, Node* receiver, const int& timeSlot);
+	Message(NodePtr sender, NodePtr receiver, const int& timeSlot);
 	virtual ~Message();
 	bool static isMessageExpired(const Message& m);
 	MessageReaction receivingAction;

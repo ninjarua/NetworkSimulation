@@ -36,8 +36,8 @@ void ByzantineProtocol::Initialize(Network* network, double byzantineP, double n
 {
     byzantineProb = byzantineP;
     nothingProb = nothingP;
-    Reset(network);
-    RandomByzantine(network);
+    //Reset(network);
+    //RandomByzantine(network);
 }
 
 void ByzantineProtocol::Refresh(Network* network)
@@ -49,7 +49,7 @@ void ByzantineProtocol::Refresh(Network* network)
 void ByzantineProtocol::Reset(Network* network)
 {
     NetworkProtocol::Reset(network);
-    vector<Node*>::iterator it = network->nodes.begin();
+    vector<NodePtr>::iterator it = network->nodes.begin();
     while(it != network->nodes.end())
     {
         (*it)->state = Sane;
@@ -66,18 +66,24 @@ void ByzantineProtocol::Reset(Network* network)
 void ByzantineProtocol::RandomByzantine(Network* network)
 {
     int seed = rand() % network->nodes.size();
-    network->nodes.at(seed)->state = Infected;
-    network->info.listInfectedNodes.push_back(network->nodes.at(seed));
-    PropagateFault(network);
+    vector<NodePtr>::iterator it = network->nodes.begin();
+    while(seed > 0)
+    {
+    	it++;
+    	seed--;
+    }
+    (*it)->state = Infected;
+    network->info.listInfectedNodes.push_back(*it);
+    //PropagateFault(network);
 }
 
-void ByzantineProtocol::CallbackReceiveByzantineMessage(void* ptr, Node* sender, Node* receiver, Message* message)
+void ByzantineProtocol::CallbackReceiveByzantineMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message)
 {
 	ByzantineProtocol* instance = static_cast<ByzantineProtocol*>(ptr);
 	instance->ReceiveByzantineMessage(sender, receiver, message);
 }
 
-void ByzantineProtocol::ReceiveByzantineMessage(Node* sender, Node* receiver, Message* message)
+void ByzantineProtocol::ReceiveByzantineMessage(NodePtr sender, NodePtr receiver, Message* message)
 {
     double next = (double)rand()/RAND_MAX;
     if (receiver->state == Infected || receiver->disconnectedNodes.find(sender) != receiver->disconnectedNodes.end())
@@ -146,7 +152,7 @@ string ByzantineProtocol::GetLogFilename()
 
 void ByzantineProtocol::Finalize(Network* network)
 {
-	vector<Node*>::iterator it = network->info.listDetectors.begin();
+	vector<NodePtr>::iterator it = network->info.listDetectors.begin();
 	for(; it != network->info.listDetectors.end(); it++)
 	{
 		(*it)->state = Inactive;
@@ -159,9 +165,9 @@ void ByzantineProtocol::Finalize(Network* network)
 	//Logger::Write(*statisticInfo, GetReportFilename(), ofstream::out | ofstream::app);
 }
 
-void ByzantineProtocol::BroadcastMessage(Node* sender, MessageReaction receivingAction)
+void ByzantineProtocol::BroadcastMessage(NodePtr sender, MessageReaction receivingAction)
 {
-	list<Node*>::iterator it = sender->neighbors.begin();
+	list<NodePtr>::iterator it = sender->neighbors.begin();
     for (; it != sender->neighbors.end(); it++)// Node neighbor in sender.Neighbors)
     {
         if ((*it)->state != Inactive)
@@ -173,7 +179,7 @@ void ByzantineProtocol::BroadcastMessage(Node* sender, MessageReaction receiving
     }
 }
 
-void ByzantineProtocol::SendMessage(Node* sender, Node* receiver, MessageReaction receivingAction)
+void ByzantineProtocol::SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction)
 {
     if (receiver->state == Inactive)
         return;
@@ -187,7 +193,7 @@ void ByzantineProtocol::RunNetwork(Network* network, void (*startAction)(void* p
     (*startAction)(this, network);
     do
     {
-    	vector<Node*>::iterator it = network->info.listDetectors.begin();
+    	vector<NodePtr>::iterator it = network->info.listDetectors.begin();
         for (; it != network->info.listDetectors.end(); it++)
         {
             (*it)->state = Inactive;
@@ -211,7 +217,7 @@ void ByzantineProtocol::CallbackPropagateFault(void* ptr, Network* network)
 
 void ByzantineProtocol::PropagateFault(Network* network)
 {
-	for (vector<Node*>::iterator it = network->info.listInfectedNodes.begin();
+	for (vector<NodePtr>::iterator it = network->info.listInfectedNodes.begin();
 			it != network->info.listInfectedNodes.end(); it++)
 	{
 		if (Tools::Exists((*it)->neighbors, &Node::isNodeState, Sane))

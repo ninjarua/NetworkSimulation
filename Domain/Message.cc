@@ -13,7 +13,7 @@ Message::Message() {
 	//receivingAction = NULL;
 }
 
-Message::Message(Node* s, Node* r, const int& t) {
+Message::Message(NodePtr s, NodePtr r, const int& t) {
 	sender = s;
 	receiver = r;
 	creationTime = t;

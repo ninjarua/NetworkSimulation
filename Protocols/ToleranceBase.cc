@@ -29,7 +29,7 @@ string ToleranceBase::GetToleranceName()
 //    return _instance;
 //}
 
-void ToleranceBase::TolerateNode(Node* node, Node* byzantine)
+void ToleranceBase::TolerateNode(NodePtr node, NodePtr byzantine)
 {
 	node->state = Detector;
 	node->ownerNetwork->info.listDetectors.push_back(node);

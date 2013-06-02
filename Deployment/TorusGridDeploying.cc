@@ -9,13 +9,12 @@
 
 namespace deployment {
 
-TorusGridDeploying::TorusGridDeploying() {
-	// TODO Auto-generated constructor stub
+TorusGridDeploying::TorusGridDeploying() : Deploying() {
 
 }
 
 TorusGridDeploying::~TorusGridDeploying() {
-	// TODO Auto-generated destructor stub
+
 }
 
 bool TorusGridDeploying::ObtainTopology(Network* network)
@@ -32,7 +31,8 @@ bool TorusGridDeploying::ObtainTopology(Network* network)
     }
     for (int i = 0; i < networkTopology.NumNodes; i++)
     {
-        network->AddNode(new Node(GetPosX(i), GetPosY(i)));
+    	NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
+        network->AddNode(newNode);
     }
     networkTopology.XTerr = networkTopology.Distance * (sqrt(networkTopology.NumNodes) - 1);
     networkTopology.YTerr = networkTopology.Distance * (sqrt(networkTopology.NumNodes) - 1);

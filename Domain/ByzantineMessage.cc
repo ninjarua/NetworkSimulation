@@ -9,7 +9,7 @@
 
 namespace domain {
 
-ByzantineMessage::ByzantineMessage(Node* sender, Node* receiver, const int& timeSlot, double byzantinePb, double nothingPb)
+ByzantineMessage::ByzantineMessage(NodePtr sender, NodePtr receiver, const int& timeSlot, double byzantinePb, double nothingPb)
 	: Message(sender, receiver, timeSlot)
 {
 	byzantineProb = byzantinePb;

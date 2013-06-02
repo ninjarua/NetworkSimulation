@@ -60,9 +60,9 @@ bool Node::isNodeState(const Node& node, const NodeState& state)
 
 void Node::CreateLists()
 {
-	neighbors = list<Node*>();
-	detectedByzantines = set<Node*>();
-	disconnectedNodes = set<Node*>();
+	neighbors = list<NodePtr>();
+	detectedByzantines = set<NodePtr>();
+	disconnectedNodes = set<NodePtr>();
 }
 
 void Node::Reset()
@@ -91,7 +91,7 @@ ofstream& operator<<(ofstream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
 				<< Constants::tab << node.posY;
-	list<Node*>::const_iterator it = node.neighbors.begin();
+	list<NodePtr>::const_iterator it = node.neighbors.begin();
 	while (it != node.neighbors.end())
 	{
 		os << Constants::tab << (*it)->id;
@@ -105,7 +105,7 @@ ostream& operator<<(ostream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
 				<< Constants::tab << node.posY;
-	list<Node*>::const_iterator it = node.neighbors.begin();
+	list<NodePtr>::const_iterator it = node.neighbors.begin();
 	while (it != node.neighbors.end())
 	{
 		os << Constants::tab << (*it)->id;
@@ -125,6 +125,14 @@ istringstream& operator>>(istringstream& is, Node& node)
 		node.neighbors.push_back(node.ownerNetwork->nodes.at(id));
 	}
 	return is;
+}
+
+string Node::printNodeWithConnectedAreaNumber(const Node& node)
+{
+	char number[18];
+	sprintf(number, "%d: can = %d", node.id, node.connectedAreaNumber);
+	string out(number);
+	return number;
 }
 
 } /* namespace domain */
