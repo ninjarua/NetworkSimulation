@@ -6,13 +6,14 @@
  */
 
 #include "SimulatorManager.h"
+namespace simulators
+{
 
 SimulatorManager::SimulatorManager() {
-	// TODO Auto-generated constructor stub
 
 }
 
 SimulatorManager::~SimulatorManager() {
-	// TODO Auto-generated destructor stub
-}
 
+}
+}

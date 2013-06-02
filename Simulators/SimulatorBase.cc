@@ -49,7 +49,7 @@ void SimulatorBase::SetDeployment(DeployingType type)
 	}
 }
 
-void SimulatorBase::GetParameters(DeployingType deployment, int numberOfNodes, int transRange, float xTerr, float yTerr, float d0, bool checkConflict)
+void SimulatorBase::GetParameters(DeployingType deployment, int numberOfNodes, int transRange, float xTerr, float yTerr, float d0)
 {
     _topology.NumNodes = numberOfNodes;
     _topology.XTerr = xTerr;
