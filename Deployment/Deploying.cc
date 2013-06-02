@@ -78,7 +78,7 @@ bool Deploying::RunDeploy(Network* network)
 
 void Deploying::NeighborInitialization(Network* network)
 {
-	for (int i = 0; i < network->nodes.size() - 1; i++)
+	for (int i = 0; i < (int)(network->nodes.size() - 1); i++)
 	{
 		for (unsigned int j = i + 1; j < network->nodes.size(); j++)
 		{
