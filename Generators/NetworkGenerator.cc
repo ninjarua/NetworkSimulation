@@ -65,14 +65,14 @@ string NetworkGenerator::GetFilenameByDeployment(string folder, int number)
 {
 	string filename = deployment->GetDeployingName() + "_" + GetFilename(number);
 	filesystem::path my_path( folder + "/" + filename);
-	return my_path.c_str();
+	return my_path.string();
 }
 
 string NetworkGenerator::GeneratorToFiles(Network* network, string folder, int times)
 {
 	for (int i = 0; i < times; i++)
 	{
-		bool hasTopology = deployment->ObtainTopology(network);
+		bool hasTopology = deployment->RunDeploy(network);
 		if (hasTopology)
 		{
 			Logger::Write(network, GetFilenameByDeployment(folder, i));
