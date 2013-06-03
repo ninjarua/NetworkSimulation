@@ -26,7 +26,7 @@ private:
 	Parameter params;
 	void SetParameters(int totalTimes, string inputFolder, string outputFolder,
 			double startingNothing, double startingByzantine,
-			double endingNothing, double endingNothing,
+			double endingNothing, double endingByzantine,
 			double intervalByz, double intervalNothing, int topologyUsage);
 	bool RunSimulationStep(bool draw = false);
 	void RunSimulationByInterval();
