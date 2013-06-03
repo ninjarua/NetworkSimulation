@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 //		sim->GetParameters(FixedRange, 1000, 330, 3000, 7500, 10);
 		//sim->GetParameters(TorusGrid, 900, 10, 100, 100, 10);
 		//cout << sim->DeployNetwork(1, false);
-		cout << sim->GenerateNetwork(FixedRange, 1000, 3000, 7500, 330, 10, 100, "/FixedRange");
+		cout << sim->GenerateNetwork(FixedRange, 1000, 3000, 7500, 330, 10, 100, "FixedRange");
 		//sim->RunSimulation(10000, 0.01, 0.01, K01, &PrintToFile, 0, 0, 0.1, 0.2);
 	}
 	catch (std::exception& ex)

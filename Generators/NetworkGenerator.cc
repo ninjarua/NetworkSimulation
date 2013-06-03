@@ -35,10 +35,11 @@ string NetworkGenerator::GetFilename(int id)
 	string filename("graph");
 	if (id > 0)
 	{
-		char number[9];
-		sprintf(number, "%04d.out", id);
+		char number[5];
+		sprintf(number, "%04d", id);
 		filename = filename + number;
 	}
+	filename = filename + ".out";
 	return filename;
 }
 
@@ -63,8 +64,10 @@ string NetworkGenerator::GetFailureString(int count)
 
 string NetworkGenerator::GetFilenameByDeployment(string folder, int number)
 {
-	string filename = deployment->GetDeployingName() + "_" + GetFilename(number);
-	filesystem::path my_path( folder + "/" + filename);
+	string filename(deployment->GetDeployingName() + "_" + GetFilename(number));
+	if (!filesystem::exists(folder))
+		filesystem::create_directory(folder);
+	filesystem::path my_path(folder + "/" + filename);
 	return my_path.string();
 }
 
