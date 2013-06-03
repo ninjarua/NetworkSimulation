@@ -65,10 +65,11 @@ string NetworkGenerator::GetFailureString(int count)
 string NetworkGenerator::GetFilenameByDeployment(string folder, int number)
 {
 	string filename(deployment->GetDeployingName() + "_" + GetFilename(number));
-	if (!filesystem::exists(folder))
-		filesystem::create_directory(folder);
-	filesystem::path my_path(folder + "/" + filename);
-	return my_path.string();
+	filesystem::path dir(folder);
+	if (!filesystem::exists(dir))
+		filesystem::create_directory(dir);
+	filesystem::path file(folder + OS_SEP + filename);
+	return file.string();
 }
 
 string NetworkGenerator::GeneratorToFiles(Network* network, string folder, int times)

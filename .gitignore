@@ -2,6 +2,4 @@
 /.cproject
 .cproject
 /FixedRange
-/graph_0001.out
-/TorusGrid_graph_0001.out
-/backup
+*.out
