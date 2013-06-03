@@ -20,7 +20,7 @@ using namespace boost;
 
 namespace domain {
 class Node;
-typedef shared_ptr<Node> NodePtr;
+typedef Node* NodePtr;
 
 enum NodeState {Sane = 0, Infected = 1, Detector = 2, Inactive = 3};
 class Network;

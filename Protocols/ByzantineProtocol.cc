@@ -66,14 +66,8 @@ void ByzantineProtocol::Reset(Network* network)
 void ByzantineProtocol::RandomByzantine(Network* network)
 {
     int seed = rand() % network->nodes.size();
-    vector<NodePtr>::iterator it = network->nodes.begin();
-    while(seed > 0)
-    {
-    	it++;
-    	seed--;
-    }
-    (*it)->state = Infected;
-    network->info.listInfectedNodes.push_back(*it);
+    network->nodes.at(seed)->state = Infected;
+    network->info.listInfectedNodes.push_back(network->nodes.at(seed));
     //PropagateFault(network);
 }
 

@@ -24,7 +24,8 @@ class ByzantineSimulator: public SimulatorBase {
 private:
 	ByzantineProtocol byzantine;
 	Parameter params;
-	void SetParameters(int totalTimes, string folder, double startingNothing, double startingByzantine,
+	void SetParameters(int totalTimes, string inputFolder, string outputFolder,
+			double startingNothing, double startingByzantine,
 			double endingNothing, double endingNothing,
 			double intervalByz, double intervalNothing, int topologyUsage);
 	bool RunSimulationStep(bool draw = false);
@@ -45,7 +46,8 @@ public:
 	virtual void SetTolerance(TypeOfTolerance toleranceType);
 	virtual void SetDeployment(DeployingType deployingType);
 
-	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, string folder, int totalTimes,
+	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
+					string inputfolder, string outputFolder,
 					double startingNothing = 0, double startingByzantine = 0,
 					double endingNothing = 1, double endingByzantine = 1,
 					double intervalByz = 0.01, double intervalNothing = 0.01, int sampleSize = 1);

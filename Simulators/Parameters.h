@@ -20,7 +20,8 @@ struct Parameter
 	int byzantineEnd;
 	int byzantineSteps;
 	int nothingSteps;
-	string folder;
+	string inputFolder;
+	string outputFolder;
 };
 
 }

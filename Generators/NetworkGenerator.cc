@@ -35,8 +35,8 @@ string NetworkGenerator::GetFilename(int id)
 	string filename("graph");
 	if (id > 0)
 	{
-		char number[5];
-		sprintf(number, "%04d", id);
+		char number[6];
+		sprintf(number, "_%04d", id);
 		filename = filename + number;
 	}
 	filename = filename + ".out";

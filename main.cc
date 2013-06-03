@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	{
 		ByzantineSimulator* sim = new ByzantineSimulator();
 		//cout << sim->GenerateNetwork(FixedRange, 1000, 3000, 7500, 330, 10, 100, "FixedRange");
-		sim->RunSimulation(FixedRange, K01, "FixedRange", 10000, 0, 0, 0, 0.99, 0.01, 0.01, 100);
+		sim->RunSimulation(FixedRange, K01, 10000, "FixedRange", "Results", 0, 0.18, 0, 0.99, 0.01, 0.01, 100);
 	}
 	catch (std::exception& ex)
 	{

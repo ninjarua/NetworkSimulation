@@ -110,7 +110,7 @@ void ByzantineSimulator::RunSimulationByInterval()
 		int sampleId = 0;
 		while (count < prediction)
 		{
-			generator->GenerateFromFiles(network, params.folder, sampleId);
+			generator->GenerateFromFiles(network, params.inputFolder, sampleId);
 			int i = 0;
 			while (i < sampleRepeat)
 			{
@@ -132,10 +132,10 @@ void ByzantineSimulator::RunSimulationByInterval()
 
 void ByzantineSimulator::PrintToFile(ByzantineReport& report, string filename)
 {
-	filesystem::path dir(params.folder);
+	filesystem::path dir(params.outputFolder);
 	if (!filesystem::exists(dir))
 		filesystem::create_directory(dir);
-	filesystem::path file(params.folder + OS_SEP + filename);
+	filesystem::path file(params.outputFolder + OS_SEP + filename);
 	Logger::Write(report, file.string(), ofstream::out | ofstream::app);
 }
 
@@ -153,7 +153,8 @@ string ByzantineSimulator::GetResultFilename(double nothingProb, double byzantin
 	return filename;
 }
 
-void ByzantineSimulator::SetParameters(int totalTimes, string folder, double startingNothing, double startingByzantine,
+void ByzantineSimulator::SetParameters(int totalTimes, string inputFolder, string outputFolder,
+			double startingNothing, double startingByzantine,
 			double endingNothing, double endingByzantine,
 			double intervalByz, double intervalNothing, int sampleSize)
 {
@@ -165,16 +166,18 @@ void ByzantineSimulator::SetParameters(int totalTimes, string folder, double sta
 	params.nothingEnd = (int)(endingNothing / intervalNothing);
 	params.byzantineEnd = (int)(endingByzantine / intervalNothing);
 	params.sampleSize = sampleSize;
-	params.folder = folder;
+	params.inputFolder = inputFolder;
+	params.outputFolder = outputFolder;
 }
 
-void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, string folder, int times,
+void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int times,
+		string inputfolder, string outputFolder,
 		double startingNothing, double startingByzantine,
 		double endingNothing, double endingByzantine,
 		double intervalByz, double intervalNothing, int sampleSize)
 {
 	SetTolerance(toleranceType);
-	SetParameters(times, folder, startingNothing, startingByzantine, endingNothing,
+	SetParameters(times, inputfolder, outputFolder, startingNothing, startingByzantine, endingNothing,
 			endingByzantine, intervalByz, intervalNothing, sampleSize);
 	SetDeployment(deploying);
 	double ratio = (double)params.nothingSteps / params.byzantineSteps;
