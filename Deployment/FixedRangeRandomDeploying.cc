@@ -9,9 +9,12 @@
 
 namespace deployment {
 
-FixedRangeRandomDeploying::FixedRangeRandomDeploying() : Deploying() {
-	// TODO Auto-generated constructor stub
-
+FixedRangeRandomDeploying::FixedRangeRandomDeploying(int numberNodes, int xTerr, int yTerr, int range) : Deploying() {
+	topology->numNodes = numberNodes;
+	topology->xTerr = xTerr;
+	topology->yTerr = yTerr;
+	topology->range = range;
+	topology->d0 = 1;
 }
 
 FixedRangeRandomDeploying::~FixedRangeRandomDeploying() {
@@ -26,7 +29,7 @@ string FixedRangeRandomDeploying::GetDeployingName()
 bool FixedRangeRandomDeploying::ObtainTopology(Network* network)
 {
 	Deploying::ObtainTopology(network);
-	if ((networkTopology.XTerr < 0) | (networkTopology.YTerr < 0))
+	if ((topology->xTerr < 0) | (topology->yTerr < 0))
 	{
 		string errorMessage = "Error: values of TERRAIN_DIMENSIONS must be positive";
 		//Logger.GetInstance().Debug(errorMessage);
@@ -34,7 +37,7 @@ bool FixedRangeRandomDeploying::ObtainTopology(Network* network)
 	}
 	// 1.4 (below) is an arbitrary number chosen to decrease the probability
 	// that nodes get closer than D0 to one another.
-	if (GetCellLength() < (networkTopology.D0 * 1.4))
+	if (GetCellLength() < (topology->d0 * 1.4))
 	{
 		string errorMessage = "Error: on RANDOM topology, density is too high, increase physical terrain";
 		//Logger.GetInstance().Debug(errorMessage);
@@ -42,9 +45,9 @@ bool FixedRangeRandomDeploying::ObtainTopology(Network* network)
 	}
 	// Node 0 is the sink node that is located in the center of the network
 	//Node node = Node(networkTopology.XTerr / 2, networkTopology.YTerr / 2);
-	NodePtr firstNode(new Node(networkTopology.XTerr / 2, networkTopology.YTerr / 2));
+	NodePtr firstNode(new Node(topology->xTerr / 2, topology->yTerr / 2));
 	network->AddNode(firstNode);
-	for (int i = 1; i < networkTopology.NumNodes; i++)
+	for (int i = 1; i < topology->numNodes; i++)
 	{
 		NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
 		network->AddNode(newNode);
@@ -59,17 +62,17 @@ bool FixedRangeRandomDeploying::ObtainTopology(Network* network)
 
 double FixedRangeRandomDeploying::GetPosX(int nodeSequenceId)
 {
-	return (double)rand()/RAND_MAX * networkTopology.XTerr;
+	return (double)rand()/RAND_MAX * topology->xTerr;
 }
 
 double FixedRangeRandomDeploying::GetPosY(int nodeSequenceId)
 {
-	return (double)rand()/RAND_MAX * networkTopology.YTerr;
+	return (double)rand()/RAND_MAX * topology->yTerr;
 }
 
 double FixedRangeRandomDeploying::GetCellLength()
 {
-	return sqrt(networkTopology.Area() / networkTopology.NumNodes);
+	return sqrt(topology->Area() / topology->numNodes);
 }
 
 } /* namespace protocols */

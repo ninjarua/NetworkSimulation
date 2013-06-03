@@ -6,20 +6,17 @@
  */
 
 #include "SimulatorBase.h"
-#include "GridDeploying.h"
-#include "FixedRangeRandomDeploying.h"
-#include "TorusGridDeploying.h"
+#include "GridGenerator.h"
+#include "FixedRangeGenerator.h"
+#include "TorusGridGenerator.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 namespace simulators {
 
 SimulatorBase::SimulatorBase() {
-	_deploying = new Deploying();
-	//NetworkGraphics _networkGraphics;
-	_network = new Network();
-	_topology = Topology();
-	_hasTopology = false;
+	generator = new NetworkGenerator();
+	network = new Network();
 	_currentTimeslot = 1;
 }
 
@@ -27,99 +24,33 @@ SimulatorBase::~SimulatorBase() {
 
 }
 
-void SimulatorBase::SetDeployment(DeployingType type)
+string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode, float xTerr, float yTerr,
+			float range, float d0, int times, string folder)
 {
-	switch(type)
+	network->transRange = range;
+	switch(deployment)
 	{
-	case Ring:
+	case Grid:
+		generator = new GridGenerator(numberOfNode);
+		generator->GeneratorToFiles(network, folder);
 		break;
 	case TorusGrid:
-		_deploying = new TorusGridDeploying();
+		generator = new TorusGridGenerator(numberOfNode);
+		generator->GeneratorToFiles(network, folder);
 		break;
-	case Grid:
-		_deploying = new GridDeploying();
+	case FixedRange:
+		generator = new FixedRangeGenerator(numberOfNode, xTerr, yTerr, range);
+		generator->GeneratorToFiles(network, folder, times);
+		break;
+	case Ring:
 		break;
 	case ER_Random:
+		break;
 	case ScaleFree:
-	case FixedRange:
-		_deploying = new FixedRangeRandomDeploying();
 		break;
 	default:
 		break;
 	}
-}
-
-void SimulatorBase::GetParameters(DeployingType deployment, int numberOfNodes, int transRange, float xTerr, float yTerr, float d0)
-{
-    _topology.NumNodes = numberOfNodes;
-    _topology.XTerr = xTerr;
-    _topology.YTerr = yTerr;
-    _topology.D0 = d0;
-    _topology.Distance = transRange;
-
-    SetDeployment(deployment);
-    _deploying->networkTopology = _topology;
-
-    _network->transRange = transRange;
-    //_network.collisionChecking = checkConflict;
-}
-
-string GetFilename(int id)
-{
-	char number[9];
-	sprintf(number, "%04d.out", id);
-	string filename("graph_");
-	filename = filename + number;
-	return filename;
-}
-
-string GetVerifyFilename(int id)
-{
-	char number[18];
-	sprintf(number, "%04d_verified.out", id);
-	string filename("graph_");
-	filename = filename + number;
-	return filename;
-}
-
-string GetFailureString(int count)
-{
-	char number[5];
-	string results("Cannot create all graphs!\n");
-	results = results + "Only create";
-	sprintf(number, "%04d", count);
-	results = results + number;
-	return results;
-}
-
-string SimulatorBase::GetFilenameByDeployment(int number)
-{
-	return _deploying->GetDeployingName() + "_" + GetFilename(number);
-}
-
-string SimulatorBase::DeployNetwork(int times, bool drawNetwork)
-{
-	for (int i = 0; i < times; i++)
-	{
-		_hasTopology = _deploying->RunDeploy(_network);
-		if (_hasTopology)
-		{
-			Logger::Write(_network, GetFilenameByDeployment(i + 1));
-			//if (drawNetwork)
-		}
-		else
-		{
-			return GetFailureString(i + 1);
-		}
-	}
-	return "Success";
-}
-
-string SimulatorBase::GenerateNetworkFromFile(int fileNumber, bool drawNetwork)
-{
-	ifstream f(GetFilenameByDeployment(fileNumber).c_str(), ifstream::in);
-	f >> (*_network);
-	f.close();
 	return "Success";
 }
 

@@ -9,7 +9,7 @@
 
 namespace deployment {
 Deploying::Deploying() {
-	//networkTopology = new Topology();
+	topology = new Topology();
 }
 
 Deploying::~Deploying() {
@@ -45,7 +45,7 @@ bool Deploying::IsValidDistance(const Node& node, const Node& neighbor)
 	Ydist = node.posY - neighbor.posY;
 	// distance between a given pair of nodes
 	dist = pow((Xdist * Xdist + Ydist * Ydist), 0.5);
-	return (dist >= networkTopology.D0);
+	return (dist >= topology->d0);
 }
 
 bool Deploying::IsAllDistanceValid(const Network& network, const Node& node)

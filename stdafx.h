@@ -12,6 +12,12 @@
 #define BOOST_THREAD_USE_LIB
 #endif
 
+#ifdef WIN32
+#define OS_SEP '\\'
+#else
+#define OS_SEP '/'
+#endif
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>

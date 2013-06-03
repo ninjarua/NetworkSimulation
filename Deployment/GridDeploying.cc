@@ -9,8 +9,14 @@
 
 namespace deployment {
 
-GridDeploying::GridDeploying() : Deploying() {
-
+GridDeploying::GridDeploying(int size) : Deploying() {
+	int sqrtNumNodes = (int)sqrt(topology->numNodes);
+	if (sqrtNumNodes != sqrt(topology->numNodes))
+	{
+		throw nsException("Error: on GRID topology, NUMBER_OF_NODES should be the square of a natural number");
+	}
+	topology->xTerr = topology->range * (sqrt(topology->numNodes) - 1);
+	topology->yTerr = topology->range * (sqrt(topology->numNodes) - 1);
 }
 
 GridDeploying::~GridDeploying() {
@@ -25,37 +31,37 @@ string GridDeploying::GetDeployingName()
 bool GridDeploying::ObtainTopology(Network* network)
 {
 	Deploying::ObtainTopology(network);
-	if (networkTopology.Distance < networkTopology.D0)
+	if (topology->range < topology->d0)
 	{
 		//Logger.GetInstance().Debug("Error: value of GRID_UNIT must be greater than D0");
 		return false;
 	}
-	int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
-	if (sqrtNumNodes != sqrt(networkTopology.NumNodes))
-	{
-		//Logger.GetInstance().Debug("Error: on GRID topology, NUMBER_OF_NODES should be the square of a natural number");
-		return false;
-	}
-	for (int i = 0; i < networkTopology.NumNodes; i++)
+//	int sqrtNumNodes = (int)sqrt(topology->NumNodes);
+//	if (sqrtNumNodes != sqrt(topology->NumNodes))
+//	{
+//		//Logger.GetInstance().Debug("Error: on GRID topology, NUMBER_OF_NODES should be the square of a natural number");
+//		return false;
+//	}
+	for (int i = 0; i < topology->numNodes; i++)
 	{
 		NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
 		network->AddNode(newNode);
 	}
-	networkTopology.XTerr = networkTopology.Distance * (sqrt(networkTopology.NumNodes) - 1);
-	networkTopology.YTerr = networkTopology.Distance * (sqrt(networkTopology.NumNodes) - 1);
+//	topology->XTerr = topology->Distance * (sqrt(topology->NumNodes) - 1);
+//	topology->YTerr = topology->Distance * (sqrt(topology->NumNodes) - 1);
 	return true;
 }
 
 double GridDeploying::GetPosX(int nodeSequenceId)
 {
-	int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
-	return (nodeSequenceId % sqrtNumNodes) * networkTopology.Distance;
+	int sqrtNumNodes = (int)sqrt(topology->numNodes);
+	return (nodeSequenceId % sqrtNumNodes) * topology->range;
 }
 
 double GridDeploying::GetPosY(int nodeSequenceId)
 {
-	int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
-	return (nodeSequenceId / sqrtNumNodes) * networkTopology.Distance;
+	int sqrtNumNodes = (int)sqrt(topology->numNodes);
+	return (nodeSequenceId / sqrtNumNodes) * topology->range;
 }
 
 bool GridDeploying::IsNeighbors(const Network& network, const Node& node, const Node& neighbor)

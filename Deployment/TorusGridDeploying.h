@@ -8,13 +8,15 @@
 #ifndef TORUSGRIDDEPLOYING_H_
 #define TORUSGRIDDEPLOYING_H_
 
+#include "stdafx.h"
 #include "Deploying.h"
+#include "nsException.h"
 
 namespace deployment {
 
 class TorusGridDeploying : public Deploying{
 public:
-	TorusGridDeploying();
+	TorusGridDeploying(int size);
 	virtual ~TorusGridDeploying();
 
 protected:

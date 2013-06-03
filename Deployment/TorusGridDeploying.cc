@@ -9,8 +9,14 @@
 
 namespace deployment {
 
-TorusGridDeploying::TorusGridDeploying() : Deploying() {
-
+TorusGridDeploying::TorusGridDeploying(int size) : Deploying() {
+	int sqrtNumNodes = (int)sqrt(topology->numNodes);
+	if (sqrtNumNodes != sqrt(topology->numNodes))
+	{
+		throw nsException("Error: on GRID topology, NUMBER_OF_NODES should be the square of a natural number");
+	}
+	topology->xTerr = topology->range * (sqrt(topology->numNodes) - 1);
+	topology->yTerr = topology->range * (sqrt(topology->numNodes) - 1);
 }
 
 TorusGridDeploying::~TorusGridDeploying() {
@@ -20,50 +26,50 @@ TorusGridDeploying::~TorusGridDeploying() {
 bool TorusGridDeploying::ObtainTopology(Network* network)
 {
     Deploying::ObtainTopology(network);
-    if (networkTopology.Distance < networkTopology.D0)
+    if (topology->range < topology->d0)
     {
         return false;
     }
-    int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
-    if (sqrtNumNodes != sqrt(networkTopology.NumNodes))
+    int sqrtNumNodes = (int)sqrt(topology->numNodes);
+    if (sqrtNumNodes != sqrt(topology->numNodes))
     {
         return false;
     }
-    for (int i = 0; i < networkTopology.NumNodes; i++)
+    for (int i = 0; i < topology->numNodes; i++)
     {
     	NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
         network->AddNode(newNode);
     }
-    networkTopology.XTerr = networkTopology.Distance * (sqrt(networkTopology.NumNodes) - 1);
-    networkTopology.YTerr = networkTopology.Distance * (sqrt(networkTopology.NumNodes) - 1);
+    topology->xTerr = topology->range * (sqrt(topology->numNodes) - 1);
+    topology->yTerr = topology->range * (sqrt(topology->numNodes) - 1);
     return true;
 }
 
 double TorusGridDeploying::GetPosX(int nodeSequenceId)
 {
-    int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
-    return (nodeSequenceId % sqrtNumNodes) * networkTopology.Distance;
+    int sqrtNumNodes = (int)sqrt(topology->numNodes);
+    return (nodeSequenceId % sqrtNumNodes) * topology->range;
 }
 
 double TorusGridDeploying::GetPosY(int nodeSequenceId)
 {
-    int sqrtNumNodes = (int)sqrt(networkTopology.NumNodes);
-    return (nodeSequenceId / sqrtNumNodes) * networkTopology.Distance;
+    int sqrtNumNodes = (int)sqrt(topology->numNodes);
+    return (nodeSequenceId / sqrtNumNodes) * topology->range;
 }
 
 bool TorusGridDeploying::IsNeighbors(const Network& network, const Node& node, const Node& neighbor)
 {
     double Xdist = node.posX - neighbor.posX;
     double Ydist = node.posY - neighbor.posY;
-    if ((node.posX == 0 && neighbor.posX == networkTopology.XTerr)
-        || (node.posX == networkTopology.XTerr && neighbor.posX == 0))
+    if ((node.posX == 0 && neighbor.posX == topology->xTerr)
+        || (node.posX == topology->xTerr && neighbor.posX == 0))
     {
-        Xdist += networkTopology.XTerr + networkTopology.Distance;
+        Xdist += topology->xTerr + topology->range;
     }
-    if ((node.posY == 0 && neighbor.posY == networkTopology.YTerr)
-        || (node.posY == networkTopology.YTerr && neighbor.posY == 0))
+    if ((node.posY == 0 && neighbor.posY == topology->yTerr)
+        || (node.posY == topology->yTerr && neighbor.posY == 0))
     {
-        Ydist += networkTopology.YTerr + networkTopology.Distance;
+        Ydist += topology->yTerr + topology->range;
     }
     // distance between a given pair of nodes
     return pow((Xdist * Xdist + Ydist * Ydist), 0.5) <= network.transRange;

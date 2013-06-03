@@ -10,6 +10,7 @@
 
 #include "SimulatorBase.h"
 #include "ByzantineReport.h"
+#include "Parameters.h"
 
 using namespace protocols;
 
@@ -17,28 +18,31 @@ namespace simulators {
 
 class ByzantineSimulator: public SimulatorBase {
 private:
-	ByzantineProtocol _byzantine;
+	ByzantineProtocol byzantine;
+	Parameter params;
+	void SetRepeatParameter(int totalTimes, string folder, double startingNothing, double startingByzantine,
+			double endingNothing, double endingNothing,
+			double intervalByz, double intervalNothing, int topologyUsage);
 public:
 	ByzantineSimulator();
 	virtual ~ByzantineSimulator();
 
 	TypeOfTolerance ToleranceType;
 
-//	NetworkInfo* GetNetworkInfo();
 	virtual void SetTolerance(TypeOfTolerance toleranceType);
-	void InitializeSimulator(double byzantineProb, double nothingProb, TypeOfTolerance toleranceType, bool draw = false);
-	bool RunSimulationStep(bool draw = false);
-	void DrawNetwork();
 	void AddOneStepReport();
 	ByzantineReport* FinishReport();
 	bool StopPrediction(ByzantineReport* report);
-	void RunSimulationByInterval(int times);
 	string GetResultFilename();
-	void RunSimulation(int times, double intervalByz, double intervalNothing,
-                        TypeOfTolerance toleranceType, void (*output)(ByzantineReport&, string),
-                        double startingNothing = 0, double startingByzantine = 0,
-                        double endNothing = 1, double endByzantine = 1);
-	void RunOneStep(void (*output)(ByzantineReport&, string), double byzantineProb, double nothingProb, int times);
+
+	bool RunSimulationStep(bool draw = false);
+	void RunSimulationByInterval();
+	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, string folder, int totalTimes,
+					double startingNothing = 0, double startingByzantine = 0,
+					double endingNothing = 1, double endingByzantine = 1,
+					double intervalByz = 0.01, double intervalNothing = 0.01, int sampleSize = 1);
+	void RunOneStep(double byzantineProb, double nothingProb, int times);
+	static void PrintToFile(ByzantineReport& report, string filename);
 };
 
 } /* namespace deployment */

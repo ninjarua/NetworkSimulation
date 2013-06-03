@@ -11,12 +11,12 @@
 namespace domain {
 class Topology{
 public:
-	double XTerr;
-	double YTerr;
-	double Area(){ return XTerr * YTerr; }
-	double Distance;
-	double D0;
-	int NumNodes;
+	double xTerr;
+	double yTerr;
+	double Area(){ return xTerr * yTerr; }
+	double range;
+	double d0;
+	int numNodes;
 };
 }
 #endif /* TOPOLOGY_H_ */

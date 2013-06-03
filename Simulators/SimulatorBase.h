@@ -14,12 +14,12 @@
 
 #include "Network.h"
 #include "Logger.h"
-#include "Topology.h"
-#include "Deploying.h"
 #include "ByzantineProtocol.h"
+#include "NetworkGenerator.h"
+#include "enums.h"
 
 using namespace domain;
-using namespace deployment;
+using namespace generators;
 using namespace protocols;
 
 namespace simulators {
@@ -29,23 +29,21 @@ public:
 	SimulatorBase();
 	virtual ~SimulatorBase();
 protected:
-	Deploying* _deploying;
+	NetworkGenerator* generator;
 	//NetworkGraphics _networkGraphics;
-	Network* _network;
-	Topology _topology;
-	bool _hasTopology;
+	Network* network;
 	int _currentTimeslot;
 	ByzantineProtocol _fault;
-	virtual void SetDeployment(DeployingType type);
 
 public:
 	int timeslot;
 	//void (*Writer)(Network*, string);
-	void GetParameters(DeployingType deployingType, int numberOfNodes, int transRange, float xTerr, float yTerr, float d0);
+	//void GetParameters(DeployingType deployingType, int numberOfNodes, int transRange, float xTerr, float yTerr, float d0);
 	//void CreateGraphic(Graphics graphic, float width, float height, float margin, Color backColor);
-	string GetFilenameByDeployment(int number);
-	string DeployNetwork(int times, bool drawNetwork);
-	string GenerateNetworkFromFile(int fileNumber, bool drawNetwork);
+	//string GetFilenameByDeployment(int number);
+	string GenerateNetwork(DeployingType deployment, int numberOfNode, float xTerr, float yTerr,
+			float range, float d0, int times, string folder);
+	//string GenerateNetworkFromFile(int fileNumber, bool drawNetwork);
 };
 
 } /* namespace deployment */

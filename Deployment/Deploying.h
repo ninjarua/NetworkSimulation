@@ -18,10 +18,6 @@ using namespace domain;
 
 namespace deployment {
 
-enum DeployingType { Ring = 0, TorusGrid = 1,
-					Grid = 2, ER_Random = 3,
-					FixedRange = 4, ScaleFree = 5};
-
 typedef bool (*pNodeCondition)(Node*);
 
 class Deploying {
@@ -30,7 +26,7 @@ public:
 	virtual ~Deploying();
 
 	public:
-		Topology networkTopology;
+		Topology* topology;
 
     protected:
         virtual void CreateInformationOfGraph(Network* network);

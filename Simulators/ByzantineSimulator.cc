@@ -10,7 +10,7 @@
 namespace simulators {
 
 ByzantineSimulator::ByzantineSimulator() : SimulatorBase() {
-	_byzantine = ByzantineProtocol(0.5, 0.5);
+	byzantine = ByzantineProtocol(0.5, 0.5);
 }
 
 ByzantineSimulator::~ByzantineSimulator() {
@@ -23,51 +23,44 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	{
 	case K01:
 		//_fault->tolerance = ToleranceBase::GetBase();
-		_byzantine.tolerance = new ToleranceBase();
+		byzantine.tolerance = new ToleranceBase();
 		break;
 	default:
-		_byzantine.tolerance = new ToleranceBase();
+		byzantine.tolerance = new ToleranceBase();
 		break;
 	}
 }
 
-void ByzantineSimulator::InitializeSimulator(double byzantineProb, double nothingProb, TypeOfTolerance toleranceType, bool draw)
-{
-	SetTolerance(toleranceType);
-	_byzantine.Initialize(_network, byzantineProb, nothingProb);
-	_byzantine.Refresh(_network);
-//	if (draw)
-//		_networkGraphics.DrawNetwork(_network, false, false, true);
-}
+//void ByzantineSimulator::InitializeSimulator(double byzantineProb, double nothingProb, TypeOfTolerance toleranceType, bool draw)
+//{
+//	SetTolerance(toleranceType);
+//	_byzantine.Initialize(_network, byzantineProb, nothingProb);
+//	_byzantine.Refresh(_network);
+//}
 
 bool ByzantineSimulator::RunSimulationStep(bool draw)
 {
-	bool stop = _byzantine.RunStepCheckFinish(_network, &Network::noNewMessageInNetwork);
+	bool stop = byzantine.RunStepCheckFinish(network, &Network::noNewMessageInNetwork);
 	//_networkGraphics.DrawNetwork(_network, false, false, true);
 	return stop;
 }
 
-void ByzantineSimulator::DrawNetwork()
-{
-
-}
-
 void ByzantineSimulator::AddOneStepReport()
 {
-	_byzantine.report->byzantineProb = _byzantine.byzantineProb;
-	_byzantine.report->AddByzantineValue(_byzantine.statisticInfo->infections);
-	_byzantine.report->AddSacrificeValue(_byzantine.statisticInfo->inactives);
-	_byzantine.report->AddDetectorValue(_byzantine.statisticInfo->detectors);
-	_byzantine.report->AddNormalValue(_byzantine.statisticInfo->sanes);
-	_byzantine.report->AddLargestConnectedAreaValue(_byzantine.statisticInfo->lca);
+	byzantine.report->byzantineProb = byzantine.byzantineProb;
+	byzantine.report->AddByzantineValue(byzantine.statisticInfo->infections);
+	byzantine.report->AddSacrificeValue(byzantine.statisticInfo->inactives);
+	byzantine.report->AddDetectorValue(byzantine.statisticInfo->detectors);
+	byzantine.report->AddNormalValue(byzantine.statisticInfo->sanes);
+	byzantine.report->AddLargestConnectedAreaValue(byzantine.statisticInfo->lca);
 }
 
 ByzantineReport* ByzantineSimulator::FinishReport()
 {
-	_byzantine.report->Clear();
+	byzantine.report->Clear();
 	AddOneStepReport();
-	_byzantine.report->Summarize(0.05);
-	return _byzantine.report;
+	byzantine.report->Summarize(0.05);
+	return byzantine.report;
 }
 
 bool ByzantineSimulator::StopPrediction(ByzantineReport* report)
@@ -77,76 +70,105 @@ bool ByzantineSimulator::StopPrediction(ByzantineReport* report)
     return averageCondition;
 }
 
-void ByzantineSimulator::RunSimulationByInterval(int times)
+void ByzantineSimulator::RunSimulationByInterval()
 {
-	_byzantine.report->Clear();
-	_byzantine.report->nothingProb = _byzantine.nothingProb;
-	if (_byzantine.nothingProb + _byzantine.byzantineProb > 0.991)
+	byzantine.report->Clear();
+	byzantine.report->nothingProb = byzantine.nothingProb;
+	int times = params.totalTimes;
+	if (byzantine.nothingProb + byzantine.byzantineProb > 0.991)
 		times = 2;
-	int prediction = (times < 500) ? times : 500;
+	int predictionIt = 1000;
+	int sampleRepeat = (int)((double) predictionIt/params.sampleSize);
+	int prediction = (times < predictionIt) ? times : predictionIt;
 	int count = 0;
 	while (count < times)
 	{
+		int sampleId = 0;
 		while (count < prediction)
 		{
-			_byzantine.Refresh(_network);
-			_byzantine.RunFault(_network);
-			AddOneStepReport();
-			count++;
+			generator->GeneratorFromFiles(network, params.folder, sampleId);
+			int i = 0;
+			while (i < sampleRepeat)
+			{
+				byzantine.Refresh(network);
+				byzantine.RunFault(network);
+				AddOneStepReport();
+				count++;
+				i++;
+			}
+			sampleId++;
 		}
-		_byzantine.report->Summarize(0.05);
-		if (StopPrediction(_byzantine.report))
+		byzantine.report->Summarize(0.05);
+		if (StopPrediction(byzantine.report))
 			times = prediction;	// reduce the running time and quit
 		else
-			prediction += 100;
+			prediction += 1000;
 	}
+}
+
+void ByzantineSimulator::PrintToFile(ByzantineReport& report, string filename)
+{
+	Logger::Write(report, filename, ofstream::out | ofstream::app);
 }
 
 string ByzantineSimulator::GetResultFilename()
 {
-	string filename = _deploying->GetDeployingName();
+	string filename = generator->GetDeployingName();
 	filename += "_";
-	filename += _byzantine.tolerance->GetToleranceName();
+	filename += byzantine.tolerance->GetToleranceName();
 	filename += ".out";
 	return filename;
 }
 
-void ByzantineSimulator::RunSimulation(int times, double intervalByz, double intervalNothing, TypeOfTolerance toleranceType,
-		void (*output)(ByzantineReport&, string), double startingNothing, double startingByzantine, double endingNothing, double endingByzantine)
+void ByzantineSimulator::SetRepeatParameter(int totalTimes, string folder, double startingNothing, double startingByzantine,
+			double endingNothing, double endingByzantine,
+			double intervalByz, double intervalNothing, int sampleSize)
+{
+	params.totalTimes = totalTimes;
+	params.nothingSteps = (int)(100 / (int)(intervalNothing * 100));;
+	params.byzantineSteps = (int)(100 / (int)(intervalByz * 100));
+	params.nothingStart = (int)(startingNothing / intervalNothing);
+	params.byzantineStart = (int)(startingByzantine / intervalNothing);
+	params.nothingEnd = (int)(endingNothing / intervalNothing);
+	params.byzantineEnd = (int)(endingByzantine / intervalNothing);
+	params.sampleSize = sampleSize;
+	params.folder = folder;
+}
+
+void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, string folder, int times,
+		double startingNothing, double startingByzantine,
+		double endingNothing, double endingByzantine,
+		double intervalByz, double intervalNothing, int sampleSize)
 {
 	SetTolerance(toleranceType);
-	int nothingSteps = (int)(100 / (int)(intervalNothing * 100)); // ex: 1000
-	int byzSteps = (int)(100 / (int)(intervalByz * 100)); // ex: 10
-	int nothingStart = (int)(startingNothing / intervalNothing);
-	int nothingEnd = (int)(endingNothing / intervalNothing);
-	int byzantineStart = (int)(startingByzantine / intervalNothing);
-	int byzantineEnd = (int)(endingByzantine / intervalNothing);
-	double ratio = (double)nothingSteps / byzSteps;
+	SetRepeatParameter(times, folder, startingNothing, startingByzantine, endingNothing,
+			endingByzantine, intervalByz, intervalNothing, sampleSize);
+	double ratio = (double)params.nothingSteps / params.byzantineSteps;
 
-	if (nothingStart == nothingEnd)
+	if (params.nothingStart == params.nothingEnd)
 	{
-		for (int j = byzantineStart; j <= byzantineEnd; j++)
-			RunOneStep(output, j * intervalByz, nothingStart * intervalNothing, times);
+		for (int j = params.byzantineStart; j <= params.byzantineEnd; j++)
+			RunOneStep(j * intervalByz, params.nothingStart * intervalNothing, times);
 	}
 	else
 	{
-		for (int j = byzantineStart; j <= (int)((nothingSteps - nothingStart)/ratio); j++)
-			RunOneStep(output, j * intervalByz, nothingStart * intervalNothing, times);
-		for (int i = nothingStart + 1; i < nothingEnd && i < nothingSteps; i++)
+		for (int j = params.byzantineStart; j <= (int)((params.nothingSteps - params.nothingStart)/ratio); j++)
+			RunOneStep(j * intervalByz, params.nothingStart * intervalNothing, times);
+		for (int i = params.nothingStart + 1; i < params.nothingEnd && i < params.nothingSteps; i++)
 		{
-			for (int j = 0; j <= (int)((nothingSteps - i) / ratio); j++)
-				RunOneStep(output, j * intervalByz, i * intervalNothing, times);
+			for (int j = 0; j <= (int)((params.nothingSteps - i) / ratio); j++)
+				RunOneStep(j * intervalByz, i * intervalNothing, times);
 		}
-		for (int j = 0; j <= byzantineEnd && j <= (int)((nothingSteps - nothingEnd) / ratio); j++)
-			RunOneStep(output, j * intervalByz, nothingEnd * intervalNothing, times);
+		for (int j = 0; j <= params.byzantineEnd && j <= (int)((params.nothingSteps - params.nothingEnd) / ratio); j++)
+			RunOneStep(j * intervalByz, params.nothingEnd * intervalNothing, times);
 	}
 }
 
-void ByzantineSimulator::RunOneStep(void (*output)(ByzantineReport&, string), double byzantineProb, double nothingProb, int times)
+void ByzantineSimulator::RunOneStep(double byzantineProb, double nothingProb, int times)
 {
-	_byzantine.Initialize(_network, byzantineProb, nothingProb);
-	RunSimulationByInterval(times);
-	output(*_byzantine.report, GetResultFilename());
+	byzantine.Initialize(network, byzantineProb, nothingProb);
+	RunSimulationByInterval();
+	PrintToFile(*byzantine.report, GetResultFilename());
 }
 
 } /* namespace deployment */
