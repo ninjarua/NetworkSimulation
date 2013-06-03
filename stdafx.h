@@ -8,6 +8,10 @@
 #ifndef STDAFX_H_
 #define STDAFX_H_
 
+#ifndef BOOST_THREAD_USE_LIB
+#define BOOST_THREAD_USE_LIB
+#endif
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
