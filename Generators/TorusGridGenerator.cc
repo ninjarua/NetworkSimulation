@@ -9,6 +9,11 @@
 
 namespace generators {
 
+TorusGridGenerator::TorusGridGenerator()
+{
+	deployment = new TorusGridDeploying();
+}
+
 TorusGridGenerator::TorusGridGenerator(int size) {
 	deployment = new TorusGridDeploying(size);
 }

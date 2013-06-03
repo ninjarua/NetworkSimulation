@@ -21,6 +21,7 @@ class GridDeploying : public Deploying {
 public:
 	string GetDeployingName();
     virtual bool ObtainTopology(Network* network);
+    GridDeploying();
 	GridDeploying(int size);
 	virtual ~GridDeploying();
 };

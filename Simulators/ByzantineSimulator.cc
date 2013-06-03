@@ -31,6 +31,30 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	}
 }
 
+void ByzantineSimulator::SetDeployment(DeployingType deployingType)
+{
+	switch(deployingType)
+	{
+	case Grid:
+		generator = new GridGenerator();
+		break;
+	case TorusGrid:
+		generator = new TorusGridGenerator();
+		break;
+	case FixedRange:
+		generator = new FixedRangeGenerator();
+		break;
+	case Ring:
+		break;
+	case ScaleFree:
+		break;
+	case ER_Random:
+		break;
+	default:
+		break;
+	}
+}
+
 //void ByzantineSimulator::InitializeSimulator(double byzantineProb, double nothingProb, TypeOfTolerance toleranceType, bool draw)
 //{
 //	SetTolerance(toleranceType);
@@ -86,7 +110,7 @@ void ByzantineSimulator::RunSimulationByInterval()
 		int sampleId = 0;
 		while (count < prediction)
 		{
-			generator->GeneratorFromFiles(network, params.folder, sampleId);
+			generator->GenerateFromFiles(network, params.folder, sampleId);
 			int i = 0;
 			while (i < sampleRepeat)
 			{
@@ -108,19 +132,28 @@ void ByzantineSimulator::RunSimulationByInterval()
 
 void ByzantineSimulator::PrintToFile(ByzantineReport& report, string filename)
 {
-	Logger::Write(report, filename, ofstream::out | ofstream::app);
+	filesystem::path dir(params.folder);
+	if (!filesystem::exists(dir))
+		filesystem::create_directory(dir);
+	filesystem::path file(params.folder + OS_SEP + filename);
+	Logger::Write(report, file.string(), ofstream::out | ofstream::app);
 }
 
-string ByzantineSimulator::GetResultFilename()
+string ByzantineSimulator::GetResultFilename(double nothingProb, double byzantineProb)
 {
 	string filename = generator->GetDeployingName();
 	filename += "_";
 	filename += byzantine.tolerance->GetToleranceName();
+
+	char number[11];
+		sprintf(number, "_%.2f_%.2f", nothingProb, byzantineProb);
+
+	filename += number;
 	filename += ".out";
 	return filename;
 }
 
-void ByzantineSimulator::SetRepeatParameter(int totalTimes, string folder, double startingNothing, double startingByzantine,
+void ByzantineSimulator::SetParameters(int totalTimes, string folder, double startingNothing, double startingByzantine,
 			double endingNothing, double endingByzantine,
 			double intervalByz, double intervalNothing, int sampleSize)
 {
@@ -141,8 +174,9 @@ void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance 
 		double intervalByz, double intervalNothing, int sampleSize)
 {
 	SetTolerance(toleranceType);
-	SetRepeatParameter(times, folder, startingNothing, startingByzantine, endingNothing,
+	SetParameters(times, folder, startingNothing, startingByzantine, endingNothing,
 			endingByzantine, intervalByz, intervalNothing, sampleSize);
+	SetDeployment(deploying);
 	double ratio = (double)params.nothingSteps / params.byzantineSteps;
 
 	if (params.nothingStart == params.nothingEnd)
@@ -168,7 +202,7 @@ void ByzantineSimulator::RunOneStep(double byzantineProb, double nothingProb, in
 {
 	byzantine.Initialize(network, byzantineProb, nothingProb);
 	RunSimulationByInterval();
-	PrintToFile(*byzantine.report, GetResultFilename());
+	PrintToFile(*byzantine.report, GetResultFilename(params.nothingStart, params.byzantineStart));
 }
 
 } /* namespace deployment */

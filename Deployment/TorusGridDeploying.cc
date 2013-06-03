@@ -9,6 +9,11 @@
 
 namespace deployment {
 
+TorusGridDeploying::TorusGridDeploying()
+{
+
+}
+
 TorusGridDeploying::TorusGridDeploying(int size) : Deploying() {
 	int sqrtNumNodes = (int)sqrt(topology->numNodes);
 	if (sqrtNumNodes != sqrt(topology->numNodes))

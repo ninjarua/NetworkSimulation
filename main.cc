@@ -24,11 +24,8 @@ int main(int argc, char* argv[])
 	try
 	{
 		ByzantineSimulator* sim = new ByzantineSimulator();
-//		sim->GetParameters(FixedRange, 1000, 330, 3000, 7500, 10);
-		//sim->GetParameters(TorusGrid, 900, 10, 100, 100, 10);
-		//cout << sim->DeployNetwork(1, false);
-		cout << sim->GenerateNetwork(FixedRange, 1000, 3000, 7500, 330, 10, 100, "FixedRange");
-		//sim->RunSimulation(10000, 0.01, 0.01, K01, &PrintToFile, 0, 0, 0.1, 0.2);
+		//cout << sim->GenerateNetwork(FixedRange, 1000, 3000, 7500, 330, 10, 100, "FixedRange");
+		sim->RunSimulation(FixedRange, K01, "FixedRange", 10000, 0, 0, 0, 0.99, 0.01, 0.01, 100);
 	}
 	catch (std::exception& ex)
 	{

@@ -18,7 +18,7 @@ NetworkGenerator::~NetworkGenerator() {
 	// TODO Auto-generated destructor stub
 }
 
-void NetworkGenerator::GeneratorFromFiles(Network* network, string folder, int index)
+void NetworkGenerator::GenerateFromFiles(Network* network, string folder, int index)
 {
 	ifstream f(GetFilenameByDeployment(folder, index).c_str(), ifstream::in);
 	f >> (*network);
@@ -54,9 +54,9 @@ string NetworkGenerator::GetVerifyFilename(int id)
 
 string NetworkGenerator::GetFailureString(int count)
 {
-	char number[5];
 	string results("Cannot create all graphs!\n");
 	results = results + "Only create";
+	char number[5];
 	sprintf(number, "%04d", count);
 	results = results + number;
 	return results;
@@ -72,7 +72,7 @@ string NetworkGenerator::GetFilenameByDeployment(string folder, int number)
 	return file.string();
 }
 
-string NetworkGenerator::GeneratorToFiles(Network* network, string folder, int times)
+string NetworkGenerator::GenerateToFiles(Network* network, string folder, int times)
 {
 	for (int i = 0; i < times; i++)
 	{

@@ -21,6 +21,7 @@ namespace deployment {
 
 class FixedRangeRandomDeploying : public Deploying {
 public:
+	FixedRangeRandomDeploying();
 	FixedRangeRandomDeploying(int numberNodes, int xTerr, int yTerr, int range);
 	virtual ~FixedRangeRandomDeploying();
 

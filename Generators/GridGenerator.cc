@@ -9,6 +9,11 @@
 
 namespace generators {
 
+GridGenerator::GridGenerator()
+{
+	deployment = new GridDeploying();
+}
+
 GridGenerator::GridGenerator(int size) {
 	deployment = new GridDeploying(size);
 }

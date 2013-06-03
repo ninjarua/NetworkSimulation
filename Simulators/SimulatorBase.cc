@@ -32,15 +32,15 @@ string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode
 	{
 	case Grid:
 		generator = new GridGenerator(numberOfNode);
-		generator->GeneratorToFiles(network, folder);
+		generator->GenerateToFiles(network, folder);
 		break;
 	case TorusGrid:
 		generator = new TorusGridGenerator(numberOfNode);
-		generator->GeneratorToFiles(network, folder);
+		generator->GenerateToFiles(network, folder);
 		break;
 	case FixedRange:
 		generator = new FixedRangeGenerator(numberOfNode, xTerr, yTerr, range);
-		generator->GeneratorToFiles(network, folder, times);
+		generator->GenerateToFiles(network, folder, times);
 		break;
 	case Ring:
 		break;

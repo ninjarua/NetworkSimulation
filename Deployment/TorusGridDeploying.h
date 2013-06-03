@@ -16,6 +16,7 @@ namespace deployment {
 
 class TorusGridDeploying : public Deploying{
 public:
+	TorusGridDeploying();
 	TorusGridDeploying(int size);
 	virtual ~TorusGridDeploying();
 

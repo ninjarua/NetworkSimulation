@@ -9,6 +9,11 @@
 
 namespace generators {
 
+FixedRangeGenerator::FixedRangeGenerator()
+{
+	deployment = new FixedRangeRandomDeploying();
+}
+
 FixedRangeGenerator::FixedRangeGenerator(int numberNodes, int xTerr, int yTerr, int range) {
 	deployment = new FixedRangeRandomDeploying(numberNodes, xTerr, yTerr, range);
 }

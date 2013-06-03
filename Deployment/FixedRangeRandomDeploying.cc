@@ -9,6 +9,11 @@
 
 namespace deployment {
 
+FixedRangeRandomDeploying::FixedRangeRandomDeploying()
+{
+
+}
+
 FixedRangeRandomDeploying::FixedRangeRandomDeploying(int numberNodes, int xTerr, int yTerr, int range) : Deploying() {
 	topology->numNodes = numberNodes;
 	topology->xTerr = xTerr;

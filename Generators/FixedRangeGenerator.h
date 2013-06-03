@@ -17,6 +17,7 @@ namespace generators {
 
 class FixedRangeGenerator: public NetworkGenerator {
 public:
+	FixedRangeGenerator();
 	FixedRangeGenerator(int numberNodes, int xTerr, int yTerr, int range);
 	virtual ~FixedRangeGenerator();
 };

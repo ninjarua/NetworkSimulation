@@ -15,6 +15,7 @@ namespace generators {
 
 class TorusGridGenerator: public NetworkGenerator {
 public:
+	TorusGridGenerator();
 	TorusGridGenerator(int size);
 	virtual ~TorusGridGenerator();
 //	void GeneratorFromFiles(Network* network, string folder, int index = 0);

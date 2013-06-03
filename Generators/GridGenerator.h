@@ -15,6 +15,7 @@ namespace generators {
 
 class GridGenerator: public NetworkGenerator {
 public:
+	GridGenerator();
 	GridGenerator(int size);
 	virtual ~GridGenerator();
 };
