@@ -24,9 +24,9 @@ void Network::CreateEmptyNodes(int n)
 {
 	info.listDetectors.clear();
 	info.listInfectedNodes.clear();
-	nodes.erase(nodes.begin(), nodes.end());
-	messages.erase(messages.begin(), messages.end());
-	newMessages.erase(newMessages.begin(), newMessages.end());
+	Tools::EraseAll(nodes);
+	Tools::EraseAll(messages);
+	Tools::EraseAll(newMessages);
 	//nodes = new vector<Node*>();
 	sequenceId = 0;
 	for (int i=0; i<n; i++)

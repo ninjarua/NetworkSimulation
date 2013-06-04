@@ -14,9 +14,9 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-#include <boost/smart_ptr/shared_ptr.hpp>
+//#include <boost/smart_ptr/shared_ptr.hpp>
 
-using namespace boost;
+//using namespace boost;
 
 namespace domain {
 class Node;

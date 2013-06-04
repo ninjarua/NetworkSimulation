@@ -170,6 +170,22 @@ void ByzantineSimulator::SetParameters(int totalTimes, string inputFolder, strin
 	params.outputFolder = outputFolder;
 }
 
+void ByzantineSimulator::RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
+		int threadId, int totalThread, int totalTimes,
+		string inputFolder, string outputFolder,
+		double intervalByz, double intervalNothing, int sampleSize)
+{
+	double slotSize = 50 / totalThread;
+	double startingNothing1 = 0.01 * threadId * slotSize;
+	double endingNothing1 = startingNothing1 + slotSize;
+	double startingNothing2 = 0.99 - endingNothing1;
+	double endingNothing2 = 0.99 - startingNothing1;
+	RunSimulation(deploying, toleranceType, totalTimes, inputFolder, outputFolder, startingNothing1, 0,
+			endingNothing1, 1 - endingNothing1, intervalByz, intervalNothing, sampleSize);
+	RunSimulation(deploying, toleranceType, totalTimes, inputFolder, outputFolder, startingNothing2, 0,
+			endingNothing2, 1 - endingNothing2, intervalByz, intervalNothing, sampleSize);
+}
+
 void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int times,
 		string inputfolder, string outputFolder,
 		double startingNothing, double startingByzantine,
@@ -177,9 +193,9 @@ void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance 
 		double intervalByz, double intervalNothing, int sampleSize)
 {
 	SetTolerance(toleranceType);
+	SetDeployment(deploying);
 	SetParameters(times, inputfolder, outputFolder, startingNothing, startingByzantine, endingNothing,
 			endingByzantine, intervalByz, intervalNothing, sampleSize);
-	SetDeployment(deploying);
 	double ratio = (double)params.nothingSteps / params.byzantineSteps;
 
 	if (params.nothingStart == params.nothingEnd)
@@ -206,6 +222,11 @@ void ByzantineSimulator::RunOneStep(double byzantineProb, double nothingProb, in
 	byzantine.Initialize(network, byzantineProb, nothingProb);
 	RunSimulationByInterval();
 	PrintToFile(*byzantine.report, GetResultFilename(params.nothingStart, params.byzantineStart));
+}
+
+void* ByzantineSimulator::CallbackThread(void* args)
+{
+	return args;
 }
 
 } /* namespace deployment */

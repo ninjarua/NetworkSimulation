@@ -10,7 +10,7 @@
 #include "stdafx.h"
 namespace simulators{
 
-struct Parameter
+struct Parameters
 {
 	int totalTimes;
 	int sampleSize;

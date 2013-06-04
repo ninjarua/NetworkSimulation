@@ -8,12 +8,16 @@
 #ifndef PROPAGATIONSIMULATOR_H_
 #define PROPAGATIONSIMULATOR_H_
 
+#include "stdafx.h"
+#include <list>
 #include "SimulatorBase.h"
 #include "ByzantineReport.h"
 #include "Parameters.h"
 #include "GridGenerator.h"
 #include "TorusGridGenerator.h"
 #include "FixedRangeGenerator.h"
+#include "ThreadArguments.h"
+#include <pthread.h>
 
 using namespace protocols;
 using namespace generators;
@@ -23,7 +27,7 @@ namespace simulators {
 class ByzantineSimulator: public SimulatorBase {
 private:
 	ByzantineProtocol byzantine;
-	Parameter params;
+	Parameters params;
 	void SetParameters(int totalTimes, string inputFolder, string outputFolder,
 			double startingNothing, double startingByzantine,
 			double endingNothing, double endingByzantine,
@@ -46,6 +50,12 @@ public:
 	virtual void SetTolerance(TypeOfTolerance toleranceType);
 	virtual void SetDeployment(DeployingType deployingType);
 
+	static void* CallbackThread(void* args);
+
+	void RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
+					int threadId, int totalThread, int totalTimes,
+					string inputFolder, string outputFolder,
+					double intervalByz, double intervalNothing, int sampleSize = 1);
 	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
 					string inputfolder, string outputFolder,
 					double startingNothing = 0, double startingByzantine = 0,
