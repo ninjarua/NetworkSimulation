@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 		//cout << sim->GenerateNetwork(FixedRange, 1000, 3000, 7500, 330, 10, 100, "FixedRange");
 		//sim->RunSimulation(FixedRange, K01, 10000, "FixedRange", "Results", 0, 0.47, 0, 1, 0.01, 0.01, 100);
 		SimulatorManager* manager = new SimulatorManager();
-		manager->RunSimulation(FixedRange, K01, 100, "FixedRange", "Results", 2, 5);
+		manager->RunSimulation(FixedRange, K01, 1, "FixedRange", "Results", 5, 1);
 	}
 	catch (std::exception& ex)
 	{

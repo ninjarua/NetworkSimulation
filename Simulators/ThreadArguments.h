@@ -21,10 +21,13 @@ public:
 	string inputFolder;
 	string outputFolder;
 	int numberCPUs;
+	int threadId;
 	int sampleSize;
 
-	ThreadArguments(DeployingType _deploying, TypeOfTolerance _toleranceType, int _totalTimes,
-			string _inputFolder, string _outputFolder, int _numberCPUs, int _sampleSize)
+	ThreadArguments(){}
+
+	void set(DeployingType _deploying, TypeOfTolerance _toleranceType, int _totalTimes, int _threadId,
+			int _numberCPUs, string _inputFolder, string _outputFolder, int _sampleSize)
 	{
 		deploying = _deploying;
 		toleranceType = _toleranceType;
@@ -33,6 +36,7 @@ public:
 		outputFolder = _outputFolder;
 		numberCPUs = _numberCPUs;
 		sampleSize = _sampleSize;
+		threadId = _threadId;
 	}
 };
 }

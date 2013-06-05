@@ -8,8 +8,8 @@
 #ifndef SIMULATORMANAGER_H_
 #define SIMULATORMANAGER_H_
 #include "stdafx.h"
-#include <pthread.h>
-//#include <boost/thread.hpp>
+//#include <pthread.h>
+#include <boost/thread.hpp>
 #include "ByzantineSimulator.h"
 
 namespace simulators

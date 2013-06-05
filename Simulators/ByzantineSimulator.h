@@ -50,7 +50,8 @@ public:
 	virtual void SetTolerance(TypeOfTolerance toleranceType);
 	virtual void SetDeployment(DeployingType deployingType);
 
-	static void* CallbackThread(void* args);
+	static void CallbackThread(ThreadArguments args);
+//	static void* CallbackThread(void* args);
 
 	void RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
 					int threadId, int totalThread, int totalTimes,

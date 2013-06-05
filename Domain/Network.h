@@ -30,7 +30,7 @@ public:
     int sequenceId;
     int currentTimeSlot;
 
-    vector<NodePtr> nodes;
+    vector<Node*> nodes;
     list<Message*> messages;
     list<Message*> newMessages;
 	NetworkInfo info;

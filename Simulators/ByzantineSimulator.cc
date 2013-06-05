@@ -101,9 +101,18 @@ void ByzantineSimulator::RunSimulationByInterval()
 	int times = params.totalTimes;
 	if (byzantine.nothingProb + byzantine.byzantineProb > 0.991)
 		times = 2;
+	int prediction;
 	int predictionIt = 1000;
+	if (times < predictionIt)
+	{
+		prediction = times;
+		predictionIt = times;
+	}
+	else
+	{
+		prediction = predictionIt;
+	}
 	int sampleRepeat = (int)((double) predictionIt/params.sampleSize);
-	int prediction = (times < predictionIt) ? times : predictionIt;
 	int count = 0;
 	while (count < times)
 	{
@@ -176,13 +185,17 @@ void ByzantineSimulator::RunSimulationByThreadId(DeployingType deploying, TypeOf
 		double intervalByz, double intervalNothing, int sampleSize)
 {
 	double slotSize = 50 / totalThread;
-	double startingNothing1 = 0.01 * threadId * slotSize;
-	double endingNothing1 = startingNothing1 + slotSize;
+	double startingNothing1 = intervalNothing * threadId * slotSize;
+	double endingNothing1 = startingNothing1 + ((slotSize - 1) * intervalNothing);
 	double startingNothing2 = 0.99 - endingNothing1;
 	double endingNothing2 = 0.99 - startingNothing1;
-	RunSimulation(deploying, toleranceType, totalTimes, inputFolder, outputFolder, startingNothing1, 0,
+	char number[5];
+	sprintf(number, "%d", threadId);
+	string inputDir = inputFolder + OS_SEP + number;
+	string outputDir = outputFolder + OS_SEP + number;
+	RunSimulation(deploying, toleranceType, totalTimes, inputDir, outputDir, startingNothing1, 0,
 			endingNothing1, 1 - endingNothing1, intervalByz, intervalNothing, sampleSize);
-	RunSimulation(deploying, toleranceType, totalTimes, inputFolder, outputFolder, startingNothing2, 0,
+	RunSimulation(deploying, toleranceType, totalTimes, inputDir, outputDir, startingNothing2, 0,
 			endingNothing2, 1 - endingNothing2, intervalByz, intervalNothing, sampleSize);
 }
 
@@ -224,9 +237,16 @@ void ByzantineSimulator::RunOneStep(double byzantineProb, double nothingProb, in
 	PrintToFile(*byzantine.report, GetResultFilename(params.nothingStart, params.byzantineStart));
 }
 
-void* ByzantineSimulator::CallbackThread(void* args)
+void ByzantineSimulator::CallbackThread(ThreadArguments args)
+//void* ByzantineSimulator::CallbackThread(void* args)
 {
-	return args;
+//	ThreadArguments* ar = (ThreadArguments*)args;
+	ByzantineSimulator* sim = new ByzantineSimulator();
+//	sim->RunSimulationByThreadId(ar->deploying, ar->toleranceType, 1, 2, ar->totalTimes,
+//			ar->inputFolder, ar->outputFolder, 0.01, 0.01, ar->sampleSize);
+	sim->RunSimulationByThreadId(args.deploying, args.toleranceType, args.threadId, args.numberCPUs, args.totalTimes,
+			args.inputFolder, args.outputFolder, 0.01, 0.01, args.sampleSize);
+//	return args;
 }
 
 } /* namespace deployment */
