@@ -19,7 +19,7 @@ ToleranceBase::~ToleranceBase() {
 
 string ToleranceBase::GetToleranceName()
 {
-	return "K1";
+	return "Base";
 }
 
 //ToleranceBase ToleranceBase::GetBase()
@@ -31,8 +31,6 @@ string ToleranceBase::GetToleranceName()
 
 void ToleranceBase::TolerateNode(NodePtr node, NodePtr byzantine)
 {
-	node->state = Detector;
-	node->ownerNetwork->info.listDetectors.push_back(node);
 	node->detectedByzantines.insert(byzantine);
 	node->disconnectedNodes.insert(byzantine);
 }

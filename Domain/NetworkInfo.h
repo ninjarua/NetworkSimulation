@@ -14,12 +14,11 @@
 
 namespace domain {
 
-class NetworkInfo {
-public:
-	NetworkInfo();
-	virtual ~NetworkInfo();
-	vector<NodePtr> listInfectedNodes;
-	vector<NodePtr> listDetectors;
+struct NetworkInfo {
+	int seedId;
+	int numberOfInfectedNodes;
+	int numberOfDetectors;
+	int numberOfInactiveNodes;
 };
 }
 #endif /* NETWORKINFO_H_ */

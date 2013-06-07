@@ -8,7 +8,11 @@
 #ifndef THREADARGUMENTS_H_
 #define THREADARGUMENTS_H_
 
+#include "enums.h"
 #include "ByzantineSimulator.h"
+#include "ToleranceBase.h"
+
+using namespace protocols;
 
 namespace simulators
 {

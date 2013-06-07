@@ -17,6 +17,18 @@ NetworkProtocol::~NetworkProtocol() {
 
 }
 
+void NetworkProtocol::AddNewMessageToNetwork(Network*& network, Message*& message)
+{
+	network->newMessages.push_back(message);
+	network->messageCount++;
+}
+
+//void NetworkProtocol::RemoveMessageFromNetwork(Network*& network, list<Message*>::iterator it)
+//{
+//    network->messages.erase(it);
+//    network->messageCount--;
+//}
+
 void NetworkProtocol::BroadcastMessage(NodePtr sender, MessageReaction receivingAction)
 {
 	list<NodePtr>::iterator it;
@@ -26,7 +38,7 @@ void NetworkProtocol::BroadcastMessage(NodePtr sender, MessageReaction receiving
         {
             Message* message = new Message(sender, *it, sender->ownerNetwork->currentTimeSlot);
             message->receivingAction = receivingAction;
-            sender->ownerNetwork->newMessages.push_back(message);
+            AddNewMessageToNetwork(sender->ownerNetwork, message);
         }
     }
 }
@@ -37,14 +49,14 @@ void NetworkProtocol::SendMessage(NodePtr sender, NodePtr receiver, MessageReact
         return;
     Message* message = new Message(sender, receiver, sender->ownerNetwork->currentTimeSlot);
     message->receivingAction = receivingAction;
-    sender->ownerNetwork->newMessages.push_back(message);
+    AddNewMessageToNetwork(receiver->ownerNetwork, message);
 }
 
 void NetworkProtocol::SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction, Message* message)
 {
     message->creationTime = sender->ownerNetwork->currentTimeSlot;
     message->receivingAction = receivingAction;
-    sender->ownerNetwork->newMessages.push_back(message);
+    AddNewMessageToNetwork(receiver->ownerNetwork, message);
 }
 
 void NetworkProtocol::Initialize(Network* network)
@@ -54,7 +66,11 @@ void NetworkProtocol::Initialize(Network* network)
 
 void NetworkProtocol::Reset(Network* network)
 {
-    network->messages.clear();
+	network->info.numberOfDetectors = 0;
+	network->info.numberOfInfectedNodes = 0;
+	network->info.numberOfInactiveNodes = 0;
+    //network->messages.clear();
+    network->messageCount = 0;
     network->newMessages.clear();
     network->currentTimeSlot = 0;
 }
@@ -70,26 +86,42 @@ void NetworkProtocol::RunNetwork(Network* network, void (*startAction)(void* ptr
 
 void NetworkProtocol::RunNetworkStep(Network* network)
 {
-    network->messages.insert(network->messages.end(),
-    		network->newMessages.begin(), network->newMessages.end());
-    network->newMessages.clear();
-    int size = network->messages.size();
-    while (size > 0)
+//    network->messages.insert(network->messages.end(),
+//    		network->newMessages.begin(), network->newMessages.end());
+    // Here don't delete pointer to message because network->message is keeping
+    //network->newMessages.clear();
+    while (network->messageCount > 0)
     {
-    	int randId = rand() % size;
-        list<Message*>::iterator it = network->messages.begin();
-    	for (; randId > 0; randId--)
+		list<Message*>::iterator it = network->newMessages.begin();
+    	if (it != network->newMessages.end())
     	{
-    		it++;
+    		(*it)->receivingAction(this, (*it)->sender, (*it)->receiver, (*it));
+    		//Logger::Write(*(*it), GetLogFilename(), ofstream::out | ofstream::app);
+    		delete *it;
+    		network->newMessages.pop_front();
+    		network->messageCount--;
     	}
-        if ((*it)->status == Sending && (*it)->creationTime < network->currentTimeSlot)
-        {
-        	(*it)->receivingAction(this, (*it)->sender, (*it)->receiver, (*it));
-            delete *it;
-            network->messages.erase(it);
-        }
-        size = network->messages.size();
     }
+//    while (network->messageCount > 0)
+//    {
+//    	int randId = rand() % network->messageCount;
+//        list<Message*>::iterator it = network->messages.begin();
+//    	for (; randId > 0; randId--)
+//    	{
+//    		it++;
+//    	}
+//    	if (it == network->messages.end())
+//    		break;
+//        if ((*it)->status == Sending && (*it)->creationTime < network->currentTimeSlot)
+//        {
+//        	(*it)->receivingAction(this, (*it)->sender, (*it)->receiver, (*it));
+//        	//Logger::Write(*(*it), GetLogFilename(), ofstream::out | ofstream::app);
+//            delete *it;
+//            network->messages.erase(it);
+//            network->messageCount--;
+//            //RemoveMessageFromNetwork(network, it);
+//        }
+//    }
     network->currentTimeSlot++;
 }
 

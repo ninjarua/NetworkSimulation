@@ -169,5 +169,5 @@ int main(int argc, char* argv[])
 //		}
 //	}
 	ByzantineSimulator* sim = new ByzantineSimulator();
-	sim->RunSimulation(FixedRange, K01, 10000, "Debug/FixedRange/0", "Debug/Result", 0, 0, 0, 1, 0.01, 0.01, 100);
+	sim->RunSimulation(FixedRange, K01, 10000, "Debug/FixedRange/0", "Debug/Results", 0, 0, 0, 1, 0.01, 0.01, 100);
 }

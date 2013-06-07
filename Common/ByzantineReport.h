@@ -37,11 +37,11 @@ public:
 	double ciOfNormals;
 	double ciOfLargestConnectedAreas;
 
-	list<long> numberOfByzantines;
-	list<long> numberOfDetectors;
-	list<long> numberOfNormals;
-	list<long> numberOfSacrifices;
-	list<long> largestConnectedAreas;
+	vector<long> numberOfByzantines;
+	vector<long> numberOfDetectors;
+	vector<long> numberOfNormals;
+	vector<long> numberOfSacrifices;
+	vector<long> largestConnectedAreas;
 
 	void Clear();
 	void AddByzantineValue(long value);

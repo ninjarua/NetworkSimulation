@@ -10,7 +10,6 @@
 
 #include "stdafx.h"
 #include <list>
-#include "SimulatorBase.h"
 #include "ByzantineReport.h"
 #include "Parameters.h"
 #include "GridGenerator.h"
@@ -19,6 +18,8 @@
 #include "ThreadArguments.h"
 #include <pthread.h>
 #include <boost/filesystem.hpp>
+#include "SimulatorBase.h"
+#include "K01Tolerance.h"
 
 using namespace boost;
 using namespace protocols;

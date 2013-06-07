@@ -38,10 +38,10 @@ double StatisticSummary::GetConfidenceInterval(double significance)
 	return delta * standardDeviation / sqrt(length);
 }
 
-double Sum(const list<long>& values)
+double Sum(const vector<long>& values)
 {
 	double sum = 0;
-	list<long>::const_iterator it = values.begin();
+	vector<long>::const_iterator it = values.begin();
 	for (; it != values.end(); it++)
 	{
 		sum += (double)(*it);
@@ -49,7 +49,7 @@ double Sum(const list<long>& values)
 	return sum;
 }
 
-StatisticSummary* StatisticSummary::Summarize(const list<long>& elements)
+StatisticSummary* StatisticSummary::Summarize(const vector<long>& elements)
 {
 	Reset();
 	length = elements.size();
@@ -60,7 +60,7 @@ StatisticSummary* StatisticSummary::Summarize(const list<long>& elements)
 
 	// variance
 	variance = 0;
-	list<long>::const_iterator it = elements.begin();
+	vector<long>::const_iterator it = elements.begin();
 	for (; it != elements.end(); it++)
 	{
 		variance += (*it - mean) * (*it - mean);

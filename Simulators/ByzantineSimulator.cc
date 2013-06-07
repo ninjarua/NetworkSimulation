@@ -22,7 +22,7 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	switch(toleranceType)
 	{
 	case K01:
-		byzantine.tolerance = new ToleranceBase();
+		byzantine.tolerance = new K01Tolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();

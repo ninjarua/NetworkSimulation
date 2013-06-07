@@ -67,9 +67,9 @@ void Node::CreateLists()
 
 void Node::Reset()
 {
-	neighbors.clear();
-	detectedByzantines.clear();
-	disconnectedNodes.clear();
+//	neighbors.clear();
+//	detectedByzantines.clear();
+//	disconnectedNodes.clear();
 }
 
 bool operator==(const Node& n1, const Node& n2)

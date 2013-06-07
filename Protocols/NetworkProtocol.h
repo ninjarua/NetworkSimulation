@@ -35,11 +35,12 @@ public:
 	virtual void RunNetwork(Network* network, void (*startAction)(void* ptr, Network*), bool (*networkCondition)(const Network&));
 	virtual void RunNetworkStep(Network* network);
 	virtual string GetLogFilename();
-
 protected:
 	string logFile;
 	string resultFile;
 	void CreateReportString(Network& network);
+	virtual void AddNewMessageToNetwork(Network*& network, Message*& message);
+//	virtual void RemoveMessageFromNetwork(Network*& network, list<Message*>::iterator it);
 };
 
 } /* namespace protocols */

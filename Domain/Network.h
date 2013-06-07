@@ -32,6 +32,8 @@ public:
 
     vector<Node*> nodes;
     list<Message*> messages;
+    // is used to overcome the size() function of list
+    int messageCount;
     list<Message*> newMessages;
 	NetworkInfo info;
 
@@ -47,10 +49,12 @@ public:
 	static int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 
 private:
-	static void ConnectedAreaSpreading(NodePtr seed, int spreadingValue, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
-	static stack<NodePtr> LookingForNode(const list<NodePtr>& listInput, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
+	static int ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
+			bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
+	static stack<NodePtr> LookingForNode(const list<NodePtr>& listInput, bool (*nodeCondition)(const Node&, const NodeState&),
+			const NodeState& state, int settingNumber);
 	static void AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
-    		const NodeState& state, int number, bool (*filter)(NodePtr n1, NodePtr n2, int number));
+    		const NodeState& state, int number, bool (*filter)(NodePtr, NodePtr, int));
 	static bool FilterDisconnectedNodeAndDifferentConnectedAreaNumber(NodePtr n1, NodePtr n2, int number);
 	static string DebugString(const Node& node, string original);
 };

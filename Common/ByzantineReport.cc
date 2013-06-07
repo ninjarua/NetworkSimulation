@@ -8,11 +8,11 @@
 #include "ByzantineReport.h"
 
 ByzantineReport::ByzantineReport() {
-	numberOfByzantines = list<long>();
-	numberOfDetectors = list<long>();
-	numberOfNormals = list<long>();
-	numberOfSacrifices = list<long>();
-	largestConnectedAreas = list<long>();
+	numberOfByzantines = vector<long>();
+	numberOfDetectors = vector<long>();
+	numberOfNormals = vector<long>();
+	numberOfSacrifices = vector<long>();
+	largestConnectedAreas = vector<long>();
 }
 
 ByzantineReport::~ByzantineReport() {
@@ -96,7 +96,7 @@ ofstream& operator<<(ofstream& ofs, const ByzantineReport& report)
 			<< report.averageOfSacrifices << "\t"
 			<< report.ciOfSacrifices << "\t"
 			<< report.averageOfDetectors << "\t"
-			<< report.ciOfSacrifices << "\t"
+			<< report.ciOfDetectors << "\t"
 			<< report.averageOfNormals << "\t"
 			<< report.ciOfNormals << "\t"
 			<< report.averageOfLargestConnectedAreas << "\t"
