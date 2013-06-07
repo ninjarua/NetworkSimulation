@@ -22,7 +22,6 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	switch(toleranceType)
 	{
 	case K01:
-		//_fault->tolerance = ToleranceBase::GetBase();
 		byzantine.tolerance = new ToleranceBase();
 		break;
 	default:
@@ -54,13 +53,6 @@ void ByzantineSimulator::SetDeployment(DeployingType deployingType)
 		break;
 	}
 }
-
-//void ByzantineSimulator::InitializeSimulator(double byzantineProb, double nothingProb, TypeOfTolerance toleranceType, bool draw)
-//{
-//	SetTolerance(toleranceType);
-//	_byzantine.Initialize(_network, byzantineProb, nothingProb);
-//	_byzantine.Refresh(_network);
-//}
 
 bool ByzantineSimulator::RunSimulationStep(bool draw)
 {
@@ -238,14 +230,13 @@ void ByzantineSimulator::RunOneStep(double byzantineProb, double nothingProb, in
 }
 
 void ByzantineSimulator::CallbackThread(ThreadArguments args)
-//void* ByzantineSimulator::CallbackThread(void* args)
 {
-//	ThreadArguments* ar = (ThreadArguments*)args;
 	ByzantineSimulator* sim = new ByzantineSimulator();
-//	sim->RunSimulationByThreadId(ar->deploying, ar->toleranceType, 1, 2, ar->totalTimes,
-//			ar->inputFolder, ar->outputFolder, 0.01, 0.01, ar->sampleSize);
 	sim->RunSimulationByThreadId(args.deploying, args.toleranceType, args.threadId, args.numberCPUs, args.totalTimes,
 			args.inputFolder, args.outputFolder, 0.01, 0.01, args.sampleSize);
+//	ThreadArguments* ar = (ThreadArguments*)args;
+//	sim->RunSimulationByThreadId(ar->deploying, ar->toleranceType, 1, 2, ar->totalTimes,
+//			ar->inputFolder, ar->outputFolder, 0.01, 0.01, ar->sampleSize);
 //	return args;
 }
 

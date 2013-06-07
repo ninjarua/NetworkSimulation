@@ -40,27 +40,10 @@ bool FixedRangeRandomDeploying::ObtainTopology(Network* network)
 		//Logger.GetInstance().Debug(errorMessage);
 		throw nsException(errorMessage);
 	}
-	// 1.4 (below) is an arbitrary number chosen to decrease the probability
-	// that nodes get closer than D0 to one another.
-	if (GetCellLength() < (topology->d0 * 1.4))
-	{
-		string errorMessage = "Error: on RANDOM topology, density is too high, increase physical terrain";
-		//Logger.GetInstance().Debug(errorMessage);
-		throw nsException(errorMessage);
-	}
-	// Node 0 is the sink node that is located in the center of the network
-	//Node node = Node(networkTopology.XTerr / 2, networkTopology.YTerr / 2);
-	NodePtr firstNode(new Node(topology->xTerr / 2, topology->yTerr / 2));
-	network->AddNode(firstNode);
-	for (int i = 1; i < topology->numNodes; i++)
+	for (int i = 0; i < topology->numNodes; i++)
 	{
 		NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
 		network->AddNode(newNode);
-		while (!IsAllDistanceValid(*network, *newNode))
-		{
-			newNode->posX = GetPosX(i);
-			newNode->posY = GetPosY(i);
-		}
 	}
 	return true;
 }

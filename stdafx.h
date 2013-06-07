@@ -21,8 +21,10 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 using namespace std;
 #include "Tools.h"
 
 
 #endif /* STDAFX_H_ */
+

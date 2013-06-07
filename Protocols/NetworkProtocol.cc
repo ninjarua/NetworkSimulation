@@ -73,17 +73,23 @@ void NetworkProtocol::RunNetworkStep(Network* network)
     network->messages.insert(network->messages.end(),
     		network->newMessages.begin(), network->newMessages.end());
     network->newMessages.clear();
-    list<Message*>::iterator it = network->messages.begin();
-    while (it != network->messages.end())
+    int size = network->messages.size();
+    while (size > 0)
     {
+    	int randId = rand() % size;
+        list<Message*>::iterator it = network->messages.begin();
+    	for (; randId > 0; randId--)
+    	{
+    		it++;
+    	}
         if ((*it)->status == Sending && (*it)->creationTime < network->currentTimeSlot)
         {
         	(*it)->receivingAction(this, (*it)->sender, (*it)->receiver, (*it));
-			//Logger::Write(*(*it), GetLogFilename(), ofstream::out | ofstream::app);
+            delete *it;
+            network->messages.erase(it);
         }
-        it++;
+        size = network->messages.size();
     }
-    Tools::RemoveWithPredicate(network->messages, &Message::isMessageExpired);
     network->currentTimeSlot++;
 }
 

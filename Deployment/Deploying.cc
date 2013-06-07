@@ -43,7 +43,6 @@ bool Deploying::IsValidDistance(const Node& node, const Node& neighbor)
 	double Xdist, Ydist, dist;
 	Xdist = node.posX - neighbor.posX;
 	Ydist = node.posY - neighbor.posY;
-	// distance between a given pair of nodes
 	dist = pow((Xdist * Xdist + Ydist * Ydist), 0.5);
 	return (dist >= topology->d0);
 }

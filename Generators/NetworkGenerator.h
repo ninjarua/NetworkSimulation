@@ -15,6 +15,7 @@
 
 #include "Deploying.h"
 
+using namespace boost;
 using namespace deployment;
 
 namespace generators {

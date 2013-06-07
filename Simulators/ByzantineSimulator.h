@@ -18,7 +18,9 @@
 #include "FixedRangeGenerator.h"
 #include "ThreadArguments.h"
 #include <pthread.h>
+#include <boost/filesystem.hpp>
 
+using namespace boost;
 using namespace protocols;
 using namespace generators;
 
