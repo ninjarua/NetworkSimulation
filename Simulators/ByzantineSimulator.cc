@@ -6,6 +6,7 @@
  */
 
 #include "ByzantineSimulator.h"
+#include <iostream>
 
 namespace simulators {
 
@@ -104,7 +105,7 @@ void ByzantineSimulator::RunSimulationByInterval()
 	{
 		prediction = predictionIt;
 	}
-	int sampleRepeat = (int)((double) predictionIt/params.sampleSize);
+	int sampleRepeat = (predictionIt > params.sampleSize) ? (int)((double) predictionIt/params.sampleSize) : 1;
 	int count = 0;
 	while (count < times)
 	{
@@ -159,13 +160,15 @@ void ByzantineSimulator::SetParameters(int totalTimes, string inputFolder, strin
 			double endingNothing, double endingByzantine,
 			double intervalByz, double intervalNothing, int sampleSize)
 {
+	int intervalNothingI = (int)(intervalNothing * 100);
+	int intervalByzI = (int)(intervalByz * 100);
 	params.totalTimes = totalTimes;
-	params.nothingSteps = (int)(100 / (int)(intervalNothing * 100));;
-	params.byzantineSteps = (int)(100 / (int)(intervalByz * 100));
-	params.nothingStart = (int)(startingNothing / intervalNothing);
-	params.byzantineStart = (int)(startingByzantine / intervalNothing);
-	params.nothingEnd = (int)(endingNothing / intervalNothing);
-	params.byzantineEnd = (int)(endingByzantine / intervalNothing);
+	params.nothingSteps = (int)(100 / intervalNothingI);;
+	params.byzantineSteps = (int)(100 / intervalByzI);
+	params.nothingStart = (int)((startingNothing * 100) / intervalNothingI);
+	params.byzantineStart = (int)((startingByzantine * 100) / intervalByzI);
+	params.nothingEnd = (int)((endingNothing * 100) / intervalNothingI);
+	params.byzantineEnd = (int)((endingByzantine * 100) / intervalByzI);
 	params.sampleSize = sampleSize;
 	params.inputFolder = inputFolder;
 	params.outputFolder = outputFolder;
@@ -179,12 +182,19 @@ void ByzantineSimulator::RunSimulationByThreadId(DeployingType deploying, TypeOf
 	double slotSize = 50 / totalThread;
 	double startingNothing1 = intervalNothing * threadId * slotSize;
 	double endingNothing1 = startingNothing1 + ((slotSize - 1) * intervalNothing);
-	double startingNothing2 = 0.99 - endingNothing1;
-	double endingNothing2 = 0.99 - startingNothing1;
+	double startingNothing2 = (99 - (endingNothing1 * 100))/100;
+	double endingNothing2 = (99 - (startingNothing1 * 100))/ 100;
 	char number[5];
 	sprintf(number, "%d", threadId);
 	string inputDir = inputFolder + OS_SEP + number;
 	string outputDir = outputFolder + OS_SEP + number;
+
+//	filesystem::path file(outputFolder + OS_SEP + number + ".out");
+//	ofstream fout;
+//	fout.open(file.string().c_str(), ofstream::out | ofstream::app);
+//	fout << "From: " << startingNothing1 << "\t" << endingNothing1 << "\t" << startingNothing2 << "\t" << endingNothing2 << endl;
+//	fout.close();
+
 	RunSimulation(deploying, toleranceType, totalTimes, inputDir, outputDir, startingNothing1, 0,
 			endingNothing1, 1 - endingNothing1, intervalByz, intervalNothing, sampleSize);
 	RunSimulation(deploying, toleranceType, totalTimes, inputDir, outputDir, startingNothing2, 0,
@@ -201,7 +211,7 @@ void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance 
 	SetDeployment(deploying);
 	SetParameters(times, inputfolder, outputFolder, startingNothing, startingByzantine, endingNothing,
 			endingByzantine, intervalByz, intervalNothing, sampleSize);
-	double ratio = (double)params.nothingSteps / params.byzantineSteps;
+	//double ratio = (double)params.nothingSteps / params.byzantineSteps;
 
 	if (params.nothingStart == params.nothingEnd)
 	{
@@ -210,14 +220,16 @@ void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance 
 	}
 	else
 	{
-		for (int j = params.byzantineStart; j <= (int)((params.nothingSteps - params.nothingStart)/ratio); j++)
+		for (int j = params.byzantineStart; j <= params.nothingSteps - params.nothingStart; j++)
+			// (int)((params.nothingSteps - params.nothingStart)/ratio); j++)
 			RunOneStep(j * intervalByz, params.nothingStart * intervalNothing, times);
 		for (int i = params.nothingStart + 1; i < params.nothingEnd && i < params.nothingSteps; i++)
 		{
-			for (int j = 0; j <= (int)((params.nothingSteps - i) / ratio); j++)
+			for (int j = 0; j <= params.nothingSteps - i; i++)// / ratio); j++)
 				RunOneStep(j * intervalByz, i * intervalNothing, times);
 		}
-		for (int j = 0; j <= params.byzantineEnd && j <= (int)((params.nothingSteps - params.nothingEnd) / ratio); j++)
+		for (int j = 0; j <= params.byzantineEnd && j <= params.nothingSteps - params.nothingEnd; j++)
+		//(int)((params.nothingSteps - params.nothingEnd) / ratio); j++)
 			RunOneStep(j * intervalByz, params.nothingEnd * intervalNothing, times);
 	}
 }

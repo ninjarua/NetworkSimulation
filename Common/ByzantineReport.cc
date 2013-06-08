@@ -29,11 +29,6 @@ ByzantineReport::~ByzantineReport() {
 
 void ByzantineReport::Clear()
 {
-//	numberOfByzantines.erase(numberOfByzantines.begin(), numberOfByzantines.end());
-//	numberOfDetectors.erase(numberOfDetectors.begin(), numberOfDetectors.end());
-//	numberOfNormals.erase(numberOfNormals.begin(), numberOfNormals.end());
-//	numberOfSacrifices.erase(numberOfSacrifices.begin(), numberOfSacrifices.end());
-//	largestConnectedAreas.erase(largestConnectedAreas.begin(), largestConnectedAreas.end());
 	numberOfByzantines.clear();
 	numberOfDetectors.clear();
 	numberOfNormals.clear();
