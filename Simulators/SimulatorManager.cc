@@ -19,7 +19,7 @@ SimulatorManager::~SimulatorManager() {
 }
 
 void SimulatorManager::RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
-					string inputFolder, string outputFolder, int numberCPUs, int sampleSize)
+					string inputFolder, string outputFolder, int numberCPUs, int sampleSize, int size)
 {
 	ThreadArguments thread_data[numberCPUs];
 	boost::thread_group threads;

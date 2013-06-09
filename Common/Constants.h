@@ -8,10 +8,11 @@
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 
-using namespace std;
 #include <vector>
 #include <list>
 #include <string>
+
+using namespace std;
 
 class Constants{
 public:

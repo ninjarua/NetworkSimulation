@@ -21,7 +21,7 @@ public:
 	virtual ~SimulatorManager();
 
 	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
-					string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
+					string inputFolder, string outputFolder, int numberCPUs, int sampleSize, int size=100);
 };
 
 }
