@@ -92,7 +92,7 @@ void ByzantineSimulator::RunSimulationByInterval()
 	byzantine.report->Clear();
 	byzantine.report->nothingProb = byzantine.nothingProb;
 	int times = params.totalTimes;
-	if (round(byzantine.nothingProb + byzantine.byzantineProb) > 0.99)
+	if (byzantine.nothingProb + byzantine.byzantineProb > 0.99)
 		times = 2;
 	int prediction;
 	int predictionIt = 1000;
