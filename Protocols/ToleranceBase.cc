@@ -34,12 +34,12 @@ void ToleranceBase::TolerateNode(NodePtr node, NodePtr byzantine)
 	node->detectedByzantines.insert(byzantine);
 	node->disconnectedNodes.insert(byzantine);
 }
-
-void ToleranceBase::CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message)
-{
-	ToleranceBase* basePtr = (ToleranceBase*)ptr;
-	basePtr->ReceiveDeactivateMessage(sender, receiver, message);
-}
+//
+//void ToleranceBase::CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message)
+//{
+//	ToleranceBase* basePtr = (ToleranceBase*)ptr;
+//	basePtr->ReceiveDeactivateMessage(sender, receiver, message);
+//}
 
 void ToleranceBase::ReceiveDeactivateMessage(Node& sender, Node& receiver, Message& message)
 {

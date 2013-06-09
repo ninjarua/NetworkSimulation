@@ -169,5 +169,5 @@ int main(int argc, char* argv[])
 //		}
 //	}
 	ByzantineSimulator* sim = new ByzantineSimulator();
-	sim->RunSimulation(TorusGrid, K01, 10000, "10000", "Results", 0, 0, 0, 1, 0.01, 0.01, 1, 10000);
+	sim->RunSimulation(TorusGrid, K01, 10000, "10000", "Results", 0, 0.5, 0, 1, 0.01, 0.01, 1, 10000);
 }

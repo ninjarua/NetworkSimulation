@@ -18,16 +18,13 @@ namespace protocols {
 enum TypeOfTolerance{ K01 = 0, K03 = 1, K04 = 2, K05 = 3, K07 = 4, K08 = 5, K11 = 6,
     C01 = 7, C03 = 8, C05 = 9, C09 = 10, C01K03 = 11, C01K05 = 12 };
 
-class ToleranceBase : NetworkProtocol {
-//private:
-//	static ToleranceBase _instance;
+class ToleranceBase : public NetworkProtocol {
 public:
-//	static ToleranceBase GetBase();
 	ToleranceBase();
 	virtual ~ToleranceBase();
 	virtual void TolerateNode(NodePtr node, NodePtr byzantine);
 	virtual string GetToleranceName();
-	static void CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message);
+//	static void CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message);
 	virtual void ReceiveDeactivateMessage(Node& sender, Node& receiver, Message& message);
 };
 

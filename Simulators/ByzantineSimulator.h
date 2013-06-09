@@ -20,6 +20,7 @@
 #include <boost/filesystem.hpp>
 #include "SimulatorBase.h"
 #include "K01Tolerance.h"
+#include "K11Tolerance.h"
 
 using namespace boost;
 using namespace protocols;
