@@ -27,11 +27,12 @@ public:
 	int numberCPUs;
 	int threadId;
 	int sampleSize;
+	int networkSize;
 
 	ThreadArguments(){}
 
 	void set(DeployingType _deploying, TypeOfTolerance _toleranceType, int _totalTimes, int _threadId,
-			int _numberCPUs, string _inputFolder, string _outputFolder, int _sampleSize)
+			int _numberCPUs, string _inputFolder, string _outputFolder, int _sampleSize, int _networkSize = 100)
 	{
 		deploying = _deploying;
 		toleranceType = _toleranceType;
@@ -41,6 +42,7 @@ public:
 		numberCPUs = _numberCPUs;
 		sampleSize = _sampleSize;
 		threadId = _threadId;
+		networkSize = _networkSize;
 	}
 };
 }

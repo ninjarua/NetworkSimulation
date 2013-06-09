@@ -35,6 +35,7 @@ public:
     // is used to overcome the size() function of list
     int messageCount;
     list<Message*> newMessages;
+    bool hasTopology;
 	NetworkInfo info;
 
 	Network();
@@ -59,5 +60,5 @@ private:
 	static string DebugString(const Node& node, string original);
 };
 
-} /* namespace domain */
-#endif /* NETWORK_H_ */
+}
+#endif

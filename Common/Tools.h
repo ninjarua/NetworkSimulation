@@ -148,49 +148,6 @@ public:
 //		return count;
 //	}
 
-	template<class T>
-	static long CountAll(const list<T*>& listInput, bool (*pCondition)(const T&))
-	{
-		long count = 0;
-//		for(unsigned int i = 0; i < listInput.size(); i++)
-		typename vector<T*>::const_iterator it = listInput.begin();
-		while(it != listInput.end())
-		{
-			if ((*pCondition)(*(*it)))
-				count++;
-			it++;
-		}
-		return count;
-	}
-//
-//	template<class T, typename U>
-//	static long CountAll(const vector< shared_ptr<T> >& listInput, bool (*pCondition)(const T&, const U&), const U& condition)
-//	{
-//		long count = 0;
-//		typename vector< shared_ptr<T> >::const_iterator it = listInput.begin();
-//		while(it != listInput.end())
-//		{
-//			if ((*pCondition)(*(*it), condition))
-//				count++;
-//			it++;
-//		}
-//		return count;
-//	}
-
-	template<class T, typename U>
-	static long CountAll(const vector<T*>& listInput, bool (*pCondition)(const T&, const U&), const U& condition)
-	{
-		long count = 0;
-		typename vector<T*>::const_iterator it = listInput.begin();
-		while(it != listInput.end())
-		{
-			if ((*pCondition)(*(*it), condition))
-				count++;
-			it++;
-		}
-		return count;
-	}
-
 //	template<class T>
 //	static list<T> FindAllToList(const vector<T>& listInput, bool (*pCondition)(T))
 //	{
@@ -235,24 +192,24 @@ public:
 //		}
 //		return count;
 //	}
-
-	template<class T, typename U>
-	static int DetachWithPredicate(list<T*>& vectorInput, bool (*pCondition)(const T&, U), U condition)
-	{
-		int count = 0;
-		typename list<T*>::iterator it(vectorInput.begin());
-		while(it != vectorInput.end())
-		{
-			if ((*pCondition)(*(*it), condition))
-			{
-				it = vectorInput.erase(it);
-				count++;
-			}
-			else
-				it++;
-		}
-		return count;
-	}
+//
+//	template<class T, typename U>
+//	static int DetachWithPredicate(list<T*>& vectorInput, bool (*pCondition)(const T&, U), U condition)
+//	{
+//		int count = 0;
+//		typename list<T*>::iterator it(vectorInput.begin());
+//		while(it != vectorInput.end())
+//		{
+//			if ((*pCondition)(*(*it), condition))
+//			{
+//				it = vectorInput.erase(it);
+//				count++;
+//			}
+//			else
+//				it++;
+//		}
+//		return count;
+//	}
 
 //	template<class T, typename U>
 //	static int RemoveWithPredicate(vector<T*>& vectorInput, bool (*pCondition)(const T&, U), U condition)
@@ -272,42 +229,42 @@ public:
 //		}
 //		return count;
 //	}
-
-	template<class T>
-	static int RemoveWithPredicate(list<T*>& vectorInput, bool (*pCondition)(const T&))
-	{
-		int count = 0;
-		typename list<T*>::iterator it = vectorInput.begin();
-		while(it != vectorInput.end())
-		{
-			if ((*pCondition)(*(*it)))
-			{
-				delete *it;
-				it = vectorInput.erase(it);
-				count++;
-			}
-			else
-				it++;
-		}
-		return count;
-	}
-
-	template<class T>
-	static bool Remove(list<T>& vectorInput, T& item)
-	{
-		typename vector<T>::iterator it = vectorInput.begin();
-		while(it != vectorInput.end())
-		{
-			if ((*it) == item)
-			{
-				delete *it;
-				it = vectorInput.erase(it);
-				return true;
-			}
-			it++;
-		}
-		return false;
-	}
+//
+//	template<class T>
+//	static int RemoveWithPredicate(list<T*>& vectorInput, bool (*pCondition)(const T&))
+//	{
+//		int count = 0;
+//		typename list<T*>::iterator it = vectorInput.begin();
+//		while(it != vectorInput.end())
+//		{
+//			if ((*pCondition)(*(*it)))
+//			{
+//				delete *it;
+//				it = vectorInput.erase(it);
+//				count++;
+//			}
+//			else
+//				it++;
+//		}
+//		return count;
+//	}
+//
+//	template<class T>
+//	static bool Remove(list<T>& vectorInput, T& item)
+//	{
+//		typename vector<T>::iterator it = vectorInput.begin();
+//		while(it != vectorInput.end())
+//		{
+//			if ((*it) == item)
+//			{
+//				delete *it;
+//				it = vectorInput.erase(it);
+//				return true;
+//			}
+//			it++;
+//		}
+//		return false;
+//	}
 
 //	template<class T>
 //	static bool Exists(const list< shared_ptr<T> >& listInput, bool (*pCondition)(const T&))
@@ -321,19 +278,19 @@ public:
 //		}
 //		return false;
 //	}
-
-	template<class T>
-	static bool Exists(const list<T*>& listInput, bool (*pCondition)(const T&))
-	{
-		typename list<T*>::const_iterator it = listInput.begin();
-		while(it != listInput.end())
-		{
-			if ((*pCondition)(*(*it)))
-				return true;
-			it++;
-		}
-		return false;
-	}
+//
+//	template<class T>
+//	static bool Exists(const list<T*>& listInput, bool (*pCondition)(const T&))
+//	{
+//		typename list<T*>::const_iterator it = listInput.begin();
+//		while(it != listInput.end())
+//		{
+//			if ((*pCondition)(*(*it)))
+//				return true;
+//			it++;
+//		}
+//		return false;
+//	}
 
 //	template<class T, typename U>
 //	static bool Exists(const list< shared_ptr<T> >& listInput, bool (*pCondition)(const T&, const U&), const U& condition)

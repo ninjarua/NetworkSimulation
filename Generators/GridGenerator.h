@@ -18,6 +18,7 @@ public:
 	GridGenerator();
 	GridGenerator(int size);
 	virtual ~GridGenerator();
+	void GenerateFromFiles(Network* network, string folder, int index = 0);
 };
 
 } /* namespace generators */

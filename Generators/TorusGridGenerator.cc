@@ -21,10 +21,13 @@ TorusGridGenerator::TorusGridGenerator(int size) {
 TorusGridGenerator::~TorusGridGenerator() {
 	delete deployment;
 }
-//
-//void TorusGridGenerator::GeneratorFromFiles(Network* network, string folder, int index)
-//{
-//
-//}
+
+void TorusGridGenerator::GenerateFromFiles(Network* network, string folder, int index)
+{
+	while (!network->hasTopology)
+	{
+		network->hasTopology = deployment->RunDeploy(network);
+	}
+}
 
 } /* namespace generators */

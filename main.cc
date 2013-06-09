@@ -153,21 +153,21 @@ void runSimulation(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
 	srand(time(NULL)); // Set random seed for random procedure
-	if (argc < 2)
-	{
-		show_usage(argv[1]);
-	}
-	else
-	{
-		if (strcmp(argv[1], "-o") == 0 && strcmp(argv[2], "generate") == 0)
-		{
-			generateGraph(argc, argv);
-		}
-		else if (strcmp(argv[1], "-o") == 0 && strcmp(argv[2], "simulate") == 0)
-		{
-			runSimulation(argc, argv);
-		}
-	}
-//	ByzantineSimulator* sim = new ByzantineSimulator();
-//	sim->RunSimulation(FixedRange, K01, 10000, "Debug/FixedRange/0", "Debug/Results", 0, 0, 0, 1, 0.01, 0.01, 100);
+//	if (argc < 2)
+//	{
+//		show_usage(argv[1]);
+//	}
+//	else
+//	{
+//		if (strcmp(argv[1], "-o") == 0 && strcmp(argv[2], "generate") == 0)
+//		{
+//			generateGraph(argc, argv);
+//		}
+//		else if (strcmp(argv[1], "-o") == 0 && strcmp(argv[2], "simulate") == 0)
+//		{
+//			runSimulation(argc, argv);
+//		}
+//	}
+	ByzantineSimulator* sim = new ByzantineSimulator();
+	sim->RunSimulation(TorusGrid, K01, 10000, "10000", "Results", 0, 0, 0, 1, 0.01, 0.01, 1, 10000);
 }

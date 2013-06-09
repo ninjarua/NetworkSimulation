@@ -14,6 +14,7 @@ GridDeploying::GridDeploying() {
 }
 
 GridDeploying::GridDeploying(int size) : Deploying() {
+	topology->numNodes = size;
 	int sqrtNumNodes = (int)sqrt(topology->numNodes);
 	if (sqrtNumNodes != sqrt(topology->numNodes))
 	{

@@ -51,7 +51,7 @@ public:
 	ByzantineSimulator();
 	virtual ~ByzantineSimulator();
 	virtual void SetTolerance(TypeOfTolerance toleranceType);
-	virtual void SetDeployment(DeployingType deployingType);
+	virtual void SetDeployment(DeployingType deployingType, int networkSize);
 
 	static void CallbackThread(ThreadArguments args);
 //	static void* CallbackThread(void* args);
@@ -59,12 +59,12 @@ public:
 	void RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
 					int threadId, int totalThread, int totalTimes,
 					string inputFolder, string outputFolder,
-					double intervalByz, double intervalNothing, int sampleSize = 1);
+					double intervalByz, double intervalNothing, int sampleSize = 1, int networkSize = 100);
 	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
 					string inputfolder, string outputFolder,
 					double startingNothing = 0, double startingByzantine = 0,
 					double endingNothing = 1, double endingByzantine = 1,
-					double intervalByz = 0.01, double intervalNothing = 0.01, int sampleSize = 1);
+					double intervalByz = 0.01, double intervalNothing = 0.01, int sampleSize = 1, int networkSize = 100);
 };
 
 } /* namespace deployment */

@@ -22,4 +22,12 @@ GridGenerator::~GridGenerator() {
 	delete deployment;
 }
 
+void GridGenerator::GenerateFromFiles(Network* network, string folder, int index)
+{
+	while (!network->hasTopology)
+	{
+		network->hasTopology = deployment->RunDeploy(network);
+	}
+}
+
 } /* namespace generators */

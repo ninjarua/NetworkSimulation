@@ -15,6 +15,8 @@ TorusGridDeploying::TorusGridDeploying()
 }
 
 TorusGridDeploying::TorusGridDeploying(int size) : Deploying() {
+	topology->numNodes = size;
+    topology->range = 1;
 	int sqrtNumNodes = (int)sqrt(topology->numNodes);
 	if (sqrtNumNodes != sqrt(topology->numNodes))
 	{
@@ -31,10 +33,6 @@ TorusGridDeploying::~TorusGridDeploying() {
 bool TorusGridDeploying::ObtainTopology(Network* network)
 {
     Deploying::ObtainTopology(network);
-    if (topology->range < topology->d0)
-    {
-        return false;
-    }
     int sqrtNumNodes = (int)sqrt(topology->numNodes);
     if (sqrtNumNodes != sqrt(topology->numNodes))
     {
@@ -47,6 +45,7 @@ bool TorusGridDeploying::ObtainTopology(Network* network)
     }
     topology->xTerr = topology->range * (sqrt(topology->numNodes) - 1);
     topology->yTerr = topology->range * (sqrt(topology->numNodes) - 1);
+    network->transRange = topology->range;
     return true;
 }
 

@@ -23,12 +23,6 @@ void NetworkProtocol::AddNewMessageToNetwork(Network*& network, Message*& messag
 	network->messageCount++;
 }
 
-//void NetworkProtocol::RemoveMessageFromNetwork(Network*& network, list<Message*>::iterator it)
-//{
-//    network->messages.erase(it);
-//    network->messageCount--;
-//}
-
 void NetworkProtocol::BroadcastMessage(NodePtr sender, MessageReaction receivingAction)
 {
 	list<NodePtr>::iterator it;
@@ -86,10 +80,6 @@ void NetworkProtocol::RunNetwork(Network* network, void (*startAction)(void* ptr
 
 void NetworkProtocol::RunNetworkStep(Network* network)
 {
-//    network->messages.insert(network->messages.end(),
-//    		network->newMessages.begin(), network->newMessages.end());
-    // Here don't delete pointer to message because network->message is keeping
-    //network->newMessages.clear();
     while (network->messageCount > 0)
     {
 		list<Message*>::iterator it = network->newMessages.begin();

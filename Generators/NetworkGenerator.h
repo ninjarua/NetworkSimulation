@@ -31,7 +31,7 @@ public:
 	string GetDeployingName();
 
 protected:
-	string GetFilenameByDeployment(string folder, int number);
+	virtual string GetFilenameByDeployment(string folder, int number);
 	string GetFilename(int id);
 	string GetVerifyFilename(int id);
 	string GetFailureString(int count);

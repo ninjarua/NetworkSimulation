@@ -14,7 +14,7 @@ Network::Network() {
 	messageCount = 0;
 	info = NetworkInfo();
 	nodes = vector<NodePtr>();
-	//messages = list<Message*>();
+	hasTopology = false;
 	newMessages = list<Message*>();
 }
 
@@ -138,7 +138,6 @@ int Network::ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
 		NodePtr node = stackNodes.top();
 		stackNodes.pop();
 		count++;
-//		node->connectedAreaNumber = spreadingValue;
 //		Logger::Write(*node, &DebugString, "Seed spread: ", "debug.out", ofstream::out|ofstream::app);
 		AddingNewNodesWithFilter(stackNodes, node, nodeCondition, state, spreadingValue,
 				&FilterDisconnectedNodeAndDifferentConnectedAreaNumber);
@@ -149,18 +148,12 @@ int Network::ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
 
 int Network::FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
 {
-	//list<NodePtr> checkNodes;
-	//list<NodePtr> spreadingNodes;
-	//Tools::FindAllToVector(network->nodes, spreadingNodes, (*nodeCondition), state);
-	//Tools::FindAllToVector(checkNodes, spreadingNodes, &Node::isConnectedAreaNumberZero);
 	int spreadingValue = 0;
 	int max = 0;
-	//list<NodePtr>::iterator it = spreadingNodes.begin();
 	vector<NodePtr>::iterator it = network->nodes.begin();
 	while (it != network->nodes.end())
 	{
 		spreadingValue++; // increase spreadingValue to a new value for another connected area
-//		NodePtr begin(*spreadingNodes.begin());
 		int count = ConnectedAreaSpreading(*it, spreadingValue, (*nodeCondition), state);
 		//int count = Tools::DetachWithPredicate(spreadingNodes, &Node::isConnectedAreaNumberEqual, spreadingValue);
 		if (count > max)

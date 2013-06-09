@@ -133,14 +133,9 @@ string ByzantineProtocol::GetLogFilename()
 
 void ByzantineProtocol::Finalize(Network* network)
 {
-//	vector<NodePtr>::iterator it = network->info.listDetectors.begin();
-//	for(; it != network->info.listDetectors.end(); it++)
-//	{
-//		(*it)->state = Inactive;
-//	}
-    statisticInfo->infections = network->info.numberOfInfectedNodes; // Tools::CountAll(network->nodes, &Node::isNodeState, Infected);
-    statisticInfo->inactives = network->info.numberOfInactiveNodes; // Tools::CountAll(network->nodes, &Node::isNodeState, Inactive);
-    statisticInfo->detectors = network->info.numberOfDetectors; // Tools::CountAll(network->nodes, &Node::isNodeState, Detector);
+    statisticInfo->infections = network->info.numberOfInfectedNodes;
+    statisticInfo->inactives = network->info.numberOfInactiveNodes;
+    statisticInfo->detectors = network->info.numberOfDetectors;
     statisticInfo->sanes = network->nodes.size() - statisticInfo->infections - statisticInfo->inactives - statisticInfo->detectors;
     statisticInfo->lca = Network::FindMaximumConnectedArea(network, &Node::isNodeState, Sane);
 }

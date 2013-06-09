@@ -31,15 +31,15 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	}
 }
 
-void ByzantineSimulator::SetDeployment(DeployingType deployingType)
+void ByzantineSimulator::SetDeployment(DeployingType deployingType, int networkSize)
 {
 	switch(deployingType)
 	{
 	case Grid:
-		generator = new GridGenerator();
+		generator = new GridGenerator(networkSize);
 		break;
 	case TorusGrid:
-		generator = new TorusGridGenerator();
+		generator = new TorusGridGenerator(networkSize);
 		break;
 	case FixedRange:
 		generator = new FixedRangeGenerator();
@@ -177,7 +177,7 @@ void ByzantineSimulator::SetParameters(int totalTimes, string inputFolder, strin
 void ByzantineSimulator::RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
 		int threadId, int totalThread, int totalTimes,
 		string inputFolder, string outputFolder,
-		double intervalByz, double intervalNothing, int sampleSize)
+		double intervalByz, double intervalNothing, int sampleSize, int networkSize)
 {
 	double slotSize = 50 / totalThread;
 	double startingNothing1 = intervalNothing * threadId * slotSize;
@@ -189,29 +189,25 @@ void ByzantineSimulator::RunSimulationByThreadId(DeployingType deploying, TypeOf
 	string inputDir = inputFolder + OS_SEP + number;
 	string outputDir = outputFolder + OS_SEP + number;
 
-//	filesystem::path file(outputFolder + OS_SEP + number + ".out");
-//	ofstream fout;
-//	fout.open(file.string().c_str(), ofstream::out | ofstream::app);
-//	fout << "From: " << startingNothing1 << "\t" << endingNothing1 << "\t" << startingNothing2 << "\t" << endingNothing2 << endl;
-//	fout.close();
-
 	RunSimulation(deploying, toleranceType, totalTimes, inputDir, outputDir, startingNothing1, 0,
-			endingNothing1, 1 - endingNothing1, intervalByz, intervalNothing, sampleSize);
+			endingNothing1, 1 - endingNothing1, intervalByz, intervalNothing, sampleSize, networkSize);
 	RunSimulation(deploying, toleranceType, totalTimes, inputDir, outputDir, startingNothing2, 0,
-			endingNothing2, 1 - endingNothing2, intervalByz, intervalNothing, sampleSize);
+			endingNothing2, 1 - endingNothing2, intervalByz, intervalNothing, sampleSize, networkSize);
 }
 
 void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int times,
 		string inputfolder, string outputFolder,
 		double startingNothing, double startingByzantine,
 		double endingNothing, double endingByzantine,
-		double intervalByz, double intervalNothing, int sampleSize)
+		double intervalByz, double intervalNothing,
+		int sampleSize, int networkSize)
 {
 	SetTolerance(toleranceType);
-	SetDeployment(deploying);
+	SetDeployment(deploying, networkSize);
+
 	SetParameters(times, inputfolder, outputFolder, startingNothing, startingByzantine, endingNothing,
 			endingByzantine, intervalByz, intervalNothing, sampleSize);
-	//double ratio = (double)params.nothingSteps / params.byzantineSteps;
+	//double ratio = round((double) params.nothingSteps / params.byzantineSteps);
 
 	if (params.nothingStart == params.nothingEnd)
 	{
@@ -245,7 +241,7 @@ void ByzantineSimulator::CallbackThread(ThreadArguments args)
 {
 	ByzantineSimulator* sim = new ByzantineSimulator();
 	sim->RunSimulationByThreadId(args.deploying, args.toleranceType, args.threadId, args.numberCPUs, args.totalTimes,
-			args.inputFolder, args.outputFolder, 0.01, 0.01, args.sampleSize);
+			args.inputFolder, args.outputFolder, 0.01, 0.01, args.sampleSize, args.networkSize);
 //	ThreadArguments* ar = (ThreadArguments*)args;
 //	sim->RunSimulationByThreadId(ar->deploying, ar->toleranceType, 1, 2, ar->totalTimes,
 //			ar->inputFolder, ar->outputFolder, 0.01, 0.01, ar->sampleSize);
