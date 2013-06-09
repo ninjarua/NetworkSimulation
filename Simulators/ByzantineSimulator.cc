@@ -92,7 +92,7 @@ void ByzantineSimulator::RunSimulationByInterval()
 	byzantine.report->Clear();
 	byzantine.report->nothingProb = byzantine.nothingProb;
 	int times = params.totalTimes;
-	if (byzantine.nothingProb + byzantine.byzantineProb > 0.991)
+	if (round(byzantine.nothingProb + byzantine.byzantineProb) > 0.99)
 		times = 2;
 	int prediction;
 	int predictionIt = 1000;
@@ -165,10 +165,10 @@ void ByzantineSimulator::SetParameters(int totalTimes, string inputFolder, strin
 	params.totalTimes = totalTimes;
 	params.nothingSteps = (int)(100 / intervalNothingI);;
 	params.byzantineSteps = (int)(100 / intervalByzI);
-	params.nothingStart = (int)((startingNothing * 100) / intervalNothingI);
-	params.byzantineStart = (int)((startingByzantine * 100) / intervalByzI);
-	params.nothingEnd = (int)((endingNothing * 100) / intervalNothingI);
-	params.byzantineEnd = (int)((endingByzantine * 100) / intervalByzI);
+	params.nothingStart = (int)(round(startingNothing * 100) / intervalNothingI);
+	params.byzantineStart = (int)(round(startingByzantine * 100) / intervalByzI);
+	params.nothingEnd = (int)(round(endingNothing * 100) / intervalNothingI);
+	params.byzantineEnd = (int)(round(endingByzantine * 100) / intervalByzI);
 	params.sampleSize = sampleSize;
 	params.inputFolder = inputFolder;
 	params.outputFolder = outputFolder;
