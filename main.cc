@@ -169,14 +169,14 @@ int main(int argc, char* argv[])
 //		}
 //	}
 //	ByzantineSimulator* sim = new ByzantineSimulator();
-//	sim->RunSimulation(TorusGrid, K01, 10000, "10000", "Results", 0, 0.5, 0, 1, 0.01, 0.01, 1, 10000);
+//	sim->RunSimulation(ER_Random, K01, 10000, "Results/Erdos_Renyi", "Results", 0, 0, 0, 1, 0.01, 0.01, 1);
 
-//	SimulatorManager* manager = new SimulatorManager();
-//	manager->ReadResults(FixedRange, K04, "/Users/thanhnd/Workspace/Results/FixedRange/K04",
-//				"/Users/thanhnd/Workspace/Results/FixedRange/K04.out", 50);
-//	manager->ReadResults(FixedRange, K11, "/Users/thanhnd/Workspace/Results/FixedRange/K11",
-//				"/Users/thanhnd/Workspace/Results/FixedRange/K11.out", 50);
+	SimulatorManager* manager = new SimulatorManager();
+	manager->ReadResults(ER_Random, K04, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04",
+				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04.out", 50);
+//	manager->ReadResults(ER_Random, K04, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04.out", 50);
 
-	ByzantineSimulator* sim = new ByzantineSimulator();
-	sim->GenerateNetwork(ER_Random, 1000, 100, "Erdos_Renyi", 100, 100, 10, 10, 0.014);
+//	ByzantineSimulator* sim = new ByzantineSimulator();
+//	sim->GenerateNetwork(ER_Random, 1000, 100, "Results/Erdos_Renyi", 100, 100, 10, 10, 0.014);
 }

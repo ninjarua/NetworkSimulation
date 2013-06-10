@@ -10,6 +10,7 @@
 namespace deployment {
 
 ERRandomDeploying::ERRandomDeploying() {
+
 }
 
 ERRandomDeploying::ERRandomDeploying(int numberNodes, double probability)

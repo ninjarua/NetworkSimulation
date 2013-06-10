@@ -6,6 +6,16 @@
  */
 
 #include "ByzantineSimulator.h"
+#include "GridGenerator.h"
+#include "TorusGridGenerator.h"
+#include "FixedRangeGenerator.h"
+#include "ERRandomGenerator.h"
+#include "K01Tolerance.h"
+#include "K04Tolerance.h"
+#include "K11Tolerance.h"
+
+using namespace generators;
+
 #include <iostream>
 
 namespace simulators {
@@ -55,6 +65,7 @@ void ByzantineSimulator::SetDeployment(DeployingType deployingType, int networkS
 	case ScaleFree:
 		break;
 	case ER_Random:
+		generator = new ERRandomGenerator();
 		break;
 	default:
 		break;
