@@ -23,7 +23,7 @@ FixedRangeRandomDeploying::FixedRangeRandomDeploying(int numberNodes, int xTerr,
 }
 
 FixedRangeRandomDeploying::~FixedRangeRandomDeploying() {
-	// TODO Auto-generated destructor stub
+
 }
 
 string FixedRangeRandomDeploying::GetDeployingName()

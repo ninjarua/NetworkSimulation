@@ -58,6 +58,7 @@ private:
     		const NodeState& state, int number, bool (*filter)(NodePtr, NodePtr, int));
 	static bool FilterDisconnectedNodeAndDifferentConnectedAreaNumber(NodePtr n1, NodePtr n2, int number);
 	static string DebugString(const Node& node, string original);
+	static bool HasOverlappedNeighbors(const NodePtr n1, const NodePtr n2);
 };
 
 }

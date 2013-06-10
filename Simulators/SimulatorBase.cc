@@ -9,6 +9,7 @@
 #include "GridGenerator.h"
 #include "FixedRangeGenerator.h"
 #include "TorusGridGenerator.h"
+#include "ERRandomGenerator.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -24,8 +25,8 @@ SimulatorBase::~SimulatorBase() {
 
 }
 
-string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode, float xTerr, float yTerr,
-			float range, float d0, int times, string folder)
+string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode, int times, string folder,
+			float xTerr, float yTerr, float range, float d0, double prob)
 {
 	network->transRange = range;
 	switch(deployment)
@@ -45,6 +46,8 @@ string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode
 	case Ring:
 		break;
 	case ER_Random:
+		generator = new ERRandomGenerator(numberOfNode, prob);
+		generator->GenerateToFiles(network, folder, times);
 		break;
 	case ScaleFree:
 		break;

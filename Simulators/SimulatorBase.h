@@ -37,13 +37,8 @@ protected:
 
 public:
 	int timeslot;
-	//void (*Writer)(Network*, string);
-	//void GetParameters(DeployingType deployingType, int numberOfNodes, int transRange, float xTerr, float yTerr, float d0);
-	//void CreateGraphic(Graphics graphic, float width, float height, float margin, Color backColor);
-	//string GetFilenameByDeployment(int number);
-	string GenerateNetwork(DeployingType deployment, int numberOfNode, float xTerr, float yTerr,
-			float range, float d0, int times, string folder);
-	//string GenerateNetworkFromFile(int fileNumber, bool drawNetwork);
+	string GenerateNetwork(DeployingType deployment, int numberOfNode, int times, string folder,
+			float xTerr = 100, float yTerr = 100, float range = 1, float d0 = 1, double prob = 1);
 };
 
 } /* namespace deployment */

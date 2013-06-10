@@ -110,8 +110,8 @@ void generateGraph(int argc, char* argv[])
 	else
 	{
 		ByzantineSimulator* sim = new ByzantineSimulator();
-		sim->GenerateNetwork(GetDeployingType(argv[3]), atoi(argv[4]), atof(argv[5]), atof(argv[6]),
-				atof(argv[7]), 1, atoi(argv[8]), argv[9]);
+		sim->GenerateNetwork(GetDeployingType(argv[3]), atoi(argv[4]), atoi(argv[8]), argv[9],
+				atof(argv[5]), atof(argv[6]), atof(argv[7]), 1);
 		delete sim;
 //		showArgumentDebugGenerateGraph(argv);
 	}
@@ -170,9 +170,13 @@ int main(int argc, char* argv[])
 //	}
 //	ByzantineSimulator* sim = new ByzantineSimulator();
 //	sim->RunSimulation(TorusGrid, K01, 10000, "10000", "Results", 0, 0.5, 0, 1, 0.01, 0.01, 1, 10000);
-	SimulatorManager* manager = new SimulatorManager();
-	manager->ReadResults(FixedRange, K04, "/Users/thanhnd/Workspace/Results/FixedRange/K04",
-				"/Users/thanhnd/Workspace/Results/FixedRange/K04.out", 50);
-	manager->ReadResults(FixedRange, K11, "/Users/thanhnd/Workspace/Results/FixedRange/K11",
-				"/Users/thanhnd/Workspace/Results/FixedRange/K11.out", 50);
+
+//	SimulatorManager* manager = new SimulatorManager();
+//	manager->ReadResults(FixedRange, K04, "/Users/thanhnd/Workspace/Results/FixedRange/K04",
+//				"/Users/thanhnd/Workspace/Results/FixedRange/K04.out", 50);
+//	manager->ReadResults(FixedRange, K11, "/Users/thanhnd/Workspace/Results/FixedRange/K11",
+//				"/Users/thanhnd/Workspace/Results/FixedRange/K11.out", 50);
+
+	ByzantineSimulator* sim = new ByzantineSimulator();
+	sim->GenerateNetwork(ER_Random, 1000, 100, "Erdos_Renyi", 100, 100, 10, 10, 0.014);
 }

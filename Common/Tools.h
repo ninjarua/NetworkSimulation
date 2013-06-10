@@ -47,6 +47,20 @@ public:
 		}
 		listInput.clear();
 	}
+
+	template<typename T>
+	static bool Contain(list<T*>& lst, T* instance)
+	{
+		list<T*> result = list<T*>();
+		typename list<T*>::iterator it = lst.begin();
+		while(it != lst.end())
+		{
+			if (*it == instance)
+				return true;
+		}
+		return false;
+	}
+
 //
 //	template<typename T>
 //	static void EraseAll(vector< shared_ptr<T> >& listInput)
@@ -61,18 +75,18 @@ public:
 //		}
 //		listInput.clear();
 //	}
-
-	template<typename T>
-	static void EraseAll(list<T>& listInput)
-	{
-		list<T> result = list<T>();
-		typename list<T>::iterator it = listInput.begin();
-		while(it != listInput.end())
-		{
-			it = listInput.erase(it);
-		}
-		listInput.clear();
-	}
+//
+//	template<typename T>
+//	static void EraseAll(list<T>& listInput)
+//	{
+//		list<T> result = list<T>();
+//		typename list<T>::iterator it = listInput.begin();
+//		while(it != listInput.end())
+//		{
+//			it = listInput.erase(it);
+//		}
+//		listInput.clear();
+//	}
 //
 //	template<class T>
 //	static void FindAllToVector(list< shared_ptr<T> >& inputVector, list< shared_ptr<T> >& outputVector, bool (*pCondition)(const T&))
@@ -88,21 +102,21 @@ public:
 //			it++;
 //		}
 //	}
-
-	template<class T>
-	static void FindAllToVector(list<T*>& inputVector, list<T*>& outputVector, bool (*pCondition)(const T&))
-	{
-		typename list<T*>::iterator it = inputVector.begin();
-		while(it != inputVector.end())
-		{
-			if ((*pCondition)(*(*it)))
-			{
-				outputVector.push_back(*it);
-				//Logger::Write(*(*it), "debug2.out", ofstream::out|ofstream::app);
-			}
-			it++;
-		}
-	}
+//
+//	template<class T>
+//	static void FindAllToVector(list<T*>& inputVector, list<T*>& outputVector, bool (*pCondition)(const T&))
+//	{
+//		typename list<T*>::iterator it = inputVector.begin();
+//		while(it != inputVector.end())
+//		{
+//			if ((*pCondition)(*(*it)))
+//			{
+//				outputVector.push_back(*it);
+//				//Logger::Write(*(*it), "debug2.out", ofstream::out|ofstream::app);
+//			}
+//			it++;
+//		}
+//	}
 //
 //	template<class T, typename U>
 //	static void FindAllToVector(vector< shared_ptr<T> >& inputVector, list< shared_ptr<T> >& outputVector, bool (*pCondition)(const T&, const U&), const U& condition)
@@ -118,21 +132,21 @@ public:
 //			it++;
 //		}
 //	}
-
-	template<class T, typename U>
-	static void FindAllToVector(vector<T*>& inputVector, list<T*>& outputVector, bool (*pCondition)(const T&, const U&), const U& condition)
-	{
-		typename vector<T*>::iterator it = inputVector.begin();
-		while(it != inputVector.end())
-		{
-			if ((*pCondition)(*(*it), condition))
-			{
-				outputVector.push_back(*it);
-				//Logger::Write(*(*it), "debug2.out", ofstream::out|ofstream::app);
-			}
-			it++;
-		}
-	}
+//
+//	template<class T, typename U>
+//	static void FindAllToVector(vector<T*>& inputVector, list<T*>& outputVector, bool (*pCondition)(const T&, const U&), const U& condition)
+//	{
+//		typename vector<T*>::iterator it = inputVector.begin();
+//		while(it != inputVector.end())
+//		{
+//			if ((*pCondition)(*(*it), condition))
+//			{
+//				outputVector.push_back(*it);
+//				//Logger::Write(*(*it), "debug2.out", ofstream::out|ofstream::app);
+//			}
+//			it++;
+//		}
+//	}
 //
 //	template<class T>
 //	static long CountAll(const list< shared_ptr<T> >& listInput, bool (*pCondition)(const T&))

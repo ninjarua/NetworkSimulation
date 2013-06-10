@@ -8,17 +8,19 @@
 #ifndef K1TOLERANCE_H_
 #define K1TOLERANCE_H_
 
-#include "stdafx.h"
 #include "ToleranceBase.h"
 
 namespace protocols {
 
 class K03Tolerance : ToleranceBase{
+	static void CallbackReceiveDeactivateMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message);
 public:
 	K03Tolerance();
 	virtual ~K03Tolerance();
 	string GetToleranceName();
+	void TolerateNode(NodePtr node, NodePtr byzantine);
+	void ReceiveDeactivateMessage(NodePtr sender, NodePtr receiver, Message* message);
 };
 
-} /* namespace domain */
-#endif /* K1TOLERANCE_H_ */
+}
+#endif
