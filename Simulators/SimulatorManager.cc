@@ -33,4 +33,22 @@ void SimulatorManager::RunSimulation(DeployingType deploying, TypeOfTolerance to
 	cout << "Success!" << endl;
 }
 
+void SimulatorManager::ReadResults(DeployingType deploying, TypeOfTolerance toleranceType,
+		string inputFolder, string outputFolder, int numberCPUs)
+{
+	for (int i = 0; i < numberCPUs; i++)
+	{
+		ThreadArguments thread_data;
+		thread_data.set(deploying, toleranceType, 0, i, numberCPUs, inputFolder, outputFolder, 0);
+		ByzantineSimulator::CallbackReader(thread_data, true);
+	}
+	for (int j = numberCPUs - 1; j >= 0; j--)
+	{
+		ThreadArguments thread_data;
+		thread_data.set(deploying, toleranceType, 0, j, numberCPUs, inputFolder, outputFolder, 0);
+		ByzantineSimulator::CallbackReader(thread_data, false);
+	}
+	cout << "Success!" << endl;
+}
+
 }

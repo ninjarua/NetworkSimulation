@@ -20,6 +20,7 @@
 #include <boost/filesystem.hpp>
 #include "SimulatorBase.h"
 #include "K01Tolerance.h"
+#include "K04Tolerance.h"
 #include "K11Tolerance.h"
 
 using namespace boost;
@@ -55,8 +56,12 @@ public:
 	virtual void SetDeployment(DeployingType deployingType, int networkSize);
 
 	static void CallbackThread(ThreadArguments args);
-//	static void* CallbackThread(void* args);
+	static void CallbackReader(ThreadArguments args, bool isFirstInSlot);
 
+	void RunReaderByThreadId(DeployingType deploying, TypeOfTolerance toleranceType, int threadId, int totalThread,
+			string resultsFolder, string outputFilename, double intervalNothing, bool isFirstInSlot);
+	void Read(DeployingType deploying, TypeOfTolerance toleranceType,
+			string resultsFolder, string outputFilename, double startingNothing, double endingNothing);
 	void RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
 					int threadId, int totalThread, int totalTimes,
 					string inputFolder, string outputFolder,

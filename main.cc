@@ -168,6 +168,11 @@ int main(int argc, char* argv[])
 //			runSimulation(argc, argv);
 //		}
 //	}
-	ByzantineSimulator* sim = new ByzantineSimulator();
-	sim->RunSimulation(TorusGrid, K01, 10000, "10000", "Results", 0, 0.5, 0, 1, 0.01, 0.01, 1, 10000);
+//	ByzantineSimulator* sim = new ByzantineSimulator();
+//	sim->RunSimulation(TorusGrid, K01, 10000, "10000", "Results", 0, 0.5, 0, 1, 0.01, 0.01, 1, 10000);
+	SimulatorManager* manager = new SimulatorManager();
+	manager->ReadResults(FixedRange, K04, "/Users/thanhnd/Workspace/Results/FixedRange/K04",
+				"/Users/thanhnd/Workspace/Results/FixedRange/K04.out", 50);
+	manager->ReadResults(FixedRange, K11, "/Users/thanhnd/Workspace/Results/FixedRange/K11",
+				"/Users/thanhnd/Workspace/Results/FixedRange/K11.out", 50);
 }

@@ -23,7 +23,7 @@ public:
 	TypeOfTolerance toleranceType;
 	int totalTimes;
 	string inputFolder;
-	string outputFolder;
+	string output;
 	int numberCPUs;
 	int threadId;
 	int sampleSize;
@@ -38,7 +38,7 @@ public:
 		toleranceType = _toleranceType;
 		totalTimes = _totalTimes;
 		inputFolder = _inputFolder;
-		outputFolder = _outputFolder;
+		output = _outputFolder;
 		numberCPUs = _numberCPUs;
 		sampleSize = _sampleSize;
 		threadId = _threadId;

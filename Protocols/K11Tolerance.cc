@@ -12,7 +12,7 @@ using namespace domain;
 
 namespace protocols {
 
-K11Tolerance::K11Tolerance() {
+K11Tolerance::K11Tolerance() : ToleranceBase() {
 
 }
 
@@ -23,6 +23,11 @@ K11Tolerance::~K11Tolerance() {
 void K11Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
 {
 	ToleranceBase::TolerateNode(node, byzantine);
+	node->state = Inactive;
+	node->ownerNetwork->info.numberOfInactiveNodes++;
+	node->detectedByzantines.insert(byzantine);
+	node->disconnectedNodes.insert(byzantine);
+
 	list<NodePtr>::iterator it = node->neighbors.begin();
 	for (; it != node->neighbors.end(); it++)
 	{
@@ -39,7 +44,10 @@ void K11Tolerance::ReceiveDeactivateMessage(NodePtr sender, NodePtr receiver, Me
 	if (receiver->state == Infected)
 		return;
 	if (receiver->state == Sane)
+	{
 		receiver->state = Inactive;
+		receiver->ownerNetwork->info.numberOfInactiveNodes++;
+	}
 	message->status = Expired;
 
 	DeactivateMessage* deactivateMessage = (DeactivateMessage*)message;
@@ -59,7 +67,7 @@ void K11Tolerance::ReceiveDeactivateMessage(NodePtr sender, NodePtr receiver, Me
 
 void K11Tolerance::CallbackReceiveDeactivateMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message)
 {
-	K11Tolerance* basePtr = (K11Tolerance*)ptr;
-	basePtr->ReceiveDeactivateMessage(sender, receiver, message);
+	K11Tolerance* ptrK11 = (K11Tolerance*)ptr;
+	ptrK11->ReceiveDeactivateMessage(sender, receiver, message);
 }
 }

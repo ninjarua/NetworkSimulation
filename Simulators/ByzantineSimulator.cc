@@ -25,6 +25,9 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	case K01:
 		byzantine.tolerance = new K01Tolerance();
 		break;
+	case K04:
+		byzantine.tolerance = new K04Tolerance();
+		break;
 	case K11:
 		byzantine.tolerance = new K11Tolerance();
 		break;
@@ -177,12 +180,44 @@ void ByzantineSimulator::SetParameters(int totalTimes, string inputFolder, strin
 	params.outputFolder = outputFolder;
 }
 
+void ByzantineSimulator::Read(DeployingType deploying, TypeOfTolerance toleranceType,
+		string resultsFolder, string outputFilename, double startingNothing, double endingNothing)
+{
+	SetTolerance(toleranceType);
+	SetDeployment(deploying, 100);
+	SetParameters(0, "", resultsFolder, startingNothing, 0, endingNothing, 1, 0.01, 0.01, 0);
+
+	filesystem::path dir(params.outputFolder);
+	if (!filesystem::exists(dir))
+		filesystem::create_directory(dir);
+	filesystem::path file(params.outputFolder + OS_SEP + GetResultFilename(params.nothingStart, params.byzantineStart));
+
+	Logger::Copy(file.string(), outputFilename);
+}
+
+void ByzantineSimulator::RunReaderByThreadId(DeployingType deploying, TypeOfTolerance toleranceType, int threadId, int totalThread,
+		string resultsFolder, string outputFilename, double intervalNothing, bool isFirstInSlot)
+{
+	int slotSize = 50 / totalThread;
+	double startingNothing1 = intervalNothing * threadId * slotSize;
+	double endingNothing1 = startingNothing1 + ((slotSize - 1) * intervalNothing);
+	double startingNothing2 = (99 - (endingNothing1 * 100))/100;
+	double endingNothing2 = (99 - (startingNothing1 * 100))/ 100;
+	char number[5];
+	sprintf(number, "%d", threadId);
+	string outputDir = resultsFolder + OS_SEP + number;
+	if (isFirstInSlot)
+		Read(deploying, toleranceType, outputDir, outputFilename, startingNothing1, endingNothing1);
+	else
+		Read(deploying, toleranceType, outputDir, outputFilename, startingNothing2, endingNothing2);
+}
+
 void ByzantineSimulator::RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
 		int threadId, int totalThread, int totalTimes,
 		string inputFolder, string outputFolder,
 		double intervalByz, double intervalNothing, int sampleSize, int networkSize)
 {
-	double slotSize = 50 / totalThread;
+	int slotSize = 50 / totalThread;
 	double startingNothing1 = intervalNothing * threadId * slotSize;
 	double endingNothing1 = startingNothing1 + ((slotSize - 1) * intervalNothing);
 	double startingNothing2 = (99 - (endingNothing1 * 100))/100;
@@ -244,11 +279,18 @@ void ByzantineSimulator::CallbackThread(ThreadArguments args)
 {
 	ByzantineSimulator* sim = new ByzantineSimulator();
 	sim->RunSimulationByThreadId(args.deploying, args.toleranceType, args.threadId, args.numberCPUs, args.totalTimes,
-			args.inputFolder, args.outputFolder, 0.01, 0.01, args.sampleSize, args.networkSize);
+			args.inputFolder, args.output, 0.01, 0.01, args.sampleSize, args.networkSize);
 //	ThreadArguments* ar = (ThreadArguments*)args;
 //	sim->RunSimulationByThreadId(ar->deploying, ar->toleranceType, 1, 2, ar->totalTimes,
 //			ar->inputFolder, ar->outputFolder, 0.01, 0.01, ar->sampleSize);
 //	return args;
+}
+
+void ByzantineSimulator::CallbackReader(ThreadArguments args, bool isFirstInSlot)
+{
+	ByzantineSimulator* sim = new ByzantineSimulator();
+	sim->RunReaderByThreadId(args.deploying, args.toleranceType, args.threadId, args.numberCPUs,
+			args.inputFolder, args.output, 0.01, isFirstInSlot);
 }
 
 } /* namespace deployment */

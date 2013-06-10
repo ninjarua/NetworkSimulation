@@ -32,6 +32,21 @@ public:
 		f.close();
 	}
 
+	//template<class T>
+	static void Copy(string sourceFile, string destFile)
+	{
+		ifstream f(sourceFile.c_str(), ifstream::in);
+		ofstream of(destFile.c_str(), ofstream::out | ofstream::app);
+		string line;
+		while (!getline(f, line).eof())
+		{
+			of << line << "\n";
+		}
+		of << "\n";
+		of.close();
+		f.close();
+	}
+
 	template<class T>
 	static void Write(const T& instance, string (*printInstance)(const T&, string), string original, string filename, ofstream::openmode mode = ofstream::out)
 	{
