@@ -13,6 +13,7 @@
 #include "K01Tolerance.h"
 #include "K04Tolerance.h"
 #include "K11Tolerance.h"
+#include "C01Tolerance.h"
 
 using namespace generators;
 
@@ -40,6 +41,9 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 		break;
 	case K11:
 		byzantine.tolerance = new K11Tolerance();
+		break;
+	case C01:
+		byzantine.tolerance = new C01Tolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();

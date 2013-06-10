@@ -22,7 +22,7 @@ namespace domain {
 class Node;
 typedef Node* NodePtr;
 
-enum NodeState {Sane = 0, Infected = 1, Detector = 2, Inactive = 3};
+enum NodeState {Sane = 0, Infected = 1, Inactive = 2};
 class Network;
 class Node {
 public:

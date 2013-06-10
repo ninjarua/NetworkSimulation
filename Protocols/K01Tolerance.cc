@@ -10,12 +10,11 @@
 namespace protocols {
 
 K01Tolerance::K01Tolerance() : ToleranceBase() {
-	// TODO Auto-generated constructor stub
 
 }
 
 K01Tolerance::~K01Tolerance() {
-	// TODO Auto-generated destructor stub
+
 }
 
 string K01Tolerance::GetToleranceName()

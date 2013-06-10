@@ -168,12 +168,12 @@ int main(int argc, char* argv[])
 //			runSimulation(argc, argv);
 //		}
 //	}
-//	ByzantineSimulator* sim = new ByzantineSimulator();
-//	sim->RunSimulation(ER_Random, K01, 10000, "Results/Erdos_Renyi", "Results", 0, 0, 0, 1, 0.01, 0.01, 1);
+	ByzantineSimulator* sim = new ByzantineSimulator();
+	sim->RunSimulation(ER_Random, C01, 10000, "Results/Erdos_Renyi", "Results", 0, 0, 0, 1, 0.01, 0.01, 1);
 
-	SimulatorManager* manager = new SimulatorManager();
-	manager->ReadResults(ER_Random, K04, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04",
-				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04.out", 50);
+//	SimulatorManager* manager = new SimulatorManager();
+//	manager->ReadResults(ER_Random, K04, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04.out", 50);
 //	manager->ReadResults(ER_Random, K04, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04",
 //				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04.out", 50);
 
