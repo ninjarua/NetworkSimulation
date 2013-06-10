@@ -25,8 +25,6 @@ string C01Tolerance::GetToleranceName()
 void C01Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
 {
 	ToleranceBase::TolerateNode(node, byzantine);
-	node->ownerNetwork->info.numberOfInactiveNodes++;
-	node->detectedByzantines.insert(byzantine);
 	node->disconnectedNodes.insert(byzantine);
 }
 

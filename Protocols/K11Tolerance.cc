@@ -17,7 +17,7 @@ K11Tolerance::K11Tolerance() : ToleranceBase() {
 }
 
 K11Tolerance::~K11Tolerance() {
-	// TODO Auto-generated destructor stub
+
 }
 
 void K11Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
@@ -25,8 +25,6 @@ void K11Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
 	ToleranceBase::TolerateNode(node, byzantine);
 	node->state = Inactive;
 	node->ownerNetwork->info.numberOfInactiveNodes++;
-	node->detectedByzantines.insert(byzantine);
-	node->disconnectedNodes.insert(byzantine);
 
 	list<NodePtr>::iterator it = node->neighbors.begin();
 	for (; it != node->neighbors.end(); it++)

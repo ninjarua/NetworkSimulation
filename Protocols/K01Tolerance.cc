@@ -28,8 +28,6 @@ void K01Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
 	node->state = Inactive;
 	node->ownerNetwork->info.numberOfInactiveNodes++;
 	//node->ownerNetwork->info.listDetectors.push_back(node);
-	node->detectedByzantines.insert(byzantine);
-	node->disconnectedNodes.insert(byzantine);
 }
 
 } /* namespace generators */

@@ -45,7 +45,7 @@ void ByzantineProtocol::Reset(Network* network)
     while(it != network->nodes.end())
     {
         (*it)->state = Sane;
-        (*it)->detectedByzantines.clear();
+        //(*it)->detectedByzantines.clear();
         (*it)->disconnectedNodes.clear();
         (*it)->connectedAreaNumber = 0;
         it++;

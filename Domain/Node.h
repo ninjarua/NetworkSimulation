@@ -32,7 +32,7 @@ public:
 	double posY;
 	NodeState state;
 	list<NodePtr> neighbors;
-	set<NodePtr> detectedByzantines;
+	//set<NodePtr> detectedByzantines;
 	set<NodePtr> disconnectedNodes;
 	int connectedAreaNumber;
 

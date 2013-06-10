@@ -31,8 +31,7 @@ string ToleranceBase::GetToleranceName()
 
 void ToleranceBase::TolerateNode(NodePtr node, NodePtr byzantine)
 {
-	node->detectedByzantines.insert(byzantine);
-	node->disconnectedNodes.insert(byzantine);
+//	node->detectedByzantines.insert(byzantine);
 }
 //
 //void ToleranceBase::CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message)

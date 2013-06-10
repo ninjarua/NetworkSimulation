@@ -24,8 +24,6 @@ void K04Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
 	ToleranceBase::TolerateNode(node, byzantine);
 	node->state = Inactive;
 	node->ownerNetwork->info.numberOfInactiveNodes++;
-	node->detectedByzantines.insert(byzantine);
-	node->disconnectedNodes.insert(byzantine);
 
 	list<NodePtr>::iterator it = node->neighbors.begin();
 	for (; it != node->neighbors.end(); it++)
