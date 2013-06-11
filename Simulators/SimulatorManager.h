@@ -22,6 +22,8 @@ public:
 
 	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
 					string inputFolder, string outputFolder, int numberCPUs, int sampleSize, int size=100);
+	void RunOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
+						string inputFolder, string outputFolder, int numberCPUs, int sampleSize, int networkSize=100);
 	void ReadResults(DeployingType deploying, TypeOfTolerance toleranceType,
 					string inputFolder, string outputFolder, int numberCPUs);
 

@@ -14,6 +14,7 @@ Node::Node() {
     posX = 0;
     posY = 0;
     CreateLists();
+    D = 0;
 }
 
 Node::Node(Network* network) {
@@ -23,6 +24,7 @@ Node::Node(Network* network) {
     posY = 0;
     CreateLists();
     ownerNetwork = network;
+    D = 0;
 }
 
 Node::~Node() {
@@ -33,6 +35,7 @@ void Node::Initialize()
     id = 0;
     state = Sane;
     connectedAreaNumber = 0;
+    D = 0;
 }
 
 Node::Node(double x, double y)
@@ -41,6 +44,7 @@ Node::Node(double x, double y)
     posX = x;
     posY = y;
     CreateLists();
+    D = 0;
 }
 
 bool Node::isConnectedAreaNumberZero(const Node& node)
@@ -61,7 +65,7 @@ bool Node::isNodeState(const Node& node, const NodeState& state)
 void Node::CreateLists()
 {
 	neighbors = list<NodePtr>();
-	detectedByzantines = set<NodePtr>();
+	//detectedByzantines = set<NodePtr>();
 	disconnectedNodes = set<NodePtr>();
 }
 
@@ -70,6 +74,13 @@ void Node::Reset()
 //	neighbors.clear();
 //	detectedByzantines.clear();
 //	disconnectedNodes.clear();
+}
+
+int Node::addNeighbor(NodePtr node)
+{
+	neighbors.push_back(node);
+	D++;
+	return D;
 }
 
 bool operator==(const Node& n1, const Node& n2)

@@ -30,9 +30,9 @@ TorusGridDeploying::~TorusGridDeploying() {
 
 }
 
-bool TorusGridDeploying::ObtainTopology(Network* network)
+bool TorusGridDeploying::obtainTopology(Network* network)
 {
-    Deploying::ObtainTopology(network);
+    Deploying::obtainTopology(network);
     int sqrtNumNodes = (int)sqrt(topology->numNodes);
     if (sqrtNumNodes != sqrt(topology->numNodes))
     {
@@ -40,8 +40,8 @@ bool TorusGridDeploying::ObtainTopology(Network* network)
     }
     for (int i = 0; i < topology->numNodes; i++)
     {
-    	NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
-        network->AddNode(newNode);
+    	NodePtr newNode(new Node(GetPosX(i), getPosY(i)));
+        network->addNode(newNode);
     }
     topology->xTerr = topology->range * (sqrt(topology->numNodes) - 1);
     topology->yTerr = topology->range * (sqrt(topology->numNodes) - 1);
@@ -55,13 +55,13 @@ double TorusGridDeploying::GetPosX(int nodeSequenceId)
     return (nodeSequenceId % sqrtNumNodes) * topology->range;
 }
 
-double TorusGridDeploying::GetPosY(int nodeSequenceId)
+double TorusGridDeploying::getPosY(int nodeSequenceId)
 {
     int sqrtNumNodes = (int)sqrt(topology->numNodes);
     return (nodeSequenceId / sqrtNumNodes) * topology->range;
 }
 
-bool TorusGridDeploying::IsNeighbors(const Network& network, const Node& node, const Node& neighbor)
+bool TorusGridDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
 {
     double Xdist = node.posX - neighbor.posX;
     double Ydist = node.posY - neighbor.posY;
@@ -79,14 +79,14 @@ bool TorusGridDeploying::IsNeighbors(const Network& network, const Node& node, c
     return pow((Xdist * Xdist + Ydist * Ydist), 0.5) <= network.transRange;
 }
 
-string TorusGridDeploying::GetDeployingName()
+string TorusGridDeploying::getDeployingName()
 {
 	return "TorusGrid";
 }
 
-void TorusGridDeploying::CreateInformationOfGraph(Network* network)
+void TorusGridDeploying::createInformationOfGraph(Network* network)
 {
-    Deploying::CreateInformationOfGraph(network);
+    Deploying::createInformationOfGraph(network);
 //    foreach (TorusNode node in network.GetNodes())
 //    {
 //        node.AssignNodeToPort();

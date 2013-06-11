@@ -57,6 +57,7 @@ public:
 		{
 			if (*it == instance)
 				return true;
+			it++;
 		}
 		return false;
 	}

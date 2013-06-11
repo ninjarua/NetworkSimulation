@@ -9,7 +9,7 @@
 
 namespace deployment {
 
-GridDeploying::GridDeploying() {
+GridDeploying::GridDeploying() : Deploying() {
 
 }
 
@@ -28,14 +28,14 @@ GridDeploying::~GridDeploying() {
 
 }
 
-string GridDeploying::GetDeployingName()
+string GridDeploying::getDeployingName()
 {
 	return "Grid";
 }
 
-bool GridDeploying::ObtainTopology(Network* network)
+bool GridDeploying::obtainTopology(Network* network)
 {
-	Deploying::ObtainTopology(network);
+	Deploying::obtainTopology(network);
 	if (topology->range < topology->d0)
 	{
 		//Logger.GetInstance().Debug("Error: value of GRID_UNIT must be greater than D0");
@@ -49,27 +49,27 @@ bool GridDeploying::ObtainTopology(Network* network)
 //	}
 	for (int i = 0; i < topology->numNodes; i++)
 	{
-		NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
-		network->AddNode(newNode);
+		NodePtr newNode(new Node(getPosX(i), getPosY(i)));
+		network->addNode(newNode);
 	}
 //	topology->XTerr = topology->Distance * (sqrt(topology->NumNodes) - 1);
 //	topology->YTerr = topology->Distance * (sqrt(topology->NumNodes) - 1);
 	return true;
 }
 
-double GridDeploying::GetPosX(int nodeSequenceId)
+double GridDeploying::getPosX(int nodeSequenceId)
 {
 	int sqrtNumNodes = (int)sqrt(topology->numNodes);
 	return (nodeSequenceId % sqrtNumNodes) * topology->range;
 }
 
-double GridDeploying::GetPosY(int nodeSequenceId)
+double GridDeploying::getPosY(int nodeSequenceId)
 {
 	int sqrtNumNodes = (int)sqrt(topology->numNodes);
 	return (nodeSequenceId / sqrtNumNodes) * topology->range;
 }
 
-bool GridDeploying::IsNeighbors(const Network& network, const Node& node, const Node& neighbor)
+bool GridDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
 {
 	double Xdist = node.posX - neighbor.posX;
 	double Ydist = node.posY - neighbor.posY;

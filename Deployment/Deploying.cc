@@ -16,29 +16,29 @@ Deploying::~Deploying() {
 
 }
 
-bool Deploying::ObtainTopology(Network* network)
+bool Deploying::obtainTopology(Network* network)
 {
 	network->sequenceId = 0;
 	network->nodes.clear();
 	return true;
 }
 
-double Deploying::GetPosX(int nodeSequenceId)
+double Deploying::getPosX(int nodeSequenceId)
 {
 	return 0;
 }
 
-double Deploying::GetPosY(int nodeSequenceId)
+double Deploying::getPosY(int nodeSequenceId)
 {
 	return 0;
 }
 
-double Deploying::GetCellLength()
+double Deploying::getCellLength()
 {
 	return 0;
 }
 
-bool Deploying::IsValidDistance(const Node& node, const Node& neighbor)
+bool Deploying::isValidDistance(const Node& node, const Node& neighbor)
 {
 	double Xdist, Ydist, dist;
 	Xdist = node.posX - neighbor.posX;
@@ -47,12 +47,12 @@ bool Deploying::IsValidDistance(const Node& node, const Node& neighbor)
 	return (dist >= topology->d0);
 }
 
-bool Deploying::IsAllDistanceValid(const Network& network, const Node& node)
+bool Deploying::isAllDistanceValid(const Network& network, const Node& node)
 {
 	int size = network.nodes.size();
 	for (int j = 0; j < size - 1; j = j + 1)
 	{
-		if (!IsValidDistance(node, *network.nodes.at(j)))
+		if (!isValidDistance(node, *network.nodes.at(j)))
 		{
 			return false;
 		}
@@ -60,43 +60,43 @@ bool Deploying::IsAllDistanceValid(const Network& network, const Node& node)
 	return true;
 }
 
-string Deploying::GetDeployingName()
+string Deploying::getDeployingName()
 {
 	return "General";
 }
 
-bool Deploying::RunDeploy(Network* network)
+bool Deploying::runDeploy(Network* network)
 {
-	if (ObtainTopology(network))
+	if (obtainTopology(network))
 	{
-		NeighborInitialization(network);
+		neighborInitialization(network);
 		return true;
 	}
 	return false;
 }
 
-void Deploying::NeighborInitialization(Network* network)
+void Deploying::neighborInitialization(Network* network)
 {
 	for (int i = 0; i < (int)(network->nodes.size() - 1); i++)
 	{
 		for (unsigned int j = i + 1; j < network->nodes.size(); j++)
 		{
-			if (IsNeighbors(*network, *network->nodes[i], *network->nodes[j]))
+			if (isNeighbors(*network, *network->nodes[i], *network->nodes[j]))
 			{
-				(network->nodes[i])->neighbors.push_back(network->nodes[j]);
-				(network->nodes[j])->neighbors.push_back(network->nodes[i]);
+				(network->nodes[i])->addNeighbor(network->nodes[j]); //neighbors.push_back(network->nodes[j]);
+				(network->nodes[j])->addNeighbor(network->nodes[i]); //neighbors.push_back(network->nodes[i]);
 			}
 		}
 	}
-	CreateInformationOfGraph(network);
+	createInformationOfGraph(network);
 }
 
-void Deploying::CreateInformationOfGraph(Network* network)
+void Deploying::createInformationOfGraph(Network* network)
 {
 
 }
 
-bool Deploying::IsNeighbors(const Network& network, const Node& node, const Node& neighbor)
+bool Deploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
 {
 	// test for commit
 	double Xdist = node.posX - neighbor.posX;

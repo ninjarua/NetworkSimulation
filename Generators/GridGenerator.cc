@@ -26,7 +26,7 @@ void GridGenerator::GenerateFromFiles(Network* network, string folder, int index
 {
 	while (!network->hasTopology)
 	{
-		network->hasTopology = deployment->RunDeploy(network);
+		network->hasTopology = deployment->runDeploy(network);
 	}
 }
 

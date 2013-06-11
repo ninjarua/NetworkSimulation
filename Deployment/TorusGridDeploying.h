@@ -21,13 +21,13 @@ public:
 	virtual ~TorusGridDeploying();
 
 protected:
-    virtual bool IsNeighbors(const Network& network, const Node& node, const Node& neighbor);
+    virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
     virtual double GetPosX(int nodeSequenceId);
-    virtual double GetPosY(int nodeSequenceId);
-    virtual void CreateInformationOfGraph(Network* network);
+    virtual double getPosY(int nodeSequenceId);
+    virtual void createInformationOfGraph(Network* network);
 public:
-    string GetDeployingName();
-    virtual bool ObtainTopology(Network* network);
+    string getDeployingName();
+    virtual bool obtainTopology(Network* network);
 };
 
 } /* namespace domain */

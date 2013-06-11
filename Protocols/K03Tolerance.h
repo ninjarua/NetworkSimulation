@@ -12,7 +12,7 @@
 
 namespace protocols {
 
-class K03Tolerance : ToleranceBase{
+class K03Tolerance : public ToleranceBase{
 	static void CallbackReceiveDeactivateMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message);
 public:
 	K03Tolerance();

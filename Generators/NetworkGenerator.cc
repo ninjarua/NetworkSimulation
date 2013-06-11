@@ -27,7 +27,7 @@ void NetworkGenerator::GenerateFromFiles(Network* network, string folder, int in
 
 string NetworkGenerator::GetDeployingName()
 {
-	return deployment->GetDeployingName();
+	return deployment->getDeployingName();
 }
 
 string NetworkGenerator::GetFilename(int id)
@@ -64,7 +64,7 @@ string NetworkGenerator::GetFailureString(int count)
 
 string NetworkGenerator::GetFilenameByDeployment(string folder, int number)
 {
-	string filename(deployment->GetDeployingName() + "_" + GetFilename(number));
+	string filename(deployment->getDeployingName() + "_" + GetFilename(number));
 	filesystem::path dir(folder);
 	if (!filesystem::exists(dir))
 		filesystem::create_directory(dir);
@@ -76,7 +76,7 @@ string NetworkGenerator::GenerateToFiles(Network* network, string folder, int ti
 {
 	for (int i = 0; i < times; i++)
 	{
-		bool hasTopology = deployment->RunDeploy(network);
+		bool hasTopology = deployment->runDeploy(network);
 		if (hasTopology)
 		{
 			Logger::Write(network, GetFilenameByDeployment(folder, i));

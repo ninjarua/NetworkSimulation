@@ -10,10 +10,12 @@
 #include "TorusGridGenerator.h"
 #include "FixedRangeGenerator.h"
 #include "ERRandomGenerator.h"
+#include "ScaleFreeGenerator.h"
 #include "K01Tolerance.h"
 #include "K04Tolerance.h"
 #include "K11Tolerance.h"
 #include "C01Tolerance.h"
+#include "C01K03Tolerance.h"
 
 using namespace generators;
 
@@ -45,6 +47,9 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	case C01:
 		byzantine.tolerance = new C01Tolerance();
 		break;
+	case C01K03:
+		byzantine.tolerance = new C01K03Tolerance();
+		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();
 		break;
@@ -67,6 +72,7 @@ void ByzantineSimulator::SetDeployment(DeployingType deployingType, int networkS
 	case Ring:
 		break;
 	case ScaleFree:
+		generator = new ScaleFreeGenerator();
 		break;
 	case ER_Random:
 		generator = new ERRandomGenerator();
@@ -265,7 +271,9 @@ void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance 
 	if (params.nothingStart == params.nothingEnd)
 	{
 		for (int j = params.byzantineStart; j <= params.byzantineEnd; j++)
+		{
 			RunOneStep(j * intervalByz, params.nothingStart * intervalNothing, times);
+		}
 	}
 	else
 	{

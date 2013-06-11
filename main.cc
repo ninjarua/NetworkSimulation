@@ -168,15 +168,16 @@ int main(int argc, char* argv[])
 //			runSimulation(argc, argv);
 //		}
 //	}
-	ByzantineSimulator* sim = new ByzantineSimulator();
-	sim->RunSimulation(ER_Random, C01, 10000, "Results/Erdos_Renyi", "Results", 0, 0, 0, 1, 0.01, 0.01, 1);
+	SimulatorManager* manager = new SimulatorManager();
+	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/eclipse/NetworkSimulation/Debug/ScaleFree/0",
+				"/Users/thanhnd/Workspace/eclipse/NetworkSimulation/Debug/ScaleFreeK01_2", 101, 100);
 
 //	SimulatorManager* manager = new SimulatorManager();
-//	manager->ReadResults(ER_Random, K04, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04",
-//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04.out", 50);
-//	manager->ReadResults(ER_Random, K04, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04",
-//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/K04.out", 50);
+//	manager->ReadResults(ER_Random, C01, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/C01",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/C01.out", 50);
+//	manager->ReadResults(ER_Random, K11, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/K11",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/K11.out", 50);
 
-//	ByzantineSimulator* sim = new ByzantineSimulator();
-//	sim->GenerateNetwork(ER_Random, 1000, 100, "Results/Erdos_Renyi", 100, 100, 10, 10, 0.014);
+	ByzantineSimulator* sim = new ByzantineSimulator();
+	sim->GenerateScaleFreeNetwork(100, "Results/ScaleFree", 9, 1000, 7);
 }

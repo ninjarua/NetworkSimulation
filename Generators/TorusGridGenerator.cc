@@ -26,7 +26,7 @@ void TorusGridGenerator::GenerateFromFiles(Network* network, string folder, int 
 {
 	while (!network->hasTopology)
 	{
-		network->hasTopology = deployment->RunDeploy(network);
+		network->hasTopology = deployment->runDeploy(network);
 	}
 }
 

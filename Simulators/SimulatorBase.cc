@@ -10,6 +10,7 @@
 #include "FixedRangeGenerator.h"
 #include "TorusGridGenerator.h"
 #include "ERRandomGenerator.h"
+#include "ScaleFreeGenerator.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -24,10 +25,32 @@ SimulatorBase::SimulatorBase() {
 SimulatorBase::~SimulatorBase() {
 
 }
+string SimulatorBase::GenerateFixedRangeNetwork(int times, int size, string folder,
+		float xTerr, float yTerr, float range, float d0)
+{
+	generator = new FixedRangeGenerator(size, xTerr, yTerr, range);
+	generator->GenerateToFiles(network, folder, times);
+	return "Success";
+}
+
+string SimulatorBase::GenerateER_RandomNetwork(int times, int size, string folder, double prob)
+{
+	generator = new ERRandomGenerator(size, prob);
+	generator->GenerateToFiles(network, folder, times);
+	return "Success";
+}
+
+string SimulatorBase::GenerateScaleFreeNetwork(int times, string folder, int cliqueSize, int size, int edge)
+{
+	generator = new ScaleFreeGenerator(cliqueSize, edge, size);
+	generator->GenerateToFiles(network, folder, times);
+	return "Success";
+}
 
 string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode, int times, string folder,
 			float xTerr, float yTerr, float range, float d0, double prob)
 {
+	string result;
 	network->transRange = range;
 	switch(deployment)
 	{
@@ -40,21 +63,17 @@ string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode
 		generator->GenerateToFiles(network, folder);
 		break;
 	case FixedRange:
-		generator = new FixedRangeGenerator(numberOfNode, xTerr, yTerr, range);
-		generator->GenerateToFiles(network, folder, times);
+		result = GenerateFixedRangeNetwork(times, numberOfNode, folder, xTerr, yTerr, range, d0);
 		break;
 	case Ring:
 		break;
 	case ER_Random:
-		generator = new ERRandomGenerator(numberOfNode, prob);
-		generator->GenerateToFiles(network, folder, times);
-		break;
-	case ScaleFree:
+		result = GenerateER_RandomNetwork(times, numberOfNode, folder, prob);
 		break;
 	default:
 		break;
 	}
-	return "Success";
+	return result;
 }
 
 } /* namespace deployment */

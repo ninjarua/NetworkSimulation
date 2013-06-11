@@ -29,20 +29,18 @@ public:
 		Topology* topology;
 
     protected:
-        virtual void CreateInformationOfGraph(Network* network);
-        virtual bool IsNeighbors(const Network& network, const Node& node, const Node& neighbor);
-        virtual bool IsAllDistanceValid(const Network& network, const Node& node);
-        virtual bool IsValidDistance(const Node& node, const Node& neighbor);
-        virtual double GetCellLength();
-        virtual double GetPosX(int nodeSequenceId);
-        virtual double GetPosY(int nodeSequenceId);
+        virtual void createInformationOfGraph(Network* network);
+        virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
+        virtual bool isAllDistanceValid(const Network& network, const Node& node);
+        virtual bool isValidDistance(const Node& node, const Node& neighbor);
+        virtual double getCellLength();
+        virtual double getPosX(int nodeSequenceId);
+        virtual double getPosY(int nodeSequenceId);
+        virtual void neighborInitialization(Network* network);
 	public:
-        bool RunDeploy(Network* network);
-        virtual string GetDeployingName();
-        virtual bool ObtainTopology(Network* network);
-	private:
-        void NeighborInitialization(Network* network);
-        //vector<Node*> FilterNode(vector<Node*> listInput, pNodeCondition nodeCondition);
+        bool runDeploy(Network* network);
+        virtual string getDeployingName();
+        virtual bool obtainTopology(Network* network);
 };
 
 } /* namespace deployment */

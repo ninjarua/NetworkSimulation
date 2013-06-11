@@ -9,7 +9,7 @@
 
 namespace deployment {
 
-FixedRangeRandomDeploying::FixedRangeRandomDeploying()
+FixedRangeRandomDeploying::FixedRangeRandomDeploying() : Deploying()
 {
 
 }
@@ -26,14 +26,14 @@ FixedRangeRandomDeploying::~FixedRangeRandomDeploying() {
 
 }
 
-string FixedRangeRandomDeploying::GetDeployingName()
+string FixedRangeRandomDeploying::getDeployingName()
 {
 	return "FixedRange";
 }
 
-bool FixedRangeRandomDeploying::ObtainTopology(Network* network)
+bool FixedRangeRandomDeploying::obtainTopology(Network* network)
 {
-	Deploying::ObtainTopology(network);
+	Deploying::obtainTopology(network);
 	if ((topology->xTerr < 0) | (topology->yTerr < 0))
 	{
 		string errorMessage = "Error: values of TERRAIN_DIMENSIONS must be positive";
@@ -42,8 +42,8 @@ bool FixedRangeRandomDeploying::ObtainTopology(Network* network)
 	}
 	for (int i = 0; i < topology->numNodes; i++)
 	{
-		NodePtr newNode(new Node(GetPosX(i), GetPosY(i)));
-		network->AddNode(newNode);
+		NodePtr newNode(new Node(GetPosX(i), getPosY(i)));
+		network->addNode(newNode);
 	}
 	return true;
 }
@@ -53,12 +53,12 @@ double FixedRangeRandomDeploying::GetPosX(int nodeSequenceId)
 	return (double)rand()/RAND_MAX * topology->xTerr;
 }
 
-double FixedRangeRandomDeploying::GetPosY(int nodeSequenceId)
+double FixedRangeRandomDeploying::getPosY(int nodeSequenceId)
 {
 	return (double)rand()/RAND_MAX * topology->yTerr;
 }
 
-double FixedRangeRandomDeploying::GetCellLength()
+double FixedRangeRandomDeploying::getCellLength()
 {
 	return sqrt(topology->Area() / topology->numNodes);
 }

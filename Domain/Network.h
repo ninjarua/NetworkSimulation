@@ -44,8 +44,8 @@ public:
 	friend ofstream& operator<<(ofstream& os, const Network& network);
 	friend istream& operator>>(istream& os, Network& network);
 
-	void AddNode(NodePtr node);
-	void CreateEmptyNodes(int n);
+	void addNode(NodePtr node);
+	void createEmptyNodes(int n);
 	static bool noNewMessageInNetwork(const Network& network);
 	static int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 

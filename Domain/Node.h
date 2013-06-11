@@ -31,8 +31,8 @@ public:
 	double posX;
 	double posY;
 	NodeState state;
+	int D;
 	list<NodePtr> neighbors;
-	//set<NodePtr> detectedByzantines;
 	set<NodePtr> disconnectedNodes;
 	int connectedAreaNumber;
 
@@ -42,6 +42,7 @@ public:
 	virtual ~Node();
 
 	void Reset();
+	int addNeighbor(NodePtr node);
 
 	bool static isConnectedAreaNumberZero(const Node& node);
 	bool static isConnectedAreaNumberEqual(const Node& node, int number);

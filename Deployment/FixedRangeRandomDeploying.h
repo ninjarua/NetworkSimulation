@@ -25,13 +25,13 @@ public:
 	FixedRangeRandomDeploying(int numberNodes, int xTerr, int yTerr, int range);
 	virtual ~FixedRangeRandomDeploying();
 
-	string GetDeployingName();
+	string getDeployingName();
 
-	bool ObtainTopology(Network* network);
+	bool obtainTopology(Network* network);
 	double GetPosX(int nodeSequenceId);
 
-	double GetPosY(int nodeSequenceId);
-	double GetCellLength();
+	double getPosY(int nodeSequenceId);
+	double getCellLength();
 };
 
 } /* namespace protocols */

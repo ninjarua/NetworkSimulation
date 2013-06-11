@@ -21,7 +21,7 @@ Network::Network() {
 Network::~Network() {
 }
 
-void Network::CreateEmptyNodes(int n)
+void Network::createEmptyNodes(int n)
 {
 	messageCount = 0;
 	Tools::EraseAll(nodes);
@@ -32,7 +32,7 @@ void Network::CreateEmptyNodes(int n)
 	for (int i=0; i<n; i++)
 	{
 		NodePtr newNode(new Node());
-		AddNode(newNode);
+		addNode(newNode);
 	}
 }
 
@@ -50,7 +50,7 @@ istream& operator>>(istream& is, Network& network)
 {
 	string line("");
 	getline(is, line);
-	network.CreateEmptyNodes(atoi(line.c_str()));
+	network.createEmptyNodes(atoi(line.c_str()));
 
 	vector<NodePtr>::const_iterator it = network.nodes.begin();
 	while (!getline(is, line).eof())
@@ -62,7 +62,7 @@ istream& operator>>(istream& is, Network& network)
 	return is;
 }
 
-void Network::AddNode(NodePtr node)
+void Network::addNode(NodePtr node)
 {
 	node->id = sequenceId++;
 	node->ownerNetwork = this;
