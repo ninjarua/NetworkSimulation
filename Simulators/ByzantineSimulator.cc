@@ -144,7 +144,9 @@ void ByzantineSimulator::RunSimulationByInterval()
 			while (i < sampleRepeat)
 			{
 				byzantine.Refresh(network);
-				byzantine.RunFault(network);
+				//byzantine.RunFault(network);
+				cout << "Run to fault propagation with nothing prob: "
+					<< byzantine.nothingProb << Constants::tab << "byzantine prob: " << byzantine.byzantineProb << "\n";
 				AddOneStepReport();
 				count++;
 				i++;
@@ -201,39 +203,49 @@ void ByzantineSimulator::SetParameters(int totalTimes, string inputFolder, strin
 	params.outputFolder = outputFolder;
 }
 
-void ByzantineSimulator::Read(DeployingType deploying, TypeOfTolerance toleranceType,
-		string resultsFolder, string outputFilename, double startingNothing, double endingNothing)
+void ByzantineSimulator::Read(DeployingType deployingType, TypeOfTolerance toleranceType,
+		string resultsFolder, string outputFilename,
+		double startingNothing, double startingByz,
+		double intervalByz, double intervalNothing)
 {
 	SetTolerance(toleranceType);
-	SetDeployment(deploying, 100);
-	SetParameters(0, "", resultsFolder, startingNothing, 0, endingNothing, 1, 0.01, 0.01, 0);
+	SetDeployment(deployingType, 100);
+	int nothingStart = (int)(round(startingNothing * 100) / (int)(intervalNothing * 100));
+	int byzantineStart = (int)(round(startingByz * 100) / (int)(intervalByz * 100));
 
-	filesystem::path dir(params.outputFolder);
+	filesystem::path dir(resultsFolder);
 	if (!filesystem::exists(dir))
 		filesystem::create_directory(dir);
-	filesystem::path file(params.outputFolder + OS_SEP + GetResultFilename(params.nothingStart, params.byzantineStart));
-
-	Logger::Copy(file.string(), outputFilename);
+	filesystem::path file(resultsFolder + OS_SEP + GetResultFilename(nothingStart, byzantineStart));
+	if (filesystem::exists(file))
+		Logger::Copy(file.string(), outputFilename, false);
 }
 
-void ByzantineSimulator::RunReaderByThreadId(DeployingType deploying, TypeOfTolerance toleranceType, int threadId, int totalThread,
-		string resultsFolder, string outputFilename, double intervalNothing, bool isFirstInSlot)
+void ByzantineSimulator::ReadOneStep(DeployingType deployingType, TypeOfTolerance toleranceType,
+			string resultsFolder, string outputFilename, double nothingProb, double intervalByz)
+{
+	int byzantingEndI = 100 - nothingProb;
+	for (int i = 0; i <= byzantingEndI; i++)
+		Read(deployingType, toleranceType, resultsFolder, outputFilename, nothingProb, i * intervalByz);
+}
+
+void ByzantineSimulator::RunReaderByThreadId(DeployingType deployingType, TypeOfTolerance toleranceType, int threadId, int totalThread,
+		string resultsFolder, string outputFilename, bool isFirstInSlot, double intervalNothing)
 {
 	int slotSize = 50 / totalThread;
 	double startingNothing1 = intervalNothing * threadId * slotSize;
 	double endingNothing1 = startingNothing1 + ((slotSize - 1) * intervalNothing);
 	double startingNothing2 = (99 - (endingNothing1 * 100))/100;
-	double endingNothing2 = (99 - (startingNothing1 * 100))/ 100;
 	char number[5];
 	sprintf(number, "%d", threadId);
-	string outputDir = resultsFolder + OS_SEP + number;
+	string inputDir = resultsFolder + OS_SEP + number;
 	if (isFirstInSlot)
-		Read(deploying, toleranceType, outputDir, outputFilename, startingNothing1, endingNothing1);
+		Read(deployingType, toleranceType, inputDir, outputFilename, startingNothing1, 0);
 	else
-		Read(deploying, toleranceType, outputDir, outputFilename, startingNothing2, endingNothing2);
+		Read(deployingType, toleranceType, inputDir, outputFilename, startingNothing2, 0);
 }
 
-void ByzantineSimulator::RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
+void ByzantineSimulator::RunSimulationByThreadId(DeployingType deployingType, TypeOfTolerance toleranceType,
 		int threadId, int totalThread, int totalTimes,
 		string inputFolder, string outputFolder,
 		double intervalByz, double intervalNothing, int sampleSize, int networkSize)
@@ -248,13 +260,13 @@ void ByzantineSimulator::RunSimulationByThreadId(DeployingType deploying, TypeOf
 	string inputDir = inputFolder + OS_SEP + number;
 	string outputDir = outputFolder + OS_SEP + number;
 
-	RunSimulation(deploying, toleranceType, totalTimes, inputDir, outputDir, startingNothing1, 0,
+	RunSimulation(deployingType, toleranceType, totalTimes, inputDir, outputDir, startingNothing1, 0,
 			endingNothing1, 1 - endingNothing1, intervalByz, intervalNothing, sampleSize, networkSize);
-	RunSimulation(deploying, toleranceType, totalTimes, inputDir, outputDir, startingNothing2, 0,
+	RunSimulation(deployingType, toleranceType, totalTimes, inputDir, outputDir, startingNothing2, 0,
 			endingNothing2, 1 - endingNothing2, intervalByz, intervalNothing, sampleSize, networkSize);
 }
 
-void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int times,
+void ByzantineSimulator::RunSimulation(DeployingType deployingType, TypeOfTolerance toleranceType, int times,
 		string inputfolder, string outputFolder,
 		double startingNothing, double startingByzantine,
 		double endingNothing, double endingByzantine,
@@ -262,7 +274,7 @@ void ByzantineSimulator::RunSimulation(DeployingType deploying, TypeOfTolerance 
 		int sampleSize, int networkSize)
 {
 	SetTolerance(toleranceType);
-	SetDeployment(deploying, networkSize);
+	SetDeployment(deployingType, networkSize);
 
 	SetParameters(times, inputfolder, outputFolder, startingNothing, startingByzantine, endingNothing,
 			endingByzantine, intervalByz, intervalNothing, sampleSize);
@@ -313,7 +325,14 @@ void ByzantineSimulator::CallbackReader(ThreadArguments args, bool isFirstInSlot
 {
 	ByzantineSimulator* sim = new ByzantineSimulator();
 	sim->RunReaderByThreadId(args.deploying, args.toleranceType, args.threadId, args.numberCPUs,
-			args.inputFolder, args.output, 0.01, isFirstInSlot);
+			args.inputFolder, args.output, isFirstInSlot);
+}
+
+void ByzantineSimulator::CallbackOneStepReader(DeployingType deployingType, TypeOfTolerance toleranceType,
+		string inputFolder, string output, double nothingProb, double intervalByz)
+{
+	ByzantineSimulator* sim = new ByzantineSimulator();
+	sim->ReadOneStep(deployingType, toleranceType, inputFolder, output, nothingProb, intervalByz);
 }
 
 } /* namespace deployment */

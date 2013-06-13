@@ -51,16 +51,22 @@ public:
 
 	static void CallbackThread(ThreadArguments args);
 	static void CallbackReader(ThreadArguments args, bool isFirstInSlot);
+	static void CallbackOneStepReader(DeployingType deployingType, TypeOfTolerance toleranceType,
+			string inputFolder, string output, double nothingProb, double intervalByz = 0.01);
 
-	void RunReaderByThreadId(DeployingType deploying, TypeOfTolerance toleranceType, int threadId, int totalThread,
-			string resultsFolder, string outputFilename, double intervalNothing, bool isFirstInSlot);
-	void Read(DeployingType deploying, TypeOfTolerance toleranceType,
-			string resultsFolder, string outputFilename, double startingNothing, double endingNothing);
-	void RunSimulationByThreadId(DeployingType deploying, TypeOfTolerance toleranceType,
+	void RunReaderByThreadId(DeployingType deployingType, TypeOfTolerance toleranceType, int threadId, int totalThread,
+			string resultsFolder, string outputFilename, bool isFirstInSlot, double intervalNothing = 0.01);
+	void ReadOneStep(DeployingType deployingType, TypeOfTolerance toleranceType,
+			string resultsFolder, string outputFilename, double nothingProb, double intervalByz);
+	void Read(DeployingType deployingType, TypeOfTolerance toleranceType,
+			string resultsFolder, string outputFilename,
+			double startingNothing, double startingByz,
+			double intervalNothing = 0.01, double intervalByz = 0.01);
+	void RunSimulationByThreadId(DeployingType deployingType, TypeOfTolerance toleranceType,
 					int threadId, int totalThread, int totalTimes,
 					string inputFolder, string outputFolder,
 					double intervalByz, double intervalNothing, int sampleSize = 1, int networkSize = 100);
-	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
+	void RunSimulation(DeployingType deployingType, TypeOfTolerance toleranceType, int totalTimes,
 					string inputfolder, string outputFolder,
 					double startingNothing = 0, double startingByzantine = 0,
 					double endingNothing = 1, double endingByzantine = 1,

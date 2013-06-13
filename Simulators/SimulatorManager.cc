@@ -44,29 +44,35 @@ void SimulatorManager::RunOneStepSimulation(DeployingType deploying, TypeOfToler
 	//double byzProb = (double)rank * 0.01;
 	//cout << "rank: " << byzProb << "\n";
 	ByzantineSimulator* sim = new ByzantineSimulator();
-//	for (int i = 0; i < numberCPUs; i++)
-//	{
-		//double byzProb = (double)i * 0.01;
-		sim->RunSimulation(deploying, toleranceType, totalTimes, inputFolder, outputFolder, 0, 0, 0, 0, 0.01, 0.01, sampleSize);
-//	}
+	for (int i = 0; i < numberCPUs; i++)
+	{
+		double byzProb = (double)i * 0.01;
+		sim->RunSimulation(deploying, toleranceType, totalTimes, inputFolder, outputFolder, 0, byzProb, 0, byzProb, 0.01, 0.01, sampleSize);
+	}
 }
 
 void SimulatorManager::ReadResults(DeployingType deploying, TypeOfTolerance toleranceType,
-		string inputFolder, string outputFolder, int numberCPUs)
+		string inputFolder, string output, int numberCPUs)
 {
 	for (int i = 0; i < numberCPUs; i++)
 	{
 		ThreadArguments thread_data;
-		thread_data.set(deploying, toleranceType, 0, i, numberCPUs, inputFolder, outputFolder, 0);
+		thread_data.set(deploying, toleranceType, 0, i, numberCPUs, inputFolder, output, 0);
 		ByzantineSimulator::CallbackReader(thread_data, true);
 	}
 	for (int j = numberCPUs - 1; j >= 0; j--)
 	{
 		ThreadArguments thread_data;
-		thread_data.set(deploying, toleranceType, 0, j, numberCPUs, inputFolder, outputFolder, 0);
+		thread_data.set(deploying, toleranceType, 0, j, numberCPUs, inputFolder, output, 0);
 		ByzantineSimulator::CallbackReader(thread_data, false);
 	}
 	cout << "Success!" << endl;
+}
+
+void SimulatorManager::ReadOneStepResults(DeployingType deploying, TypeOfTolerance toleranceType,
+			string inputFolder, string output, double nothingProb, double intervalByz)
+{
+	ByzantineSimulator::CallbackOneStepReader(deploying, toleranceType, inputFolder, output, nothingProb, intervalByz);
 }
 
 }

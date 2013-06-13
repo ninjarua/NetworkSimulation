@@ -33,7 +33,7 @@ public:
 	}
 
 	//template<class T>
-	static void Copy(string sourceFile, string destFile)
+	static void Copy(string sourceFile, string destFile, bool endByLineBreak = true)
 	{
 		ifstream f(sourceFile.c_str(), ifstream::in);
 		ofstream of(destFile.c_str(), ofstream::out | ofstream::app);
@@ -42,7 +42,8 @@ public:
 		{
 			of << line << "\n";
 		}
-		of << "\n";
+		if(endByLineBreak)
+			of << "\n";
 		of.close();
 		f.close();
 	}
