@@ -18,11 +18,15 @@ NetworkGenerator::~NetworkGenerator() {
 	// TODO Auto-generated destructor stub
 }
 
-void NetworkGenerator::GenerateFromFiles(Network* network, string folder, int index)
+bool NetworkGenerator::GenerateFromFiles(Network* network, string folder, int index)
 {
-	ifstream f(GetFilenameByDeployment(folder, index).c_str(), ifstream::in);
+	string filename = GetFilenameByDeployment(folder, index);
+	if (filename == "")
+		return false;
+	ifstream f(filename.c_str(), ifstream::in);
 	f >> (*network);
 	f.close();
+	return true;
 }
 
 string NetworkGenerator::GetDeployingName()
@@ -69,6 +73,11 @@ string NetworkGenerator::GetFilenameByDeployment(string folder, int number)
 	if (!filesystem::exists(dir))
 		filesystem::create_directory(dir);
 	filesystem::path file(folder + OS_SEP + filename);
+	//cout << file.string() << Constants::endline;
+//	if (!filesystem::exists(file))
+//	{
+//		return "";
+//	}
 	return file.string();
 }
 

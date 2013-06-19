@@ -13,13 +13,15 @@
 namespace protocols {
 
 class CxHopTolerance: public protocols::ToleranceBase {
-	static void CallbackReceiveDeactivateMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message);
+	static void CallbackReceiveDeactivateMessage(void* ptr, Message* message);
 public:
 	CxHopTolerance();
 	virtual ~CxHopTolerance();
-	virtual void TolerateNode(NodePtr node, NodePtr byzantine);
+	virtual void TolerateNode(LinkPtr link);
 	string GetToleranceName();
-	void ReceiveDeactivateMessage(NodePtr sender, NodePtr receiver, Message* message);
+	void ReceiveDeactivateMessage(Message* message);
+	list<LinkPtr> GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodePtr exception);
+	bool ContainNode(vector<LinkPtr> links, NodePtr node);
 };
 
 } /* namespace protocols */

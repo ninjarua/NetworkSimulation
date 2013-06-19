@@ -16,7 +16,7 @@ class DeactivateMessage: public domain::Message {
 public:
 	int TTL;
 	DeactivateMessage();
-	DeactivateMessage(NodePtr sender, NodePtr receiver, const int& timeSlot);
+	DeactivateMessage(LinkPtr link, const int& timeSlot);
 	virtual ~DeactivateMessage();
 };
 

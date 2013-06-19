@@ -44,33 +44,40 @@ void ByzantineProtocol::Reset(Network* network)
     vector<NodePtr>::iterator it = network->nodes.begin();
     while(it != network->nodes.end())
     {
-        (*it)->state = Sane;
-        //(*it)->detectedByzantines.clear();
-        (*it)->disconnectedNodes.clear();
-        (*it)->connectedAreaNumber = 0;
+//        (*it)->state = Sane;
+//        //(*it)->disconnectedNodes.clear();
+//        (*it)->connectedAreaNumber = 0;
+    	(*it)->Reset();
         it++;
     }
     statisticInfo->Reset();
 }
 
-void ByzantineProtocol::RandomByzantine(Network* network)
+void ByzantineProtocol::RandomByzantine(Network* network, bool selectHub, int averageDegree)
 {
     int seed = rand() % network->nodes.size();
-    network->nodes.at(seed)->state = Infected;
+
+    while (selectHub && network->nodes[seed]->D < averageDegree * 3)
+    {
+    	seed = rand() % network->nodes.size();
+    }
+    network->nodes[seed]->state = Infected;
     network->info.seedId = seed;
     network->info.numberOfInfectedNodes = 1;
     //PropagateFault(network);
 }
 
-void ByzantineProtocol::CallbackReceiveByzantineMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message)
+void ByzantineProtocol::CallbackReceiveByzantineMessage(void* ptr, Message* message)
 {
 	ByzantineProtocol* instance = static_cast<ByzantineProtocol*>(ptr);
-	instance->ReceiveByzantineMessage(sender, receiver, message);
+	instance->ReceiveByzantineMessage(message);
 }
 
-void ByzantineProtocol::ReceiveByzantineMessage(NodePtr sender, NodePtr receiver, Message* message)
+void ByzantineProtocol::ReceiveByzantineMessage(Message* message)
 {
-    if (receiver->state == Infected || receiver->disconnectedNodes.find(sender) != receiver->disconnectedNodes.end())
+	NodeState destState = message->link->dest->state;
+    if (destState == Infected || destState == Inactive
+    		|| message->link->state == Cut)
     {
         message->status = Expired;
         return;
@@ -78,24 +85,21 @@ void ByzantineProtocol::ReceiveByzantineMessage(NodePtr sender, NodePtr receiver
     double next = (double)rand()/RAND_MAX;
     if (next < byzantineProb)
     {
-        if (receiver->state != Inactive)
-        {
-            receiver->state = Infected;
-            receiver->ownerNetwork->info.numberOfInfectedNodes++;
-            // Send byzantine message to attack its neighbors
-            BroadcastMessage(receiver, CallbackReceiveByzantineMessage);
-        }
+		message->link->dest->state = Infected;
+		message->link->dest->ownerNetwork->info.numberOfInfectedNodes++;
+		// Send byzantine message to attack its neighbors
+		BroadcastMessage(message->link->dest, CallbackReceiveByzantineMessage);
     }
     else if (next < byzantineProb + nothingProb)
     {
         // Send byzantine message to attack again
-        SendMessage(sender, receiver, CallbackReceiveByzantineMessage);
+        SendMessage(message->link, CallbackReceiveByzantineMessage);
     }
     else
     {
-        if (receiver->state != Inactive && receiver->state != Infected)
+        if (destState != Infected)
         {
-            tolerance->TolerateNode(receiver, sender);
+            tolerance->TolerateNode(message->link);//->dest, message->link->src);
         }
     }
     message->status = Expired;
@@ -142,25 +146,28 @@ void ByzantineProtocol::Finalize(Network* network)
 
 void ByzantineProtocol::BroadcastMessage(NodePtr sender, MessageReaction receivingAction)
 {
-	list<NodePtr>::iterator it = sender->neighbors.begin();
-    for (; it != sender->neighbors.end(); it++)// Node neighbor in sender.Neighbors)
+//	list<NodePtr>::iterator it = sender->neighbors.begin();
+//    for (; it != sender->neighbors.end(); it++)// Node neighbor in sender.Neighbors)
+	vector<LinkPtr>::iterator it = sender->links.begin();
+	for(; it != sender->links.end(); it++)
     {
-        if ((*it)->state != Inactive)
+        if ((*it)->state != Cut && (*it)->dest->state != Inactive)
         {
-            Message* message = new ByzantineMessage(sender, *it, sender->ownerNetwork->currentTimeSlot, byzantineProb, nothingProb);
+            Message* message = new ByzantineMessage((*it), sender->ownerNetwork->currentTimeSlot,
+            					byzantineProb, nothingProb);
             message->receivingAction = receivingAction;
             AddNewMessageToNetwork(sender->ownerNetwork, message);
         }
     }
 }
 
-void ByzantineProtocol::SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction)
+void ByzantineProtocol::SendMessage(LinkPtr link, MessageReaction receivingAction)
 {
-    if (receiver->state == Inactive)
+    if (link->dest->state == Inactive)
         return;
-    Message* message = new ByzantineMessage(sender, receiver, sender->ownerNetwork->currentTimeSlot, byzantineProb, nothingProb);
+    Message* message = new ByzantineMessage(link, link->src->ownerNetwork->currentTimeSlot, byzantineProb, nothingProb);
     message->receivingAction = receivingAction;
-    AddNewMessageToNetwork(sender->ownerNetwork, message);
+    AddNewMessageToNetwork(link->src->ownerNetwork, message);
 }
 
 void ByzantineProtocol::RunNetwork(Network* network, void (*startAction)(void* ptr, Network*), bool (*networkCondition)(const Network&))
@@ -169,12 +176,6 @@ void ByzantineProtocol::RunNetwork(Network* network, void (*startAction)(void* p
     bool isContinue = true;
     do
     {
-//    	vector<NodePtr>::iterator it = network->info.listDetectors.begin();
-//        for (; it != network->info.listDetectors.end(); it++)
-//        {
-//            (*it)->state = Inactive;
-//        }
-//        network->info.listDetectors.clear();
     	isContinue = !RunStepCheckFinish(network, (*networkCondition));
     } while (isContinue);
 }
@@ -193,8 +194,8 @@ void ByzantineProtocol::CallbackPropagateFault(void* ptr, Network* network)
 void ByzantineProtocol::PropagateFault(Network* network)
 {
 	Node* firstInfected = network->nodes[network->info.seedId];
-	if (Tools::Exists(firstInfected->neighbors, &Node::isNodeState, Sane))
-		BroadcastMessage(firstInfected, CallbackReceiveByzantineMessage);
+	//if (Tools::Exists(firstInfected->neighbors, &Node::isNodeState, Sane))
+	BroadcastMessage(firstInfected, CallbackReceiveByzantineMessage);
 	network->currentTimeSlot++;
 }
 

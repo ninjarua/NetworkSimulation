@@ -9,8 +9,8 @@
 
 namespace domain {
 
-ByzantineMessage::ByzantineMessage(NodePtr sender, NodePtr receiver, const int& timeSlot, double byzantinePb, double nothingPb)
-	: Message(sender, receiver, timeSlot)
+ByzantineMessage::ByzantineMessage(LinkPtr link, const int& timeSlot, double byzantinePb, double nothingPb)
+	: Message(link, timeSlot)
 {
 	byzantineProb = byzantinePb;
 	nothingProb = nothingPb;

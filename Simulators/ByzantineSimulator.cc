@@ -139,14 +139,17 @@ void ByzantineSimulator::RunSimulationByInterval()
 		int sampleId = 0;
 		while (count < prediction)
 		{
-			generator->GenerateFromFiles(network, params.inputFolder, sampleId);
+			//cout << "Generating network from files: " << params.inputFolder << "\n";
+			bool result = generator->GenerateFromFiles(network, params.inputFolder, sampleId);
+			if (!result)
+				return;
 			int i = 0;
 			while (i < sampleRepeat)
 			{
 				byzantine.Refresh(network);
-				//byzantine.RunFault(network);
-				cout << "Run to fault propagation with nothing prob: "
-					<< byzantine.nothingProb << Constants::tab << "byzantine prob: " << byzantine.byzantineProb << "\n";
+				byzantine.RunFault(network);
+				//cout << "Run to fault propagation with nothing prob: "
+					//<< byzantine.nothingProb << Constants::tab << "byzantine prob: " << byzantine.byzantineProb << "\n";
 				AddOneStepReport();
 				count++;
 				i++;
@@ -257,7 +260,7 @@ void ByzantineSimulator::RunSimulationByThreadId(DeployingType deployingType, Ty
 	double endingNothing2 = (99 - (startingNothing1 * 100))/ 100;
 	char number[5];
 	sprintf(number, "%d", threadId);
-	string inputDir = inputFolder + OS_SEP + number;
+	string inputDir = inputFolder;// + OS_SEP + number;
 	string outputDir = outputFolder + OS_SEP + number;
 
 	RunSimulation(deployingType, toleranceType, totalTimes, inputDir, outputDir, startingNothing1, 0,
@@ -279,7 +282,6 @@ void ByzantineSimulator::RunSimulation(DeployingType deployingType, TypeOfTolera
 	SetParameters(times, inputfolder, outputFolder, startingNothing, startingByzantine, endingNothing,
 			endingByzantine, intervalByz, intervalNothing, sampleSize);
 	//double ratio = round((double) params.nothingSteps / params.byzantineSteps);
-
 	if (params.nothingStart == params.nothingEnd)
 	{
 		for (int j = params.byzantineStart; j <= params.byzantineEnd; j++)
@@ -294,7 +296,7 @@ void ByzantineSimulator::RunSimulation(DeployingType deployingType, TypeOfTolera
 			RunOneStep(j * intervalByz, params.nothingStart * intervalNothing, times);
 		for (int i = params.nothingStart + 1; i < params.nothingEnd && i < params.nothingSteps; i++)
 		{
-			for (int j = 0; j <= params.nothingSteps - i; i++)// / ratio); j++)
+			for (int j = 0; j <= params.nothingSteps - i; j++)// / ratio); j++)
 				RunOneStep(j * intervalByz, i * intervalNothing, times);
 		}
 		for (int j = 0; j <= params.byzantineEnd && j <= params.nothingSteps - params.nothingEnd; j++)
@@ -308,6 +310,17 @@ void ByzantineSimulator::RunOneStep(double byzantineProb, double nothingProb, in
 	byzantine.Initialize(network, byzantineProb, nothingProb);
 	RunSimulationByInterval();
 	PrintToFile(*byzantine.report, GetResultFilename(params.nothingStart, params.byzantineStart));
+}
+
+void ByzantineSimulator::CallbackThreadOneStep(ThreadArguments args)
+{
+	ByzantineSimulator* sim = new ByzantineSimulator();
+	int interval = 101/args.numberCPUs;
+
+	double startByzProb = (double)args.threadId * interval * 0.01;
+	double endByzProb = (double)(args.threadId + 1) * interval * 0.01 - 0.01;
+	sim->RunSimulation(args.deploying, args.toleranceType,
+			args.totalTimes, args.inputFolder, args.output, 0, startByzProb, 0, endByzProb, 0.01, 0.01, args.sampleSize);
 }
 
 void ByzantineSimulator::CallbackThread(ThreadArguments args)

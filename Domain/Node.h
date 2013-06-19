@@ -14,6 +14,8 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <map>
+#include "Link.h"
 //#include <boost/smart_ptr/shared_ptr.hpp>
 
 //using namespace boost;
@@ -32,8 +34,9 @@ public:
 	double posY;
 	NodeState state;
 	int D;
-	list<NodePtr> neighbors;
-	set<NodePtr> disconnectedNodes;
+	//list<NodePtr> neighbors;
+	vector<LinkPtr> links;
+//	set<NodePtr> disconnectedNodes;
 	int connectedAreaNumber;
 
 	Node();
@@ -42,7 +45,7 @@ public:
 	virtual ~Node();
 
 	void Reset();
-	int addNeighbor(NodePtr node);
+	int addNeighbor(LinkPtr link);
 
 	bool static isConnectedAreaNumberZero(const Node& node);
 	bool static isConnectedAreaNumberEqual(const Node& node, int number);

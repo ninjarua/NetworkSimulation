@@ -28,6 +28,8 @@ Node::Node(Network* network) {
 }
 
 Node::~Node() {
+	Tools::EraseAll(links);
+	//neighbors.clear();
 }
 
 void Node::Initialize()
@@ -64,21 +66,25 @@ bool Node::isNodeState(const Node& node, const NodeState& state)
 
 void Node::CreateLists()
 {
-	neighbors = list<NodePtr>();
+	//neighbors = list<NodePtr>();
+	links = vector<LinkPtr>();
 	//detectedByzantines = set<NodePtr>();
-	disconnectedNodes = set<NodePtr>();
+	//disconnectedNodes = set<NodePtr>();
 }
 
 void Node::Reset()
 {
-//	neighbors.clear();
-//	detectedByzantines.clear();
-//	disconnectedNodes.clear();
+    state = Sane;
+    connectedAreaNumber = 0;
+    vector<LinkPtr>::iterator it = links.begin();
+    for(; it != links.end(); it++)
+    	(*it)->state = Active;
 }
 
-int Node::addNeighbor(NodePtr node)
+int Node::addNeighbor(LinkPtr link)
 {
-	neighbors.push_back(node);
+	//neighbors.push_back(node);
+	links.push_back(link);
 	D++;
 	return D;
 }
@@ -102,10 +108,10 @@ ofstream& operator<<(ofstream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
 				<< Constants::tab << node.posY;
-	list<NodePtr>::const_iterator it = node.neighbors.begin();
-	while (it != node.neighbors.end())
+	vector<LinkPtr>::const_iterator it = node.links.begin();
+	while (it != node.links.end())
 	{
-		os << Constants::tab << (*it)->id;
+		os << Constants::tab << (*it)->dest->id;
 		it++;
 	}
 	os << Constants::endline;
@@ -116,10 +122,10 @@ ostream& operator<<(ostream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
 				<< Constants::tab << node.posY;
-	list<NodePtr>::const_iterator it = node.neighbors.begin();
-	while (it != node.neighbors.end())
+	vector<LinkPtr>::const_iterator it = node.links.begin();
+	while (it != node.links.end())
 	{
-		os << Constants::tab << (*it)->id;
+		os << Constants::tab << (*it)->dest->id;
 		it++;
 	}
 	os << Constants::endline;
@@ -133,7 +139,10 @@ istringstream& operator>>(istringstream& is, Node& node)
 	int id;
 	while (is >> id)
 	{
-		node.neighbors.push_back(node.ownerNetwork->nodes.at(id));
+		//node.ownerNetwork->makeNeighbors(node.id, id);
+		//new Link(&node, node.ownerNetwork->nodes[id]);
+		node.addNeighbor(new Link(&node, node.ownerNetwork->nodes[id]));
+		//node.neighbors.push_back(node.ownerNetwork->nodes.at(id));
 	}
 	return is;
 }

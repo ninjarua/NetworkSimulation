@@ -31,10 +31,9 @@ public:
     int currentTimeSlot;
 
     vector<Node*> nodes;
-    list<Message*> messages;
     // is used to overcome the size() function of list
     int messageCount;
-    list<Message*> newMessages;
+    list<Message*> messages;
     bool hasTopology;
 	NetworkInfo info;
 
@@ -46,13 +45,14 @@ public:
 
 	void addNode(NodePtr node);
 	void createEmptyNodes(int n);
+	void makeNeighbors(int id1, int id2);
 	static bool noNewMessageInNetwork(const Network& network);
 	static int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 
 private:
 	static int ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
 			bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
-	static stack<NodePtr> LookingForNode(const list<NodePtr>& listInput, bool (*nodeCondition)(const Node&, const NodeState&),
+	static stack<NodePtr> LookingForNode(const vector<LinkPtr>& links, bool (*nodeCondition)(const Node&, const NodeState&),
 			const NodeState& state, int settingNumber);
 	static void AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
     		const NodeState& state, int number, bool (*filter)(NodePtr, NodePtr, int));

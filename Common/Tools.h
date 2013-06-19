@@ -12,6 +12,7 @@ using namespace std;
 #include <iostream>
 #include <vector>
 #include <list>
+#include <map>
 //#include <boost/smart_ptr/shared_ptr.hpp>
 #include "Logger.h"
 
@@ -22,10 +23,23 @@ public:
 	Tools(){};
 	virtual ~Tools();
 
+	template<typename U, typename T>
+	static void EraseAll(map<U, T*>& inputMap)
+	{
+		typename map<U, T*>::iterator it = inputMap.begin();
+		while(it != inputMap.end())
+		{
+			U key = it->first;
+			delete it->second;
+			it++;
+			inputMap.erase(key);
+		}
+		inputMap.clear();
+	}
+
 	template<typename T>
 	static void EraseAll(list<T*>& listInput)
 	{
-		list<T*> result = list<T*>();
 		typename list<T*>::iterator it = listInput.begin();
 		while(it != listInput.end())
 		{
@@ -39,9 +53,10 @@ public:
 	static void EraseAll(vector<T*>& listInput)
 	{
 		vector<T*> result = vector<T*>();
-		typename vector<T*>::iterator it = listInput.begin();
-		while(it != listInput.end())
+		typename vector<T*>::iterator it = listInput.end();
+		while(it != listInput.begin())
 		{
+			it--;
 			delete *it;
 			it = listInput.erase(it);
 		}

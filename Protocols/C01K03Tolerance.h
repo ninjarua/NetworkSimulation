@@ -13,13 +13,13 @@
 namespace protocols {
 
 class C01K03Tolerance: public ToleranceBase {
-	static void CallbackReceiveDeactivateMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message);
+	static void CallbackReceiveDeactivateMessage(void* ptr, Message* message);
 public:
 	C01K03Tolerance();
 	virtual ~C01K03Tolerance();
-	virtual void TolerateNode(NodePtr node, NodePtr byzantine);
+	virtual void TolerateNode(LinkPtr link);
 	string GetToleranceName();
-	void ReceiveDeactivateMessage(NodePtr sender, NodePtr receiver, Message* message);
+	void ReceiveDeactivateMessage(Message* message);
 };
 
 } /* namespace protocols */

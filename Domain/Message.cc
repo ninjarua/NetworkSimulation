@@ -13,9 +13,8 @@ Message::Message() {
 	//receivingAction = NULL;
 }
 
-Message::Message(NodePtr s, NodePtr r, const int& t) {
-	sender = s;
-	receiver = r;
+Message::Message(LinkPtr l, const int& t) {
+	link = l;
 	creationTime = t;
 	status = Sending;
 	//receivingAction = NULL;
@@ -38,7 +37,7 @@ ostream& operator<<(ostream& ofs, const Message& message)
 {
 	string logString = message.GetMessageName() + ": ";
 	ofs <<  logString;
-	ofs << message.sender->id << " to " << message.receiver->id << "\n";
+	ofs << message.link->src->id << " to " << message.link->dest->id << "\n";
 	return ofs;
 }
 
@@ -46,7 +45,7 @@ ofstream& operator<<(ofstream& ofs, const Message& message)
 {
 	string logString = message.GetMessageName() + ": ";
 	ofs <<  logString;
-	ofs << message.sender->id << " to " << message.receiver->id << "\n";
+	ofs << message.link->src->id << " to " << message.link->dest->id << "\n";
 	return ofs;
 }
 

@@ -50,6 +50,7 @@ public:
 	virtual void SetDeployment(DeployingType deployingType, int networkSize);
 
 	static void CallbackThread(ThreadArguments args);
+	static void CallbackThreadOneStep(ThreadArguments args);
 	static void CallbackReader(ThreadArguments args, bool isFirstInSlot);
 	static void CallbackOneStepReader(DeployingType deployingType, TypeOfTolerance toleranceType,
 			string inputFolder, string output, double nothingProb, double intervalByz = 0.01);

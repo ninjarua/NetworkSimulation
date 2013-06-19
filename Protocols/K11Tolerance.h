@@ -13,12 +13,12 @@
 namespace protocols {
 
 class K11Tolerance: public ToleranceBase {
-	static void CallbackReceiveDeactivateMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message);
+	static void CallbackReceiveDeactivateMessage(void* ptr, Message* message);
 public:
 	K11Tolerance();
 	virtual ~K11Tolerance();
-	void TolerateNode(NodePtr node, NodePtr byzantine);
-	void ReceiveDeactivateMessage(NodePtr sender, NodePtr receiver, Message* message);
+	void TolerateNode(LinkPtr link);
+	void ReceiveDeactivateMessage(Message* message);
 };
 
 } /* namespace protocols */

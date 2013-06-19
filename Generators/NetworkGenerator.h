@@ -27,7 +27,7 @@ public:
 	NetworkGenerator();
 	virtual ~NetworkGenerator();
 	virtual string GenerateToFiles(Network* network, string folder, int times = 1);
-	virtual void GenerateFromFiles(Network* network, string folder, int index = 0);
+	virtual bool GenerateFromFiles(Network* network, string folder, int index = 0);
 	string GetDeployingName();
 
 protected:

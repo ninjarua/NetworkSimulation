@@ -12,12 +12,11 @@
 namespace protocols {
 
 K03Tolerance::K03Tolerance() {
-	// TODO Auto-generated constructor stub
 
 }
 
 K03Tolerance::~K03Tolerance() {
-	// TODO Auto-generated destructor stub
+
 }
 
 string K03Tolerance::GetToleranceName()
@@ -25,42 +24,44 @@ string K03Tolerance::GetToleranceName()
 	return "K3";
 }
 
-void K03Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
+void K03Tolerance::TolerateNode(LinkPtr link)
 {
-	ToleranceBase::TolerateNode(node, byzantine);
+	ToleranceBase::TolerateNode(link);
+	NodePtr node = link->dest;
 	node->state = Inactive;
 	node->ownerNetwork->info.numberOfInactiveNodes++;
 
-	list<NodePtr>::iterator it = node->neighbors.begin();
-	for (; it != node->neighbors.end(); it++)
+	vector<LinkPtr>::iterator it = node->links.begin();
+	for (; it != node->links.end(); it++)
 	{
-		if ((*it)->state == Infected || (*it)->state == Inactive)
+		if ((*it)->dest->state == Infected || (*it)->dest->state == Inactive)
 			continue;
-		if (NetworkTools::HasCommonNeighborsExcept(*it, byzantine, node))
+		if (NetworkTools::HasCommonNeighborsExcept((*it)->dest, link->src, node))
 		{
-			DeactivateMessage* message = new DeactivateMessage(node, *it, (*it)->ownerNetwork->currentTimeSlot);
+			DeactivateMessage* message = new DeactivateMessage((*it), node->ownerNetwork->currentTimeSlot);
 			message->TTL = 0;
-			SendMessage(node, (*it), CallbackReceiveDeactivateMessage, message);
+			SendMessage((*it), CallbackReceiveDeactivateMessage, message);
 		}
 	}
 }
 
-void K03Tolerance::ReceiveDeactivateMessage(NodePtr sender, NodePtr receiver, Message* message)
+void K03Tolerance::ReceiveDeactivateMessage(Message* message)
 {
-	if (receiver->state == Infected)
+	NodePtr node = message->link->dest;
+	if (node->state == Infected)
 		return;
-	if (receiver->state == Sane)
+	if (node->state == Sane)
 	{
-		receiver->state = Inactive;
-		receiver->ownerNetwork->info.numberOfInactiveNodes++;
+		node->state = Inactive;
+		node->ownerNetwork->info.numberOfInactiveNodes++;
 	}
 	message->status = Expired;
 }
 
-void K03Tolerance::CallbackReceiveDeactivateMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message)
+void K03Tolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* message)
 {
 	K03Tolerance* ptrK3 = (K03Tolerance*)ptr;
-	ptrK3->ReceiveDeactivateMessage(sender, receiver, message);
+	ptrK3->ReceiveDeactivateMessage(message);
 }
 
 } /* namespace domain */

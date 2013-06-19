@@ -29,7 +29,7 @@ string ToleranceBase::GetToleranceName()
 //    return _instance;
 //}
 
-void ToleranceBase::TolerateNode(NodePtr node, NodePtr byzantine)
+void ToleranceBase::TolerateNode(LinkPtr link)
 {
 //	node->detectedByzantines.insert(byzantine);
 }
@@ -39,10 +39,5 @@ void ToleranceBase::TolerateNode(NodePtr node, NodePtr byzantine)
 //	ToleranceBase* basePtr = (ToleranceBase*)ptr;
 //	basePtr->ReceiveDeactivateMessage(sender, receiver, message);
 //}
-
-void ToleranceBase::ReceiveDeactivateMessage(Node& sender, Node& receiver, Message& message)
-{
-
-}
 
 } /* namespace protocols */

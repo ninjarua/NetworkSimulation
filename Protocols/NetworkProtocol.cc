@@ -19,38 +19,38 @@ NetworkProtocol::~NetworkProtocol() {
 
 void NetworkProtocol::AddNewMessageToNetwork(Network*& network, Message*& message)
 {
-	network->newMessages.push_back(message);
+	network->messages.push_back(message);
 	network->messageCount++;
 }
 
 void NetworkProtocol::BroadcastMessage(NodePtr sender, MessageReaction receivingAction)
 {
-	list<NodePtr>::iterator it;
-    for (it = sender->neighbors.begin(); it != sender->neighbors.end(); it++)// Node neighbor in sender.Neighbors)
+	vector<LinkPtr>::iterator it;
+    for (it = sender->links.begin(); it != sender->links.end(); it++)// Node neighbor in sender.Neighbors)
     {
-        if ((*it)->state != Inactive)
+        if ((*it)->state != Cut && (*it)->dest->state != Inactive)
         {
-            Message* message = new Message(sender, *it, sender->ownerNetwork->currentTimeSlot);
+            Message* message = new Message((*it), sender->ownerNetwork->currentTimeSlot);
             message->receivingAction = receivingAction;
             AddNewMessageToNetwork(sender->ownerNetwork, message);
         }
     }
 }
 
-void NetworkProtocol::SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction)
+void NetworkProtocol::SendMessage(LinkPtr link, MessageReaction receivingAction)
 {
-    if (receiver->state == Inactive)
+    if (link->dest->state == Inactive)
         return;
-    Message* message = new Message(sender, receiver, sender->ownerNetwork->currentTimeSlot);
+    Message* message = new Message(link, link->src->ownerNetwork->currentTimeSlot);
     message->receivingAction = receivingAction;
-    AddNewMessageToNetwork(receiver->ownerNetwork, message);
+    AddNewMessageToNetwork(link->dest->ownerNetwork, message);
 }
 
-void NetworkProtocol::SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction, Message* message)
+void NetworkProtocol::SendMessage(LinkPtr link, MessageReaction receivingAction, Message* message)
 {
-    message->creationTime = sender->ownerNetwork->currentTimeSlot;
+    message->creationTime = link->src->ownerNetwork->currentTimeSlot;
     message->receivingAction = receivingAction;
-    AddNewMessageToNetwork(receiver->ownerNetwork, message);
+    AddNewMessageToNetwork(link->dest->ownerNetwork, message);
 }
 
 void NetworkProtocol::Initialize(Network* network)
@@ -63,9 +63,8 @@ void NetworkProtocol::Reset(Network* network)
 	network->info.numberOfDetectors = 0;
 	network->info.numberOfInfectedNodes = 0;
 	network->info.numberOfInactiveNodes = 0;
-    //network->messages.clear();
     network->messageCount = 0;
-    network->newMessages.clear();
+    network->messages.clear();
     network->currentTimeSlot = 0;
 }
 
@@ -82,13 +81,13 @@ void NetworkProtocol::RunNetworkStep(Network* network)
 {
     while (network->messageCount > 0)
     {
-		list<Message*>::iterator it = network->newMessages.begin();
-    	if (it != network->newMessages.end())
+		list<Message*>::iterator it = network->messages.begin();
+    	if (it != network->messages.end())
     	{
-    		(*it)->receivingAction(this, (*it)->sender, (*it)->receiver, (*it));
+    		(*it)->receivingAction(this, (*it));
     		//Logger::Write(*(*it), GetLogFilename(), ofstream::out | ofstream::app);
     		delete *it;
-    		network->newMessages.pop_front();
+    		network->messages.pop_front();
     		network->messageCount--;
     	}
     }

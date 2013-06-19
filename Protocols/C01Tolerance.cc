@@ -22,10 +22,10 @@ string C01Tolerance::GetToleranceName()
 	return "C1";
 }
 
-void C01Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
+void C01Tolerance::TolerateNode(LinkPtr link)
 {
-	ToleranceBase::TolerateNode(node, byzantine);
-	node->disconnectedNodes.insert(byzantine);
+	ToleranceBase::TolerateNode(link);
+	link->state = Cut;
 }
 
 } /* namespace generators */

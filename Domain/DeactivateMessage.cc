@@ -14,8 +14,8 @@ DeactivateMessage::DeactivateMessage() {
 
 }
 
-DeactivateMessage::DeactivateMessage(NodePtr sender, NodePtr receiver, const int& timeSlot)
-	: Message(sender, receiver, timeSlot)
+DeactivateMessage::DeactivateMessage(LinkPtr link, const int& timeSlot)
+	: Message(link, timeSlot)
 {
 
 }

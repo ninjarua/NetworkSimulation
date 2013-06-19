@@ -46,33 +46,61 @@ void ScaleFreeDeploying::increaseClique(Network* network, int newSize)
 		return;
 	for(int i=0; i < newSize - 1; i++)
 	{
-		(network->nodes[i])->addNeighbor(network->nodes[newSize - 1]); // neighbors.push_back(network->nodes[newSize]);
-		(network->nodes[newSize - 1])->addNeighbor(network->nodes[i]);
+		network->makeNeighbors(i, newSize - 1);
 	}
+}
+
+bool insertToSortedList(list<int>& lstInt, const int& number)
+{
+	list<int>::iterator right = lstInt.end();
+	while (right != lstInt.begin() && number < (*right))
+	{
+		right--;
+	}
+	if (number == (*right))
+		return false;
+	else if (right == lstInt.begin() && number < (*lstInt.begin()))
+	{
+		lstInt.insert(right, number);
+	}
+	else
+	{
+		right++;
+		lstInt.insert(right, number);
+	}
+	return true;
 }
 
 void ScaleFreeDeploying::attachNewNode(Network* network, int index, unsigned long& totalDegree)
 {
-	vector<int> connectId = vector<int>();
+	list<int> connectId = list<int>();
+	//int count = 0;
 	for(int i = 0; i < mEdge; i++)
 	{
-		double p0 = (double)rand() / RAND_MAX;
-		double p = 0;
-		int j = 0;
-		for (; p < p0 && j < index; j++)
+		int j;
+		bool result = false;
+		while(!result)
 		{
-			p += (double)network->nodes[j]->D / totalDegree;
+			double p0 = (double)rand() / RAND_MAX;
+			double p = 0;
+			j = 0;
+			for (; p < p0 && j < index; j++)
+			{
+				p += (double)network->nodes[j]->D / totalDegree;
+			}
+			if (j <= index)
+				result = insertToSortedList(connectId, j - 1);
+			else
+				result = false;
 		}
-		if (j < index)
-			connectId.push_back(j);
+		//count++;
 	}
-	int addingSize = connectId.size();
-	for (int i = 0; i < addingSize; i++)
+	list<int>::iterator it = connectId.begin();
+	for (; it != connectId.end(); it++)
 	{
-		network->nodes[connectId[i]]->addNeighbor(network->nodes[index]);
-		network->nodes[index]->addNeighbor(network->nodes[connectId[i]]);
+		network->makeNeighbors(*it, index);
 	}
-	totalDegree += 2 * addingSize;
+	totalDegree += 2 * mEdge;
 	connectId.clear();
 }
 

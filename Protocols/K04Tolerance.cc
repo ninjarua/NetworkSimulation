@@ -11,46 +11,47 @@
 namespace protocols {
 
 K04Tolerance::K04Tolerance() : ToleranceBase() {
-	// TODO Auto-generated constructor stub
 
 }
 
 K04Tolerance::~K04Tolerance() {
-	// TODO Auto-generated destructor stub
+
 }
 
-void K04Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
+void K04Tolerance::TolerateNode(LinkPtr link)
 {
-	ToleranceBase::TolerateNode(node, byzantine);
+	ToleranceBase::TolerateNode(link);
+	NodePtr node = link->dest;
 	node->state = Inactive;
 	node->ownerNetwork->info.numberOfInactiveNodes++;
 
-	list<NodePtr>::iterator it = node->neighbors.begin();
-	for (; it != node->neighbors.end(); it++)
+	vector<LinkPtr>::iterator it = node->links.begin();
+	for (; it != node->links.end(); it++)
 	{
-		if ((*it)->state == Infected || (*it)->state == Inactive)
+		if ((*it)->dest->state == Infected || (*it)->dest->state == Inactive)
 			continue;
-		DeactivateMessage* message = new DeactivateMessage(node, (*it), (*it)->ownerNetwork->currentTimeSlot);
+		DeactivateMessage* message = new DeactivateMessage((*it), node->ownerNetwork->currentTimeSlot);
 		message->TTL = 0;
-		SendMessage(node, (*it), CallbackReceiveDeactivateMessage, message);
+		SendMessage((*it), CallbackReceiveDeactivateMessage, message);
 	}
 }
 
-void K04Tolerance::ReceiveDeactivateMessage(NodePtr sender, NodePtr receiver, Message* message)
+void K04Tolerance::ReceiveDeactivateMessage(Message* message)
 {
-	if (receiver->state == Infected)
+	NodePtr node = message->link->dest;
+	if (node->state == Infected)
 		return;
-	if (receiver->state == Sane)
+	if (node->state == Sane)
 	{
-		receiver->state = Inactive;
-		receiver->ownerNetwork->info.numberOfInactiveNodes++;
+		node->state = Inactive;
+		node->ownerNetwork->info.numberOfInactiveNodes++;
 	}
 	message->status = Expired;
 }
 
-void K04Tolerance::CallbackReceiveDeactivateMessage(void* ptr, NodePtr sender, NodePtr receiver, Message* message)
+void K04Tolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* message)
 {
 	K04Tolerance* ptrK4 = (K04Tolerance*)ptr;
-	ptrK4->ReceiveDeactivateMessage(sender, receiver, message);
+	ptrK4->ReceiveDeactivateMessage(message);
 }
 } /* namespace protocols */

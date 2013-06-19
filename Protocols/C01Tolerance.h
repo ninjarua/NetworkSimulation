@@ -17,7 +17,7 @@ public:
 	C01Tolerance();
 	virtual ~C01Tolerance();
 
-	virtual void TolerateNode(NodePtr node, NodePtr byzantine);
+	virtual void TolerateNode(LinkPtr link);
 
 	string GetToleranceName();
 };

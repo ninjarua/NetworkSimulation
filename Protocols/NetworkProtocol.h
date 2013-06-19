@@ -26,8 +26,8 @@ public:
 	virtual ~NetworkProtocol();
 	//typedef void (NetworkProtocol::*receivingMessage)(Node*, Node*, Message*);
 	virtual void BroadcastMessage(NodePtr sender, MessageReaction receivingAction);//, object content);
-	virtual void SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction);//, string content);
-	virtual void SendMessage(NodePtr sender, NodePtr receiver, MessageReaction receivingAction, Message* message);
+	virtual void SendMessage(LinkPtr link, MessageReaction receivingAction);//, string content);
+	virtual void SendMessage(LinkPtr link, MessageReaction receivingAction, Message* message);
 
 	virtual void Initialize(Network* network);
 	virtual void Reset(Network* network);

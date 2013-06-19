@@ -6,6 +6,7 @@
  */
 
 #include "Network.h"
+#include "Link.h"
 namespace domain {
 
 Network::Network() {
@@ -15,7 +16,7 @@ Network::Network() {
 	info = NetworkInfo();
 	nodes = vector<NodePtr>();
 	hasTopology = false;
-	newMessages = list<Message*>();
+	messages = list<Message*>();
 }
 
 Network::~Network() {
@@ -25,15 +26,20 @@ void Network::createEmptyNodes(int n)
 {
 	messageCount = 0;
 	Tools::EraseAll(nodes);
-	//Tools::EraseAll(messages);
-	Tools::EraseAll(newMessages);
-	//nodes = new vector<Node*>();
+	Tools::EraseAll(messages);
 	sequenceId = 0;
 	for (int i=0; i<n; i++)
 	{
 		NodePtr newNode(new Node());
 		addNode(newNode);
 	}
+}
+
+void Network::makeNeighbors(int id1, int id2)
+{
+	//Link* link = new Link(nodes[id1], nodes[id2]);
+	nodes[id1]->addNeighbor(new Link(nodes[id1], nodes[id2]));
+	nodes[id2]->addNeighbor(new Link(nodes[id2], nodes[id1]));
 }
 
 ofstream& operator<<(ofstream& os, const Network& network)
@@ -75,17 +81,17 @@ bool Network::noNewMessageInNetwork(const Network& network)
 	return (network.messageCount == 0);
 }
 
-stack<NodePtr> Network::LookingForNode(const list<NodePtr>& listInput, bool (*nodeCondition)(const Node&, const NodeState&),
+stack<NodePtr> Network::LookingForNode(const vector<LinkPtr>& links, bool (*nodeCondition)(const Node&, const NodeState&),
 				const NodeState& state, int settingNumber)
 {
 	stack<NodePtr> results = stack<NodePtr>();
-	list<NodePtr>::const_iterator it = listInput.begin();
-	for (; it != listInput.end(); it++)
+	vector<LinkPtr>::const_iterator it = links.begin();
+	for (; it != links.end(); it++)
 	{
-		if (nodeCondition(*(*it), state))
+		if (nodeCondition(*(*it)->dest, state))
 		{
-			results.push(*it);
-			(*it)->connectedAreaNumber = settingNumber;
+			results.push((*it)->dest);
+			(*it)->dest->connectedAreaNumber = settingNumber;
 		}
 	}
 	return results;
@@ -94,26 +100,26 @@ stack<NodePtr> Network::LookingForNode(const list<NodePtr>& listInput, bool (*no
 void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
 				const NodeState& state, int number, bool (*filter)(NodePtr, NodePtr, int))
 {
-	list<NodePtr>::const_iterator it = consideringNode->neighbors.begin();
+	vector<LinkPtr>::const_iterator it = consideringNode->links.begin();
 	string prefix = "Next according to: ";
-	for(; it != consideringNode->neighbors.end(); it++)
+	for(; it != consideringNode->links.end(); it++)
 	{
-		bool isSameState = nodeCondition(*(*it), state);
+		bool isSameState = nodeCondition(*(*it)->dest, state);
 		// Check to take neighbors which has same state, connectedAreaNumber=0
 		// and is not disconnected node with considering node
-		if (isSameState && filter(*it, consideringNode, number))
+		if (isSameState && filter((*it)->dest, consideringNode, number))
 		{
 //			Logger::Write(*(*it), &DebugString, prefix, "debug.out", ofstream::out|ofstream::app);
-			stack.push(*it);
-			(*it)->connectedAreaNumber = number; // Adding value for the new node in stack so that we don't add again.
+			stack.push((*it)->dest);
+			(*it)->dest->connectedAreaNumber = number; // Adding value for the new node in stack so that we don't add again.
 		}
 	}
 }
 
 bool Network::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(NodePtr n1, NodePtr n2, int number)
 {
-	return n1->connectedAreaNumber != number && n2->disconnectedNodes.find(n1) == n2->disconnectedNodes.end()
-			&& n1->disconnectedNodes.find(n2) == n1->disconnectedNodes.end();
+	return n1->connectedAreaNumber != number;// && n2->links[n1->id]->state != Cut
+			//&& n1->links[n2->id]->state != Cut;
 }
 
 string Network::DebugString(const Node& node, string original)
@@ -131,7 +137,7 @@ int Network::ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
 {
 	int count = 0;
 	seed->connectedAreaNumber = spreadingValue;
-	stack<NodePtr> stackNodes = LookingForNode(seed->neighbors, nodeCondition, state, spreadingValue);
+	stack<NodePtr> stackNodes = LookingForNode(seed->links, nodeCondition, state, spreadingValue);
 	int size = stackNodes.size();
 	while (size > 0)
 	{

@@ -22,11 +22,11 @@ string K01Tolerance::GetToleranceName()
 	return "K1";
 }
 
-void K01Tolerance::TolerateNode(NodePtr node, NodePtr byzantine)
+void K01Tolerance::TolerateNode(LinkPtr link)
 {
-	ToleranceBase::TolerateNode(node, byzantine);
-	node->state = Inactive;
-	node->ownerNetwork->info.numberOfInactiveNodes++;
+	ToleranceBase::TolerateNode(link);
+	link->dest->state = Inactive;
+	link->dest->ownerNetwork->info.numberOfInactiveNodes++;
 	//node->ownerNetwork->info.listDetectors.push_back(node);
 }
 

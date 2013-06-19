@@ -83,8 +83,7 @@ void Deploying::neighborInitialization(Network* network)
 		{
 			if (isNeighbors(*network, *network->nodes[i], *network->nodes[j]))
 			{
-				(network->nodes[i])->addNeighbor(network->nodes[j]); //neighbors.push_back(network->nodes[j]);
-				(network->nodes[j])->addNeighbor(network->nodes[i]); //neighbors.push_back(network->nodes[i]);
+				network->makeNeighbors(i, j);
 			}
 		}
 	}

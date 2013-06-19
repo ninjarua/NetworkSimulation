@@ -22,10 +22,8 @@ class ToleranceBase : public NetworkProtocol {
 public:
 	ToleranceBase();
 	virtual ~ToleranceBase();
-	virtual void TolerateNode(NodePtr node, NodePtr byzantine);
+	virtual void TolerateNode(LinkPtr link);
 	virtual string GetToleranceName();
-//	static void CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message);
-	virtual void ReceiveDeactivateMessage(Node& sender, Node& receiver, Message& message);
 };
 
 } /* namespace protocols */
