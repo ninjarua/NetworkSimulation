@@ -9,10 +9,11 @@
 
 namespace domain {
 
-Link2Hop::Link2Hop(Node* s, Node* d, Node* mid) {
-	src = s;
+Link2Hop::Link2Hop(Node* d, Node* mid) {
+//	src = s;
 	dest = d;
-
+	mids = vector<Link2Hop*>();
+	mids.push_back(mid);
 }
 
 Link2Hop::~Link2Hop() {

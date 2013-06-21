@@ -15,8 +15,9 @@ Network::Network() {
 	messageCount = 0;
 	info = NetworkInfo();
 	nodes = vector<NodePtr>();
-	hasTopology = false;
 	messages = list<Message*>();
+	hasTopology = false;
+	has2HopInfo = false;
 }
 
 Network::~Network() {
@@ -44,6 +45,8 @@ void Network::makeNeighbors(int id1, int id2)
 
 ofstream& operator<<(ofstream& os, const Network& network)
 {
+	if (network.has2HopInfo)
+		os << Constants::has2Hop;
 	os << network.nodes.size();
 	os << Constants::endline;
 	vector<NodePtr>::const_iterator it = network.nodes.begin();
@@ -56,16 +59,52 @@ istream& operator>>(istream& is, Network& network)
 {
 	string line("");
 	getline(is, line);
+	if (line == Constants::has2Hop)
+	{
+		network.has2HopInfo = true;
+		getline(is, line);
+	}
+	else
+	{
+		network.has2HopInfo = false;
+	}
 	network.createEmptyNodes(atoi(line.c_str()));
-
 	vector<NodePtr>::const_iterator it = network.nodes.begin();
-	while (!getline(is, line).eof())
+	is = getline(is, line);
+	while (!is.eof())
 	{
 		istringstream iss(line);
 		iss >> *(*it);
+		is = getline(is, line);
+
+		if (network.has2HopInfo)
+		{
+			while (line.find(Constants::begin2HopList) == 0)
+			{
+				(*it)->Get2HopInformation(line);
+				getline(is, line);
+			}
+		}
 		it++;
 	}
+	if (!network.has2HopInfo)
+	{
+		network.Collect2HopInformation();
+		network.has2HopInfo = true;
+	}
 	return is;
+}
+
+void Network::Collect2HopInformation()
+{
+	vector<NodePtr>::iterator it = nodes.begin();
+	while (it != nodes.end())
+	{
+		(*it)->Collect2HopInformation();
+	}
+	it = nodes.begin();
+	for (; it != nodes.end(); it++)
+		(*it)->ChangeListToVector();
 }
 
 void Network::addNode(NodePtr node)

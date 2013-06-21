@@ -32,10 +32,12 @@ public:
 
     vector<Node*> nodes;
     // is used to overcome the size() function of list
-    int messageCount;
     list<Message*> messages;
+    int messageCount;
+
+    NetworkInfo info;
     bool hasTopology;
-	NetworkInfo info;
+    bool has2HopInfo;
 
 	Network();
 	virtual ~Network();
@@ -50,6 +52,7 @@ public:
 	static int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 
 private:
+	void Collect2HopInformation();
 	static int ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
 			bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 	static stack<NodePtr> LookingForNode(const vector<LinkPtr>& links, bool (*nodeCondition)(const Node&, const NodeState&),

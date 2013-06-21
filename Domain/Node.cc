@@ -6,6 +6,7 @@
  */
 
 #include "Network.h"
+#include "Tools.h"
 
 namespace domain {
 Node::Node() {
@@ -68,6 +69,7 @@ void Node::CreateLists()
 {
 	//neighbors = list<NodePtr>();
 	links = vector<LinkPtr>();
+	links2Hop = vector<Link2Hop>();
 	//detectedByzantines = set<NodePtr>();
 	//disconnectedNodes = set<NodePtr>();
 }
@@ -83,7 +85,6 @@ void Node::Reset()
 
 int Node::addNeighbor(LinkPtr link)
 {
-	//neighbors.push_back(node);
 	links.push_back(link);
 	D++;
 	return D;
@@ -129,6 +130,20 @@ ostream& operator<<(ostream& os, const Node& node)
 		it++;
 	}
 	os << Constants::endline;
+	if (node.ownerNetwork->has2HopInfo)
+	{
+		vector<Link2Hop*>::const_iterator v2it = node.links2Hop.begin();
+		for(; v2it != node.links2Hop.end(); v2it++)
+		{
+			os << Constants::begin2HopList << Constants::tab << (*v2it)->dest->id;
+			vector<NodePtr>::const_iterator midIt = (*v2it)->mids.begin();
+			for(; midIt != (*v2it)->mids.end(); midIt++)
+			{
+				os << Constants::tab << (*midIt)->id;
+			}
+			os << Constants::endline;
+		}
+	}
 	return os;
 }
 
@@ -145,6 +160,64 @@ istringstream& operator>>(istringstream& is, Node& node)
 		//node.neighbors.push_back(node.ownerNetwork->nodes.at(id));
 	}
 	return is;
+}
+
+void Node::Get2HopInformation(string lst2HopLine)
+{
+	istringstream is(lst2HopLine);
+	int destId;
+	int mid;
+	is >> destId >> mid;
+	Link2Hop* link = new Link2Hop(ownerNetwork->nodes[destId], ownerNetwork->nodes[mid]);
+
+	while (is >> mid)
+	{
+		link->mids.push_back(ownerNetwork->nodes[mid]);
+	}
+	links2Hop.push_back(link);
+}
+
+void Node::Collect2HopInformation()
+{
+	int neighborSize = links.size();
+	for (int i = 0; i < neighborSize - 1; i++)
+	{
+		for (int j = i + 1; j < neighborSize; j++)
+		{
+			NodePtr nbi = links[i]->dest;
+			NodePtr nbj = links[j]->dest;
+			// If node links[j] is not contained in list links of node links[i].
+			// Add 2-hop information of these node.
+			if (!NetworkTools::ContainNode(nbi->links, nbj))
+			{
+				// Need to check if node is contained in list 2 hop
+				list<Link2Hop*>::iterator it2Hop = NetworkTools::ContainNodeIn2Hop(nbi->tempLinks2Hop, nbj);
+				if (it2Hop == nbi->tempLinks2Hop.end()
+						|| (*it2Hop)->dest->id > nbj->id)
+				{
+					Link2Hop* link2hop = new Link2Hop(nbj, this);
+					NetworkTools::InsertIntoSortedLinks2Hop(nbi->tempLinks2Hop, link2hop);
+
+					Link2Hop* link2hopReverse = new Link2Hop(nbi, this);
+					NetworkTools::InsertIntoSortedLinks2Hop(nbj->tempLinks2Hop, link2hopReverse);
+				}
+				else
+				{
+					(*it2Hop)->mids.push_back(nbj);
+					list<Link2Hop*>::iterator itj2Hop = nbj->tempLinks2Hop.begin();
+					while ((*itj2Hop)->dest->id < nbi->id && itj2Hop != nbj->tempLinks2Hop.end())
+						itj2Hop++;
+					if (itj2Hop != nbj->tempLinks2Hop.end())
+						(*itj2Hop)->mids.push_back(nbi);
+				}
+			}
+		}
+	}
+}
+
+void Node::ChangeListToVector()
+{
+	NetworkTools::MoveToVector(tempLinks2Hop, links2Hop);
 }
 
 string Node::printNodeWithConnectedAreaNumber(const Node& node)

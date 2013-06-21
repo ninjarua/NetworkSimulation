@@ -47,6 +47,62 @@ public:
 		}
 		return false;
 	}
+
+	static list<Link2Hop*>::iterator ContainNodeIn2Hop(list<Link2Hop*> links, NodePtr node)
+	{
+		list<Link2Hop*>::iterator it = links.begin();
+		while (it->dest->id <= node->id && it != links.end())
+		{
+			if (it->dest->id == node->id)
+				return it;
+			it++;
+		}
+		return it;
+	}
+
+	static bool ContainNodeIn2Hop(vector<Link2Hop*> links, NodePtr node)
+	{
+		int size = links.size();
+		int left = 0;
+		int right = size - 1;
+		int mid;
+		while (left <= right)
+		{
+			mid = (left + right)/2;
+			Link2Hop* linkMid = links[mid];
+			if (node->id > linkMid->dest->id)
+				left = mid + 1;
+			else if(node->id < linkMid->dest->id)
+				right = mid - 1;
+			else
+				return true;
+		}
+		return false;
+	}
+
+	static void InsertIntoSortedLinks2Hop(list<Link2Hop*>& lstLinks, Link2Hop* link)
+	{
+		list<Link2Hop*>::iterator it = lstLinks.begin();
+		while (it->dest->id < link->dest->id && it != lstLinks.end())
+		{
+			it++;
+		}
+		lstLinks.insert(it, link);
+	}
+
+	static void MoveToVector(list<Link2Hop*>& lstLinks, vector<Link2Hop*>& vectorLinks)
+	{
+//		list<Link2Hop*>::iterator itList = lstLinks.begin();
+//		for (; itList != lstLinks.end(); itList++)
+//		{
+//			vectorLinks.push_back(*itList);
+//		}
+		while (!lstLinks.empty())
+		{
+			vectorLinks.push_back(lstLinks.front());
+			lstLinks.pop_front();
+		}
+	}
 };
 }
 

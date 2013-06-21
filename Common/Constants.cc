@@ -9,3 +9,5 @@
 
 string Constants::tab = "\t";
 string Constants::endline = "\n";
+string Constants::has2Hop = "true";
+string Constants::begin2HopList = ">>";

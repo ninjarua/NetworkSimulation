@@ -28,6 +28,7 @@ public:
 	virtual ~NetworkGenerator();
 	virtual string GenerateToFiles(Network* network, string folder, int times = 1);
 	virtual bool GenerateFromFiles(Network* network, string folder, int index = 0);
+	virtual void WriteNetworkToFile(Network* network, string folder, int index = 0);
 	string GetDeployingName();
 
 protected:

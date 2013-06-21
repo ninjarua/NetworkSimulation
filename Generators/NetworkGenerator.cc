@@ -99,4 +99,9 @@ string NetworkGenerator::GenerateToFiles(Network* network, string folder, int ti
 	return "Success";
 }
 
+void NetworkGenerator::WriteNetworkToFile(Network* network, string folder, int index)
+{
+	Logger::Write(network, GetFilenameByDeployment(folder, index));
+}
+
 } /* namespace generators */

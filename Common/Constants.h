@@ -18,6 +18,8 @@ class Constants{
 public:
 	static string tab;
 	static string endline;
+	static string has2Hop;
+	static string begin2HopList;
 };
 
 #endif

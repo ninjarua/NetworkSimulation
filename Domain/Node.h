@@ -14,11 +14,9 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-#include <map>
+#include <list>
 #include "Link.h"
-//#include <boost/smart_ptr/shared_ptr.hpp>
-
-//using namespace boost;
+#include "Link2Hop.h"
 
 namespace domain {
 class Node;
@@ -36,6 +34,8 @@ public:
 	int D;
 	//list<NodePtr> neighbors;
 	vector<LinkPtr> links;
+	list<Link2Hop*> tempLinks2Hop;
+	vector<Link2Hop*> links2Hop;
 //	set<NodePtr> disconnectedNodes;
 	int connectedAreaNumber;
 
@@ -56,6 +56,9 @@ public:
 	friend ostream& operator<<(ostream& os, const Node& node);
 	friend ofstream& operator<<(ofstream& os, const Node& node);
 	friend istringstream& operator>>(istringstream& os, Node& node);
+	void Collect2HopInformation();
+	void ChangeListToVector();
+	void Get2HopInformation(string lst2Hop);
 	static string printNodeWithConnectedAreaNumber(const Node& node);
 private:
 	void CreateLists();

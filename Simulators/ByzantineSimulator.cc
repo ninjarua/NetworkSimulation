@@ -114,6 +114,21 @@ bool ByzantineSimulator::StopPrediction(ByzantineReport* report)
     return averageCondition;
 }
 
+void ByzantineSimulator::Convert2HopInformation(DeployingType deployingType, TypeOfTolerance toleranceType,
+		string inputfolder, string outputFolder, int sampleSize)
+{
+	SetTolerance(toleranceType);
+	SetDeployment(deployingType, 1000);
+
+	SetParameters(1, inputfolder, outputFolder, 0, 0, 0, 0, 0.01, 0.01, sampleSize);
+	for (int i = 0; i < sampleSize; i++)
+	{
+		bool result = generator->GenerateFromFiles(network, params.inputFolder, i);
+		if (result)
+			generator->WriteNetworkToFile(network, params.outputFolder, i);
+	}
+}
+
 void ByzantineSimulator::RunSimulationByInterval()
 {
 	byzantine.report->Clear();
