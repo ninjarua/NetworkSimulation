@@ -31,6 +31,7 @@ Node::Node(Network* network) {
 
 Node::~Node() {
 	Tools::EraseAll(links);
+	Tools::EraseAll(links2Hop);
 	//neighbors.clear();
 }
 
