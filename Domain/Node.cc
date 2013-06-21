@@ -6,6 +6,7 @@
  */
 
 #include "Network.h"
+#include "NetworkTools.h"
 #include "Tools.h"
 
 namespace domain {
@@ -69,7 +70,8 @@ void Node::CreateLists()
 {
 	//neighbors = list<NodePtr>();
 	links = vector<LinkPtr>();
-	links2Hop = vector<Link2Hop>();
+	links2Hop = vector<Link2Hop*>();
+	tempLinks2Hop = list<Link2Hop*>();
 	//detectedByzantines = set<NodePtr>();
 	//disconnectedNodes = set<NodePtr>();
 }
@@ -116,6 +118,20 @@ ofstream& operator<<(ofstream& os, const Node& node)
 		it++;
 	}
 	os << Constants::endline;
+	if (node.ownerNetwork->has2HopInfo)
+	{
+		vector<Link2Hop*>::const_iterator v2it = node.links2Hop.begin();
+		for(; v2it != node.links2Hop.end(); v2it++)
+		{
+			os << Constants::begin2HopList << Constants::tab << (*v2it)->dest->id;
+			vector<NodePtr>::const_iterator midIt = (*v2it)->mids.begin();
+			for(; midIt != (*v2it)->mids.end(); midIt++)
+			{
+				os << Constants::tab << (*midIt)->id;
+			}
+			os << Constants::endline;
+		}
+	}
 	return os;
 }
 
@@ -191,9 +207,9 @@ void Node::Collect2HopInformation()
 			if (!NetworkTools::ContainNode(nbi->links, nbj))
 			{
 				// Need to check if node is contained in list 2 hop
-				list<Link2Hop*>::iterator it2Hop = NetworkTools::ContainNodeIn2Hop(nbi->tempLinks2Hop, nbj);
-				if (it2Hop == nbi->tempLinks2Hop.end()
-						|| (*it2Hop)->dest->id > nbj->id)
+				list<Link2Hop*>::iterator it2Hop;// = nbi->tempLinks2Hop.begin();
+				bool isContained = NetworkTools::ContainNodeIn2Hop(nbi->tempLinks2Hop, nbj, it2Hop);
+				if (!isContained || (*it2Hop)->dest->id > nbj->id)
 				{
 					Link2Hop* link2hop = new Link2Hop(nbj, this);
 					NetworkTools::InsertIntoSortedLinks2Hop(nbi->tempLinks2Hop, link2hop);
@@ -203,12 +219,12 @@ void Node::Collect2HopInformation()
 				}
 				else
 				{
-					(*it2Hop)->mids.push_back(nbj);
+					(*it2Hop)->mids.push_back(this);
 					list<Link2Hop*>::iterator itj2Hop = nbj->tempLinks2Hop.begin();
 					while ((*itj2Hop)->dest->id < nbi->id && itj2Hop != nbj->tempLinks2Hop.end())
 						itj2Hop++;
 					if (itj2Hop != nbj->tempLinks2Hop.end())
-						(*itj2Hop)->mids.push_back(nbi);
+						(*itj2Hop)->mids.push_back(this);
 				}
 			}
 		}

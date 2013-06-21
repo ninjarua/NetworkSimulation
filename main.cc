@@ -20,17 +20,17 @@ using namespace simulators;
 #include <iostream>
 #include <fstream>
 
-static void show_usage(string name)
-{
-	std::cerr << "Usage: " << name << " <option(s)> SOURCES"
-			  << "Options:\n"
-			  << "\t-o,--operation\tThe operation want to execute:\n"
-			  << "\t\t\t\'generate\' for generating graph\n"
-			  << "\t\t\t\'simulate\' for simulate tolerance strategy.\n"
-			  << "\t-t,--topology\tThe type of graph for network topology\n"
-			  << "\t-s,--strategy\tSpecify the evaluated topology\n"
-			  << std::endl;
-}
+//static void show_usage(string name)
+//{
+//	std::cerr << "Usage: " << name << " <option(s)> SOURCES"
+//			  << "Options:\n"
+//			  << "\t-o,--operation\tThe operation want to execute:\n"
+//			  << "\t\t\t\'generate\' for generating graph\n"
+//			  << "\t\t\t\'simulate\' for simulate tolerance strategy.\n"
+//			  << "\t-t,--topology\tThe type of graph for network topology\n"
+//			  << "\t-s,--strategy\tSpecify the evaluated topology\n"
+//			  << std::endl;
+//}
 
 static void show_missing_generate_arguments(int numbers)
 {
@@ -168,17 +168,17 @@ int main(int argc, char* argv[])
 //			runSimulation(argc, argv);
 //		}
 //	}
-	SimulatorManager* manager = new SimulatorManager();
+//	SimulatorManager* manager = new SimulatorManager();
 //	manager->RunSimulation(ER_Random, C01K03, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi_10000",
 //				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10000/C01K03_new", 2, 100);
-	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000",
-				"/Users/thanhnd/Workspace/Results/ScaleFree/8/1000", 2, 100);
-	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000",
-				"/Users/thanhnd/Workspace/Results/ScaleFree/8/2000", 2, 100);
-	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/3000",
-				"/Users/thanhnd/Workspace/Results/ScaleFree/8/3000", 2, 100);
-	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/4000",
-				"/Users/thanhnd/Workspace/Results/ScaleFree/8/4000", 2, 100);
+//	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000",
+//				"/Users/thanhnd/Workspace/Results/ScaleFree/8/1000", 2, 100);
+//	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000",
+//				"/Users/thanhnd/Workspace/Results/ScaleFree/8/2000", 2, 100);
+//	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/3000",
+//				"/Users/thanhnd/Workspace/Results/ScaleFree/8/3000", 2, 100);
+//	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/4000",
+//				"/Users/thanhnd/Workspace/Results/ScaleFree/8/4000", 2, 100);
 
 //	SimulatorManager* manager = new SimulatorManager();
 //	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/1000/C01K03_0",
@@ -204,7 +204,9 @@ int main(int argc, char* argv[])
 //	manager->ReadResults(ScaleFree, K03, "/Users/thanhnd/Workspace/Results/ScaleFree/K3",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/K03.out", 50);
 
-//	ByzantineSimulator* sim = new ByzantineSimulator();
+	ByzantineSimulator* sim = new ByzantineSimulator();
+	sim->Convert2HopInformation(ScaleFree, K01, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8",
+			"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/test", 1);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000", 7, 1000, 4);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000", 7, 2000, 4);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/3000", 7, 3000, 4);

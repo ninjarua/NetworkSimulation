@@ -48,16 +48,16 @@ public:
 		return false;
 	}
 
-	static list<Link2Hop*>::iterator ContainNodeIn2Hop(list<Link2Hop*> links, NodePtr node)
+	static bool ContainNodeIn2Hop(list<Link2Hop*>& links, NodePtr node, list<Link2Hop*>::iterator& it)
 	{
-		list<Link2Hop*>::iterator it = links.begin();
-		while (it->dest->id <= node->id && it != links.end())
+		it = links.begin();
+		while (it != links.end() && (*it)->dest->id <= node->id)
 		{
-			if (it->dest->id == node->id)
-				return it;
+			if ((*it)->dest->id == node->id)
+				return true;
 			it++;
 		}
-		return it;
+		return false;
 	}
 
 	static bool ContainNodeIn2Hop(vector<Link2Hop*> links, NodePtr node)
@@ -83,7 +83,7 @@ public:
 	static void InsertIntoSortedLinks2Hop(list<Link2Hop*>& lstLinks, Link2Hop* link)
 	{
 		list<Link2Hop*>::iterator it = lstLinks.begin();
-		while (it->dest->id < link->dest->id && it != lstLinks.end())
+		while (it != lstLinks.end() && (*it)->dest->id < link->dest->id)
 		{
 			it++;
 		}

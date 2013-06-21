@@ -9,7 +9,7 @@
 #define LINK2HOP_H_
 #include "stdafx.h"
 
-#include <list>
+#include <vector>
 
 namespace domain {
 class Node;

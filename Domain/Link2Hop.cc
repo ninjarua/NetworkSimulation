@@ -12,7 +12,7 @@ namespace domain {
 Link2Hop::Link2Hop(Node* d, Node* mid) {
 //	src = s;
 	dest = d;
-	mids = vector<Link2Hop*>();
+	mids = vector<Node*>();
 	mids.push_back(mid);
 }
 
