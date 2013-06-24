@@ -63,6 +63,8 @@ void ByzantineProtocol::RandomByzantine(Network* network, bool selectHub, int av
     }
     network->nodes[seed]->state = Infected;
     network->info.seedId = seed;
+    network->info.seedDegree = network->nodes[seed]->D;
+    network->info.seedDiameter = network->nodes[seed]->diameter;
     network->info.numberOfInfectedNodes = 1;
     //PropagateFault(network);
 }
@@ -117,23 +119,23 @@ bool ByzantineProtocol::RunStepCheckFinish(Network* network, bool (*stopConditio
 		return false;
 }
 
-string ByzantineProtocol::GetReportFilename()
-{
-	string filename = tolerance->GetToleranceName() + "_";
-	char* number = new char[15];
-	sprintf(number, "%.2f_%.2f_report.out", nothingProb, byzantineProb);
-	filename += number;
-	return filename;
-}
-
-string ByzantineProtocol::GetLogFilename()
-{
-	string filename = tolerance->GetToleranceName() + "_";
-	char* number = new char[15];
-	sprintf(number, "%.2f_%.2f.log", nothingProb, byzantineProb);
-	filename += number;
-	return filename;
-}
+//string ByzantineProtocol::GetReportFilename()
+//{
+//	string filename = tolerance->GetToleranceName() + "_";
+//	char* number = new char[15];
+//	sprintf(number, "%.2f_%.2f_report.out", nothingProb, byzantineProb);
+//	filename += number;
+//	return filename;
+//}
+//
+//string ByzantineProtocol::GetLogFilename()
+//{
+//	string filename = tolerance->GetToleranceName() + "_";
+//	char* number = new char[15];
+//	sprintf(number, "%.2f_%.2f.log", nothingProb, byzantineProb);
+//	filename += number;
+//	return filename;
+//}
 
 void ByzantineProtocol::Finalize(Network* network)
 {
@@ -142,6 +144,8 @@ void ByzantineProtocol::Finalize(Network* network)
     statisticInfo->detectors = network->info.numberOfDetectors;
     statisticInfo->sanes = network->nodes.size() - statisticInfo->infections - statisticInfo->inactives - statisticInfo->detectors;
     statisticInfo->lca = Network::FindMaximumConnectedArea(network, &Node::isNodeState, Sane);
+    statisticInfo->degree = network->info.seedDegree;
+    statisticInfo->diameter = network->info.seedDiameter;
 }
 
 void ByzantineProtocol::BroadcastMessage(NodePtr sender, MessageReaction receivingAction)
@@ -195,6 +199,7 @@ void ByzantineProtocol::PropagateFault(Network* network)
 {
 	Node* firstInfected = network->nodes[network->info.seedId];
 	//if (Tools::Exists(firstInfected->neighbors, &Node::isNodeState, Sane))
+	Logger::Write(firstInfected->diameter, "");
 	BroadcastMessage(firstInfected, CallbackReceiveByzantineMessage);
 	network->currentTimeSlot++;
 }

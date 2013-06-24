@@ -19,6 +19,8 @@ struct NetworkInfo {
 	int numberOfInfectedNodes;
 	int numberOfDetectors;
 	int numberOfInactiveNodes;
+	int seedDiameter;
+	int seedDegree;
 };
 }
 #endif /* NETWORKINFO_H_ */

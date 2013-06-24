@@ -72,7 +72,7 @@ public:
 					double startingNothing = 0, double startingByzantine = 0,
 					double endingNothing = 1, double endingByzantine = 1,
 					double intervalByz = 0.01, double intervalNothing = 0.01, int sampleSize = 1, int networkSize = 100);
-	void Convert2HopInformation(DeployingType deployingType, TypeOfTolerance toleranceType,
+	void Convert2HopInformation(DeployingType deployingType,
 			string inputfolder, string outputFolder, int sampleSize);
 };
 

@@ -19,6 +19,8 @@ public:
 	long inactives;
 	long detectors;
 	long lca;
+	int diameter;
+	int degree;
 public:
 	NetworkStatistic();
 	virtual ~NetworkStatistic();

@@ -20,8 +20,8 @@ public:
 	virtual void TolerateNode(LinkPtr link);
 	string GetToleranceName();
 	void ReceiveDeactivateMessage(Message* message);
-	list<LinkPtr> GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodePtr exception);
-	bool ContainNode(vector<LinkPtr> links, NodePtr node);
+	Link2Hop* GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodePtr exception);
+	Link2Hop* LookingForLink2Hop(vector<Link2Hop*> links, NodePtr node);
 };
 
 } /* namespace protocols */

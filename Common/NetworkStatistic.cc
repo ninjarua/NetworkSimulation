@@ -5,6 +5,7 @@
  *      Author: thanh
  */
 #include "NetworkStatistic.h"
+#include "Constants.h"
 
 NetworkStatistic::NetworkStatistic()
 {
@@ -23,11 +24,15 @@ void NetworkStatistic::Reset()
 	inactives = 0;
 	detectors = 0;
 	lca = 0;
+	diameter = 0;
+	degree = 0;
 }
 
 ofstream& operator<<(ofstream& ofs, const NetworkStatistic& statistic)
 {
-	ofs << statistic.infections << "\t" << statistic.inactives << "\t"
-		<< statistic.detectors << "\t" << statistic.sanes << "\t" << statistic.lca << "\n";
+	ofs << statistic.degree << Constants::tab << statistic.diameter << Constants::tab
+		<< statistic.infections << Constants::tab << statistic.inactives << Constants::tab
+		<< statistic.detectors << Constants::tab << statistic.sanes << Constants::tab
+		<< statistic.lca << Constants::endline;
 	return ofs;
 }

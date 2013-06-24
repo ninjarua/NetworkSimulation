@@ -205,8 +205,10 @@ int main(int argc, char* argv[])
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/K03.out", 50);
 
 	ByzantineSimulator* sim = new ByzantineSimulator();
-	sim->Convert2HopInformation(ScaleFree, K01, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000",
-			"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/test", 101);
+//	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/1000",
+//			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/advanced/1000", 101);
+	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10000",
+			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/advanced/10000", 101);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000", 7, 1000, 4);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000", 7, 2000, 4);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/3000", 7, 3000, 4);

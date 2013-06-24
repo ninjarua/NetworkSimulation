@@ -15,8 +15,10 @@ namespace domain {
 class DeactivateMessage: public domain::Message {
 public:
 	int TTL;
+	Link2Hop* link2Hop;
 	DeactivateMessage();
 	DeactivateMessage(LinkPtr link, const int& timeSlot);
+	DeactivateMessage(LinkPtr link, Link2Hop* l2Hop, const int& timeSlot);
 	virtual ~DeactivateMessage();
 };
 

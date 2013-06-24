@@ -97,6 +97,8 @@ void ByzantineSimulator::AddOneStepReport()
 	byzantine.report->AddDetectorValue(byzantine.statisticInfo->detectors);
 	byzantine.report->AddNormalValue(byzantine.statisticInfo->sanes);
 	byzantine.report->AddLargestConnectedAreaValue(byzantine.statisticInfo->lca);
+	byzantine.report->AddDegrees(byzantine.statisticInfo->degree);
+	byzantine.report->AddDiameters(byzantine.statisticInfo->diameter);
 }
 
 ByzantineReport* ByzantineSimulator::FinishReport()
@@ -114,10 +116,9 @@ bool ByzantineSimulator::StopPrediction(ByzantineReport* report)
     return averageCondition;
 }
 
-void ByzantineSimulator::Convert2HopInformation(DeployingType deployingType, TypeOfTolerance toleranceType,
+void ByzantineSimulator::Convert2HopInformation(DeployingType deployingType,
 		string inputfolder, string outputFolder, int sampleSize)
 {
-	SetTolerance(toleranceType);
 	SetDeployment(deployingType, 1000);
 
 	SetParameters(1, inputfolder, outputFolder, 0, 0, 0, 0, 0.01, 0.01, sampleSize);
@@ -154,7 +155,6 @@ void ByzantineSimulator::RunSimulationByInterval()
 		int sampleId = 0;
 		while (count < prediction)
 		{
-			//cout << "Generating network from files: " << params.inputFolder << "\n";
 			bool result = generator->GenerateFromFiles(network, params.inputFolder, sampleId);
 			if (!result)
 				return;
@@ -163,8 +163,6 @@ void ByzantineSimulator::RunSimulationByInterval()
 			{
 				byzantine.Refresh(network);
 				byzantine.RunFault(network);
-				//cout << "Run to fault propagation with nothing prob: "
-					//<< byzantine.nothingProb << Constants::tab << "byzantine prob: " << byzantine.byzantineProb << "\n";
 				AddOneStepReport();
 				count++;
 				i++;

@@ -32,6 +32,13 @@ public:
 		f.close();
 	}
 
+//	static void Write(string str, string filename, ofstream::openmode mode = ofstream::out)
+//	{
+//		ofstream f(filename.c_str(), mode);
+//		f << str;
+//		f.close();
+//	}
+
 	//template<class T>
 	static void Copy(string sourceFile, string destFile, bool endByLineBreak = true)
 	{

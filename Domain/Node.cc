@@ -41,6 +41,7 @@ void Node::Initialize()
     state = Sane;
     connectedAreaNumber = 0;
     D = 0;
+    diameter = 0;
 }
 
 Node::Node(double x, double y)
@@ -112,6 +113,10 @@ ofstream& operator<<(ofstream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
 				<< Constants::tab << node.posY;
+	if (node.ownerNetwork->has2HopInfo)
+	{
+		os << Constants::tab << node.diameter;
+	}
 	vector<LinkPtr>::const_iterator it = node.links.begin();
 	while (it != node.links.end())
 	{
@@ -140,6 +145,10 @@ ostream& operator<<(ostream& os, const Node& node)
 {
 	os << node.id << Constants::tab << node.posX
 				<< Constants::tab << node.posY;
+	if (node.ownerNetwork->has2HopInfo)
+	{
+		os << Constants::tab << node.diameter;
+	}
 	vector<LinkPtr>::const_iterator it = node.links.begin();
 	while (it != node.links.end())
 	{
@@ -168,6 +177,11 @@ istringstream& operator>>(istringstream& is, Node& node)
 {
 	node.Reset();
 	is >> node.id >> node.posX >> node.posY;
+	if (node.ownerNetwork->has2HopInfo)
+	{
+		is >> node.diameter;
+	}
+
 	int id;
 	while (is >> id)
 	{

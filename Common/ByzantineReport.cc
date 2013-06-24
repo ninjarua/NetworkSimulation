@@ -61,6 +61,16 @@ void ByzantineReport::AddLargestConnectedAreaValue(long value)
 	largestConnectedAreas.push_back(value);
 }
 
+void ByzantineReport::AddDegrees(int value)
+{
+	degrees.push_back(value);
+}
+
+void ByzantineReport::AddDiameters(int value)
+{
+	diameters.push_back(value);
+}
+
 ByzantineReport* ByzantineReport::Summarize(double significance)
 {
 	StatisticSummary summary = StatisticSummary();
@@ -78,6 +88,12 @@ ByzantineReport* ByzantineReport::Summarize(double significance)
 	ciOfNormals = summary.GetConfidenceInterval(significance);
 	summary.Summarize(largestConnectedAreas);
 	averageOfLargestConnectedAreas = summary.mean;
+	ciOfLargestConnectedAreas = summary.GetConfidenceInterval(significance);
+	summary.Summarize(degrees);
+	averageOfDegree = summary.mean;
+	ciOfLargestConnectedAreas = summary.GetConfidenceInterval(significance);
+	summary.Summarize(diameters);
+	averageOfDiameter = summary.mean;
 	ciOfLargestConnectedAreas = summary.GetConfidenceInterval(significance);
 	size = summary.length;
 	return this;

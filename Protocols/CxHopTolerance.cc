@@ -37,12 +37,12 @@ void CxHopTolerance::TolerateNode(LinkPtr link)
 			continue;
 		if ((*it)->dest == link->src)
 			(*it)->state = Cut;
-		list<LinkPtr> commonNeighbors = GetCommonNeighborsExcept((*it)->dest, link->src, node);
-		if (commonNeighbors.begin() != commonNeighbors.end())
+		Link2Hop* link2Hop = GetCommonNeighborsExcept((*it)->dest, link->src, node);
+		if (link != NULL)
 		{
-//			DeactivateMessage* message = new DeactivateMessage((*it), node->ownerNetwork->currentTimeSlot);
-//			message->TTL = 0;
-//			SendMessage((*it), CallbackReceiveDeactivateMessage, message);
+			DeactivateMessage* message = new DeactivateMessage((*it), link2Hop, node->ownerNetwork->currentTimeSlot);
+			message->TTL = 1; // is not used yet, because the receiver of deactivate message does not forward message.
+			SendMessage((*it), CallbackReceiveDeactivateMessage, message);
 		}
 	}
 }
@@ -54,8 +54,16 @@ void CxHopTolerance::ReceiveDeactivateMessage(Message* message)
 		return;
 	if (node->state == Sane)
 	{
-		node->state = Inactive;
-		node->ownerNetwork->info.numberOfInactiveNodes++;
+		DeactivateMessage* deactivateMessage = (DeactivateMessage*)message;
+		int size = deactivateMessage->link2Hop->mids.size();
+		for(int i = 0; i < size; i++)
+		{
+			NodePtr mid_i = deactivateMessage->link2Hop->mids[i];
+			if (mid_i->id != deactivateMessage->link->src->id)
+			{
+				NetworkTools::GetLinkPtr(node->links, mid_i)->state = Cut;
+			}
+		}
 	}
 	message->status = Expired;
 }
@@ -66,37 +74,42 @@ void CxHopTolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* messag
 	ptrC1K3->ReceiveDeactivateMessage(message);
 }
 
-list<LinkPtr> CxHopTolerance::GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodePtr exception)
+Link2Hop* CxHopTolerance::GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodePtr exception)
 {
 	list<LinkPtr> commonNodes = list<LinkPtr>();
-	vector<LinkPtr>::iterator it = n1->links.begin();
-	// for each neighbor of n1, check if it is in list neighbors of n2
-	for (; it != n1->links.end(); it++)
-		if ((*it)->dest->id != exception->id && ContainNode(n2->links, (*it)->dest))
-		{
-			commonNodes.push_back(*it);
-		}
-	return commonNodes;
+//	vector<LinkPtr>::iterator it = n1->links.begin();
+//	// for each neighbor of n1, check if it is in list neighbors of n2
+//	for (; it != n1->links.end(); it++)
+//		if ((*it)->dest->id != exception->id && ContainNode(n2->links, (*it)->dest))
+//		{
+//			commonNodes.push_back(*it);
+//		}
+	Link2Hop* link2Hop = LookingForLink2Hop(n1->links2Hop, n2);
+	if (link2Hop != NULL && link2Hop->mids.size() > 1)
+	{
+		return link2Hop;//vector<NodePtr>::iterator it = link2Hop->mids;
+	}
+	return NULL;
 }
 
-bool CxHopTolerance::ContainNode(vector<LinkPtr> links, NodePtr node)
+Link2Hop* CxHopTolerance::LookingForLink2Hop(vector<Link2Hop*> links2Hop, NodePtr node)
 {
-	int size = links.size();
+	int size = links2Hop.size();
 	int left = 0;
 	int right = size - 1;
 	int mid;
 	while (left <= right)
 	{
 		mid = (left + right)/2;
-		LinkPtr linkMid = links[mid];
+		Link2Hop* linkMid = links2Hop[mid];
 		if (node->id > linkMid->dest->id)
 			left = mid + 1;
 		else if(node->id < linkMid->dest->id)
 			right = mid - 1;
 		else
-			return true;
+			return linkMid;
 	}
-	return false;
+	return NULL;
 }
 
 } /* namespace protocols */

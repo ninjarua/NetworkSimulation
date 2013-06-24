@@ -48,6 +48,26 @@ public:
 		return false;
 	}
 
+	static LinkPtr GetLinkPtr(vector<LinkPtr> links, NodePtr node)
+	{
+		int size = links.size();
+		int left = 0;
+		int right = size - 1;
+		int mid;
+		while (left <= right)
+		{
+			mid = (left + right)/2;
+			LinkPtr linkMid = links[mid];
+			if (node->id > linkMid->dest->id)
+				left = mid + 1;
+			else if(node->id < linkMid->dest->id)
+				right = mid - 1;
+			else
+				return linkMid;
+		}
+		return NULL;
+	}
+
 	static bool ContainNodeIn2Hop(list<Link2Hop*>& links, NodePtr node, list<Link2Hop*>::iterator& it)
 	{
 		it = links.begin();
@@ -92,11 +112,6 @@ public:
 
 	static void MoveToVector(list<Link2Hop*>& lstLinks, vector<Link2Hop*>& vectorLinks)
 	{
-//		list<Link2Hop*>::iterator itList = lstLinks.begin();
-//		for (; itList != lstLinks.end(); itList++)
-//		{
-//			vectorLinks.push_back(*itList);
-//		}
 		while (!lstLinks.empty())
 		{
 			vectorLinks.push_back(lstLinks.front());

@@ -32,6 +32,7 @@ public:
 	double posY;
 	NodeState state;
 	int D;
+	int diameter;
 	//list<NodePtr> neighbors;
 	vector<LinkPtr> links;
 	list<Link2Hop*> tempLinks2Hop;

@@ -34,7 +34,7 @@ public:
 	ByzantineProtocol(double byzantineProb, double detectingProb);
 	virtual ~ByzantineProtocol();
 	//static ByzantineProtocol* GetInstance(double byzantineProb, double dectectingProb);
-	string GetLogFilename();
+//	string GetLogFilename();
 	void BroadcastMessage(NodePtr sender, MessageReaction receivingAction);//, object content);
 	void SendMessage(LinkPtr link, MessageReaction receivingAction);//, string content);
 	void Reset(Network* network);
@@ -49,7 +49,7 @@ public:
 	bool RunStepCheckFinish(Network* network, bool (*stopCondition)(const Network&));
 	void Finalize(Network* network);
 	void RunFault(Network* network);
-	string GetReportFilename();
+//	string GetReportFilename();
 private:
 	static void CallbackPropagateFault(void* ptr, Network* network);
 	void PropagateFault(Network* network);
