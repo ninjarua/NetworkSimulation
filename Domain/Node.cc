@@ -130,10 +130,10 @@ ofstream& operator<<(ofstream& os, const Node& node)
 		for(; v2it != node.links2Hop.end(); v2it++)
 		{
 			os << Constants::begin2HopList << Constants::tab << (*v2it)->dest->id;
-			vector<NodePtr>::const_iterator midIt = (*v2it)->mids.begin();
+			vector<int>::const_iterator midIt = (*v2it)->mids.begin();
 			for(; midIt != (*v2it)->mids.end(); midIt++)
 			{
-				os << Constants::tab << (*midIt)->id;
+				os << Constants::tab << (*midIt);
 			}
 			os << Constants::endline;
 		}
@@ -162,10 +162,10 @@ ostream& operator<<(ostream& os, const Node& node)
 		for(; v2it != node.links2Hop.end(); v2it++)
 		{
 			os << Constants::begin2HopList << Constants::tab << (*v2it)->dest->id;
-			vector<NodePtr>::const_iterator midIt = (*v2it)->mids.begin();
+			vector<int>::const_iterator midIt = (*v2it)->mids.begin();
 			for(; midIt != (*v2it)->mids.end(); midIt++)
 			{
-				os << Constants::tab << (*midIt)->id;
+				os << Constants::tab << (*midIt);
 			}
 			os << Constants::endline;
 		}
@@ -199,11 +199,11 @@ void Node::Get2HopInformation(string lst2HopLine)
 	int destId;
 	int mid;
 	is >> destId >> mid;
-	Link2Hop* link = new Link2Hop(ownerNetwork->nodes[destId], ownerNetwork->nodes[mid]);
+	Link2Hop* link = new Link2Hop(ownerNetwork->nodes[destId], ownerNetwork->nodes[mid]->id);
 
 	while (is >> mid)
 	{
-		link->mids.push_back(ownerNetwork->nodes[mid]);
+		link->mids.push_back(ownerNetwork->nodes[mid]->id);
 	}
 	links2Hop.push_back(link);
 }
@@ -226,20 +226,20 @@ void Node::Collect2HopInformation()
 				bool isContained = NetworkTools::ContainNodeIn2Hop(nbi->tempLinks2Hop, nbj, it2Hop);
 				if (!isContained || (*it2Hop)->dest->id > nbj->id)
 				{
-					Link2Hop* link2hop = new Link2Hop(nbj, this);
+					Link2Hop* link2hop = new Link2Hop(nbj, this->id);
 					NetworkTools::InsertIntoSortedLinks2Hop(nbi->tempLinks2Hop, link2hop);
 
-					Link2Hop* link2hopReverse = new Link2Hop(nbi, this);
+					Link2Hop* link2hopReverse = new Link2Hop(nbi, this->id);
 					NetworkTools::InsertIntoSortedLinks2Hop(nbj->tempLinks2Hop, link2hopReverse);
 				}
 				else
 				{
-					(*it2Hop)->mids.push_back(this);
+					(*it2Hop)->mids.push_back(this->id);
 					list<Link2Hop*>::iterator itj2Hop = nbj->tempLinks2Hop.begin();
 					while ((*itj2Hop)->dest->id < nbi->id && itj2Hop != nbj->tempLinks2Hop.end())
 						itj2Hop++;
 					if (itj2Hop != nbj->tempLinks2Hop.end())
-						(*itj2Hop)->mids.push_back(this);
+						(*itj2Hop)->mids.push_back(this->id);
 				}
 			}
 		}

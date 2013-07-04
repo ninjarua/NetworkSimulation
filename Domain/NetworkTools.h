@@ -48,7 +48,7 @@ public:
 		return false;
 	}
 
-	static LinkPtr GetLinkPtr(vector<LinkPtr> links, NodePtr node)
+	static LinkPtr GetLinkPtr(vector<LinkPtr> links, const int& id)
 	{
 		int size = links.size();
 		int left = 0;
@@ -58,9 +58,9 @@ public:
 		{
 			mid = (left + right)/2;
 			LinkPtr linkMid = links[mid];
-			if (node->id > linkMid->dest->id)
+			if (id > linkMid->dest->id)
 				left = mid + 1;
-			else if(node->id < linkMid->dest->id)
+			else if(id < linkMid->dest->id)
 				right = mid - 1;
 			else
 				return linkMid;
@@ -114,6 +114,7 @@ public:
 	{
 		while (!lstLinks.empty())
 		{
+			//Link2Hop* l = new Link2Hop(*lstLinks.front());
 			vectorLinks.push_back(lstLinks.front());
 			lstLinks.pop_front();
 		}

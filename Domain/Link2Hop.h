@@ -15,10 +15,10 @@ namespace domain {
 class Node;
 class Link2Hop {
 public:
-//	Node* src;
 	Node* dest;
-	vector<Node*> mids;
-	Link2Hop(Node* d, Node* mid);
+	vector<int> mids;
+	Link2Hop(Node* d, int mid_id);
+	Link2Hop(const Link2Hop& copy);
 	virtual ~Link2Hop();
 };
 

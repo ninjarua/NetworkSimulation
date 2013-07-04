@@ -50,7 +50,7 @@ void SimulatorManager::RunOneStepSimulation(DeployingType deploying, TypeOfToler
 	threads.join_all();
 
 //	ByzantineSimulator* sim = new ByzantineSimulator();
-//	for (int i = 0; i < numberCPUs; i++)
+//	for (int i = 11; i < 100; i++)
 //	{
 //		double byzProb = (double)i * 0.01;
 //		sim->RunSimulation(deploying, toleranceType, totalTimes, inputFolder, outputFolder, 0, byzProb, 0, byzProb, 0.01, 0.01, sampleSize);

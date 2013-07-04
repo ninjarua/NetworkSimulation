@@ -18,8 +18,8 @@ Deploying::~Deploying() {
 
 bool Deploying::obtainTopology(Network* network)
 {
-	network->sequenceId = 0;
-	network->nodes.clear();
+	network->Reset();
+	network->size = topology->numNodes;
 	return true;
 }
 
@@ -70,6 +70,7 @@ bool Deploying::runDeploy(Network* network)
 	if (obtainTopology(network))
 	{
 		neighborInitialization(network);
+		network->createAdvancedInformation();
 		return true;
 	}
 	return false;

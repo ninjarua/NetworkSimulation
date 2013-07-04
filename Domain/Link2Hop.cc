@@ -9,15 +9,21 @@
 
 namespace domain {
 
-Link2Hop::Link2Hop(Node* d, Node* mid) {
+Link2Hop::Link2Hop(Node* d, int mid_id) {
 //	src = s;
 	dest = d;
-	mids = vector<Node*>();
-	mids.push_back(mid);
+	mids = vector<int>();
+	mids.push_back(mid_id);
+}
+
+Link2Hop::Link2Hop(const Link2Hop& copy)
+{
+	dest = copy.dest;
+	mids = copy.mids;
 }
 
 Link2Hop::~Link2Hop() {
-	// TODO Auto-generated destructor stub
+	mids.clear();
 }
 
 } /* namespace domain */

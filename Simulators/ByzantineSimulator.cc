@@ -13,9 +13,11 @@
 #include "ScaleFreeGenerator.h"
 #include "K01Tolerance.h"
 #include "K04Tolerance.h"
-#include "K11Tolerance.h"
+#include "KxHopTolerance.h"
 #include "C01Tolerance.h"
 #include "C01K03Tolerance.h"
+#include "CxHopTolerance.h"
+#include <mpi.h>
 
 using namespace generators;
 
@@ -42,13 +44,16 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 		byzantine.tolerance = new K04Tolerance();
 		break;
 	case K11:
-		byzantine.tolerance = new K11Tolerance();
+		byzantine.tolerance = new KxHopTolerance(2);
 		break;
 	case C01:
 		byzantine.tolerance = new C01Tolerance();
 		break;
 	case C01K03:
 		byzantine.tolerance = new C01K03Tolerance();
+		break;
+	case CxHop:
+		byzantine.tolerance = new CxHopTolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();
@@ -120,9 +125,14 @@ void ByzantineSimulator::Convert2HopInformation(DeployingType deployingType,
 		string inputfolder, string outputFolder, int sampleSize)
 {
 	SetDeployment(deployingType, 1000);
-
 	SetParameters(1, inputfolder, outputFolder, 0, 0, 0, 0, 0.01, 0.01, sampleSize);
-	for (int i = 0; i < sampleSize; i++)
+
+//	int cpu_size;
+//	int cpu_rank;
+//	MPI_Comm_size(MPI_COMM_WORLD, &cpu_size);
+//	MPI_Comm_rank(MPI_COMM_WORLD, &cpu_rank);
+
+	for (int i = 0; i <= 100; i++)
 	{
 		bool result = generator->GenerateFromFiles(network, params.inputFolder, i);
 		if (result)

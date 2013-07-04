@@ -169,10 +169,10 @@ int main(int argc, char* argv[])
 //		}
 //	}
 //	SimulatorManager* manager = new SimulatorManager();
-//	manager->RunSimulation(ER_Random, C01K03, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi_10000",
-//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10000/C01K03_new", 2, 100);
-//	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/8/1000", 2, 100);
+//	manager->RunOneStepSimulation(ER_Random, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/K01_0", 2, 100);
+//	manager->RunOneStepSimulation(ER_Random, CxHop, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/CxHop_0", 2, 100);
 //	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/8/2000", 2, 100);
 //	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/3000",
@@ -180,11 +180,14 @@ int main(int argc, char* argv[])
 //	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/4000",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/8/4000", 2, 100);
 
-//	SimulatorManager* manager = new SimulatorManager();
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/1000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/1000/C01K03_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/2000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/2000/C01K03_0.out", 0, 0.01);
+	SimulatorManager* manager = new SimulatorManager();
+//	manager->ReadOneStepResults(ER_Random, K01, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/K01_0",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/K01_0.out", 0, 0.01);
+//	manager->ReadOneStepResults(ER_Random, CxHop, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/CxHop_0",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/CxHop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(ER_Random, C01K03, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/14/1000/CxHop_0",
+				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/14/1000/CxHop_0.out", 0, 0.01);
+
 //	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0.out", 0, 0.01);
 //	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/4000/C01K03_0",
@@ -204,11 +207,14 @@ int main(int argc, char* argv[])
 //	manager->ReadResults(ScaleFree, K03, "/Users/thanhnd/Workspace/Results/ScaleFree/K3",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/K03.out", 50);
 
-	ByzantineSimulator* sim = new ByzantineSimulator();
-//	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/1000",
-//			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/advanced/1000", 101);
-	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10000",
-			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/advanced/10000", 101);
+//	ByzantineSimulator* sim = new ByzantineSimulator();
+//	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/14/10000",
+//			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/14/advanced/10000", 101);
+//	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/5/5000",
+//			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/5/advanced/5000", 101);
+//	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/5/10000",
+//			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/5/advanced/10000", 101);
+
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000", 7, 1000, 4);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000", 7, 2000, 4);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/3000", 7, 3000, 4);
@@ -219,5 +225,5 @@ int main(int argc, char* argv[])
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/8000", 7, 8000, 4);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/9000", 7, 9000, 4);
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/10000", 7, 10000, 4);
-//	sim->GenerateER_RandomNetwork(100, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi_10000", 0.0014);
+//	sim->GenerateER_RandomNetwork(101, 1000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000", 0.01);
 }

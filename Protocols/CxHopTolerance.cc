@@ -21,7 +21,7 @@ CxHopTolerance::~CxHopTolerance() {
 
 string CxHopTolerance::GetToleranceName()
 {
-	return "C1K03";
+	return "CxHop";
 }
 
 void CxHopTolerance::TolerateNode(LinkPtr link)
@@ -38,7 +38,7 @@ void CxHopTolerance::TolerateNode(LinkPtr link)
 		if ((*it)->dest == link->src)
 			(*it)->state = Cut;
 		Link2Hop* link2Hop = GetCommonNeighborsExcept((*it)->dest, link->src, node);
-		if (link != NULL)
+		if (link2Hop != NULL)
 		{
 			DeactivateMessage* message = new DeactivateMessage((*it), link2Hop, node->ownerNetwork->currentTimeSlot);
 			message->TTL = 1; // is not used yet, because the receiver of deactivate message does not forward message.
@@ -55,11 +55,12 @@ void CxHopTolerance::ReceiveDeactivateMessage(Message* message)
 	if (node->state == Sane)
 	{
 		DeactivateMessage* deactivateMessage = (DeactivateMessage*)message;
-		int size = deactivateMessage->link2Hop->mids.size();
+		Link2Hop* link2 = deactivateMessage->link2Hop;
+		int size = link2->mids.size();
 		for(int i = 0; i < size; i++)
 		{
-			NodePtr mid_i = deactivateMessage->link2Hop->mids[i];
-			if (mid_i->id != deactivateMessage->link->src->id)
+			int mid_i = deactivateMessage->link2Hop->mids[i];
+			if (mid_i != deactivateMessage->link->src->id)
 			{
 				NetworkTools::GetLinkPtr(node->links, mid_i)->state = Cut;
 			}
@@ -76,14 +77,6 @@ void CxHopTolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* messag
 
 Link2Hop* CxHopTolerance::GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodePtr exception)
 {
-	list<LinkPtr> commonNodes = list<LinkPtr>();
-//	vector<LinkPtr>::iterator it = n1->links.begin();
-//	// for each neighbor of n1, check if it is in list neighbors of n2
-//	for (; it != n1->links.end(); it++)
-//		if ((*it)->dest->id != exception->id && ContainNode(n2->links, (*it)->dest))
-//		{
-//			commonNodes.push_back(*it);
-//		}
 	Link2Hop* link2Hop = LookingForLink2Hop(n1->links2Hop, n2);
 	if (link2Hop != NULL && link2Hop->mids.size() > 1)
 	{

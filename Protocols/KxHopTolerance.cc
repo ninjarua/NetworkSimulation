@@ -5,22 +5,22 @@
  *      Author: thanh
  */
 
-#include "K11Tolerance.h"
+#include "KxHopTolerance.h"
 #include "DeactivateMessage.h"
 
 using namespace domain;
 
 namespace protocols {
 
-K11Tolerance::K11Tolerance() : ToleranceBase() {
+KxHopTolerance::KxHopTolerance(int hopKilled) : ToleranceBase() {
+	hopToKill = hopKilled;
+}
+
+KxHopTolerance::~KxHopTolerance() {
 
 }
 
-K11Tolerance::~K11Tolerance() {
-
-}
-
-void K11Tolerance::TolerateNode(LinkPtr link)
+void KxHopTolerance::TolerateNode(LinkPtr link)
 {
 	ToleranceBase::TolerateNode(link);
 	NodePtr node = link->dest;
@@ -33,12 +33,12 @@ void K11Tolerance::TolerateNode(LinkPtr link)
 		if ((*it)->dest->state == Infected || (*it)->dest->state == Inactive)
 			continue;
 		DeactivateMessage* message = new DeactivateMessage((*it), node->ownerNetwork->currentTimeSlot);
-		message->creationTime = 1;
+		message->TTL = hopToKill;
 		SendMessage((*it), CallbackReceiveDeactivateMessage, message);
 	}
 }
 
-void K11Tolerance::ReceiveDeactivateMessage(Message* message)
+void KxHopTolerance::ReceiveDeactivateMessage(Message* message)
 {
 	NodePtr node = message->link->dest;
 	if (node->state == Infected)
@@ -66,9 +66,9 @@ void K11Tolerance::ReceiveDeactivateMessage(Message* message)
 	}
 }
 
-void K11Tolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* message)
+void KxHopTolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* message)
 {
-	K11Tolerance* ptrK11 = (K11Tolerance*)ptr;
+	KxHopTolerance* ptrK11 = (KxHopTolerance*)ptr;
 	ptrK11->ReceiveDeactivateMessage(message);
 }
 }

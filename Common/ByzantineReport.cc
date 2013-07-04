@@ -13,6 +13,8 @@ ByzantineReport::ByzantineReport() {
 	numberOfNormals = vector<long>();
 	numberOfSacrifices = vector<long>();
 	largestConnectedAreas = vector<long>();
+	degrees = vector<long>();
+	diameters = vector<long>();
 }
 
 ByzantineReport::~ByzantineReport() {
@@ -34,6 +36,8 @@ void ByzantineReport::Clear()
 	numberOfNormals.clear();
 	numberOfSacrifices.clear();
 	largestConnectedAreas.clear();
+	degrees.clear();
+	diameters.clear();
 }
 
 void ByzantineReport::AddByzantineValue(long value)
@@ -91,10 +95,10 @@ ByzantineReport* ByzantineReport::Summarize(double significance)
 	ciOfLargestConnectedAreas = summary.GetConfidenceInterval(significance);
 	summary.Summarize(degrees);
 	averageOfDegree = summary.mean;
-	ciOfLargestConnectedAreas = summary.GetConfidenceInterval(significance);
+	ciOfDegrees = summary.GetConfidenceInterval(significance);
 	summary.Summarize(diameters);
 	averageOfDiameter = summary.mean;
-	ciOfLargestConnectedAreas = summary.GetConfidenceInterval(significance);
+	ciOfDiameters = summary.GetConfidenceInterval(significance);
 	size = summary.length;
 	return this;
 }

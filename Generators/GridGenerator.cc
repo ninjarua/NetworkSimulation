@@ -28,7 +28,7 @@ bool GridGenerator::GenerateFromFiles(Network* network, string folder, int index
 	{
 		network->hasTopology = deployment->runDeploy(network);
 	}
-	return true;
+	return network->hasTopology;
 }
 
 } /* namespace generators */

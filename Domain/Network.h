@@ -51,17 +51,18 @@ public:
 	friend istream& operator>>(istream& os, Network& network);
 
 	void addNode(NodePtr node);
+	void Reset();
 	void createEmptyNodes(int n);
 	void makeNeighbors(int id1, int id2);
 	static bool noNewMessageInNetwork(const Network& network);
 	static int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
+	void createAdvancedInformation();
 
 private:
 	void collect2HopInformation();
 	void createMatrixDistance();
 	void updateMatrixDistanceFromNeighbors();
 	void runFloyd();
-	void createAdvancedInformation();
 
 	static int ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
 			bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
