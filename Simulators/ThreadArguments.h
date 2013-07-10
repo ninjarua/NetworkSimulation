@@ -28,12 +28,14 @@ public:
 	int threadId;
 	int sampleSize;
 	int networkSize;
+	int hopCount;
 
 	ThreadArguments(){}
 
-	void set(DeployingType _deploying, TypeOfTolerance _toleranceType, int _totalTimes, int _threadId,
+	void set(DeployingType _deploying, TypeOfTolerance _toleranceType, int _hopCount, int _totalTimes, int _threadId,
 			int _numberCPUs, string _inputFolder, string _outputFolder, int _sampleSize, int _networkSize = 100)
 	{
+		hopCount = _hopCount;
 		deploying = _deploying;
 		toleranceType = _toleranceType;
 		totalTimes = _totalTimes;

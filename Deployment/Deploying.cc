@@ -70,7 +70,7 @@ bool Deploying::runDeploy(Network* network)
 	if (obtainTopology(network))
 	{
 		neighborInitialization(network);
-		network->createAdvancedInformation();
+		//network->createAdvancedInformation();
 		return true;
 	}
 	return false;

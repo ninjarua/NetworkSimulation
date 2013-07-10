@@ -33,7 +33,7 @@ void CxHopTolerance::TolerateNode(LinkPtr link)
 	vector<LinkPtr>::iterator it = node->links.begin();
 	for (; it != node->links.end(); it++)
 	{
-		if ((*it)->dest->state == Infected || (*it)->dest->state == Inactive)
+		if ((*it)->state == Cut || (*it)->dest->state == Infected || (*it)->dest->state == Inactive)
 			continue;
 		if ((*it)->dest == link->src)
 			(*it)->state = Cut;

@@ -36,7 +36,7 @@ void C01K03Tolerance::TolerateNode(LinkPtr link)
 	vector<LinkPtr>::iterator it = node->links.begin();
 	for (; it != node->links.end(); it++)
 	{
-		if ((*it)->dest->state == Infected || (*it)->dest->state == Inactive)
+		if ((*it)->state == Cut || (*it)->dest->state == Infected || (*it)->dest->state == Inactive)
 			continue;
 		if ((*it)->dest == link->src)
 		{
@@ -54,7 +54,7 @@ void C01K03Tolerance::TolerateNode(LinkPtr link)
 void C01K03Tolerance::ReceiveDeactivateMessage(Message* message)
 {
 	NodeState destState = message->link->dest->state;
-	if (destState == Infected)
+	if (destState == Infected || destState == Inactive)
 		return;
 	if (destState == Sane)
 	{

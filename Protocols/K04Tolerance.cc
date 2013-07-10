@@ -39,7 +39,7 @@ void K04Tolerance::TolerateNode(LinkPtr link)
 void K04Tolerance::ReceiveDeactivateMessage(Message* message)
 {
 	NodePtr node = message->link->dest;
-	if (node->state == Infected)
+	if (node->state == Infected || node->state == Inactive)
 		return;
 	if (node->state == Sane)
 	{

@@ -78,8 +78,7 @@ void ByzantineProtocol::CallbackReceiveByzantineMessage(void* ptr, Message* mess
 void ByzantineProtocol::ReceiveByzantineMessage(Message* message)
 {
 	NodeState destState = message->link->dest->state;
-    if (destState == Infected || destState == Inactive
-    		|| message->link->state == Cut)
+    if (destState == Infected || destState == Inactive || message->link->state == Cut)
     {
         message->status = Expired;
         return;

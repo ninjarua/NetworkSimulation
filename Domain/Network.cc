@@ -18,6 +18,7 @@ Network::Network() {
 	sequenceId = 0;
 	currentTimeSlot = 0;
 	messageCount = 0;
+	newMessageCount = 0;
 	info = NetworkInfo();
 	nodes = vector<NodePtr>();
 	messages = list<Message*>();
@@ -32,6 +33,7 @@ Network::~Network() {
 void Network::Reset()
 {
 	messageCount = 0;
+	newMessageCount = 0;
 	Tools::EraseAll(nodes);
 	Tools::EraseAll(messages);
 	diameter = 0;

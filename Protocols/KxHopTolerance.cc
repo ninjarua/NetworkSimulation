@@ -41,7 +41,7 @@ void KxHopTolerance::TolerateNode(LinkPtr link)
 void KxHopTolerance::ReceiveDeactivateMessage(Message* message)
 {
 	NodePtr node = message->link->dest;
-	if (node->state == Infected)
+	if (node->state == Infected || node->state == Inactive)
 		return;
 	if (node->state == Sane)
 	{

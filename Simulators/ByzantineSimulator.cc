@@ -33,7 +33,7 @@ ByzantineSimulator::~ByzantineSimulator() {
 
 }
 
-void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
+void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType, int hopCount)
 {
 	switch(toleranceType)
 	{
@@ -43,8 +43,8 @@ void ByzantineSimulator::SetTolerance(TypeOfTolerance toleranceType)
 	case K04:
 		byzantine.tolerance = new K04Tolerance();
 		break;
-	case K11:
-		byzantine.tolerance = new KxHopTolerance(2);
+	case KxHop:
+		byzantine.tolerance = new KxHopTolerance(hopCount);
 		break;
 	case C01:
 		byzantine.tolerance = new C01Tolerance();
@@ -272,7 +272,7 @@ void ByzantineSimulator::RunReaderByThreadId(DeployingType deployingType, TypeOf
 }
 
 void ByzantineSimulator::RunSimulationByThreadId(DeployingType deployingType, TypeOfTolerance toleranceType,
-		int threadId, int totalThread, int totalTimes,
+		int hopCount, int threadId, int totalThread, int totalTimes,
 		string inputFolder, string outputFolder,
 		double intervalByz, double intervalNothing, int sampleSize, int networkSize)
 {
@@ -286,20 +286,21 @@ void ByzantineSimulator::RunSimulationByThreadId(DeployingType deployingType, Ty
 	string inputDir = inputFolder;// + OS_SEP + number;
 	string outputDir = outputFolder + OS_SEP + number;
 
-	RunSimulation(deployingType, toleranceType, totalTimes, inputDir, outputDir, startingNothing1, 0,
+	RunSimulation(deployingType, toleranceType, hopCount, totalTimes, inputDir, outputDir, startingNothing1, 0,
 			endingNothing1, 1 - endingNothing1, intervalByz, intervalNothing, sampleSize, networkSize);
-	RunSimulation(deployingType, toleranceType, totalTimes, inputDir, outputDir, startingNothing2, 0,
+	RunSimulation(deployingType, toleranceType, hopCount, totalTimes, inputDir, outputDir, startingNothing2, 0,
 			endingNothing2, 1 - endingNothing2, intervalByz, intervalNothing, sampleSize, networkSize);
 }
 
-void ByzantineSimulator::RunSimulation(DeployingType deployingType, TypeOfTolerance toleranceType, int times,
+void ByzantineSimulator::RunSimulation(DeployingType deployingType, TypeOfTolerance toleranceType,
+		int hopCount, int times,
 		string inputfolder, string outputFolder,
 		double startingNothing, double startingByzantine,
 		double endingNothing, double endingByzantine,
 		double intervalByz, double intervalNothing,
 		int sampleSize, int networkSize)
 {
-	SetTolerance(toleranceType);
+	SetTolerance(toleranceType, hopCount);
 	SetDeployment(deployingType, networkSize);
 
 	SetParameters(times, inputfolder, outputFolder, startingNothing, startingByzantine, endingNothing,
@@ -342,14 +343,14 @@ void ByzantineSimulator::CallbackThreadOneStep(ThreadArguments args)
 
 	double startByzProb = (double)args.threadId * interval * 0.01;
 	double endByzProb = (double)(args.threadId + 1) * interval * 0.01 - 0.01;
-	sim->RunSimulation(args.deploying, args.toleranceType,
-			args.totalTimes, args.inputFolder, args.output, 0, startByzProb, 0, endByzProb, 0.01, 0.01, args.sampleSize);
+	sim->RunSimulation(args.deploying, args.toleranceType, args.hopCount,
+			args.totalTimes, args.inputFolder, args.output, 0, startByzProb, 0, endByzProb, 0.01, 0.01, args.sampleSize, args.networkSize);
 }
 
 void ByzantineSimulator::CallbackThread(ThreadArguments args)
 {
 	ByzantineSimulator* sim = new ByzantineSimulator();
-	sim->RunSimulationByThreadId(args.deploying, args.toleranceType, args.threadId, args.numberCPUs, args.totalTimes,
+	sim->RunSimulationByThreadId(args.deploying, args.toleranceType, args.hopCount, args.threadId, args.numberCPUs, args.totalTimes,
 			args.inputFolder, args.output, 0.01, 0.01, args.sampleSize, args.networkSize);
 //	ThreadArguments* ar = (ThreadArguments*)args;
 //	sim->RunSimulationByThreadId(ar->deploying, ar->toleranceType, 1, 2, ar->totalTimes,

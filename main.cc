@@ -86,7 +86,7 @@ TypeOfTolerance GetToleranceType(char* type)
 	else if (strcmp(type, "K7") == 0)
 		return K07;
 	else if (strcmp(type, "K11") == 0)
-		return K11;
+		return KxHop;
 	return K01;
 }
 
@@ -140,7 +140,7 @@ void runSimulation(int argc, char* argv[])
 		{
 			SimulatorManager* manager = new SimulatorManager();
 						manager->RunSimulation(GetDeployingType(argv[3]),
-								GetToleranceType(argv[4]), atoi(argv[5]),
+								GetToleranceType(argv[4]), 1, atoi(argv[5]),
 								argv[6], argv[7], atoi(argv[8]), atoi(argv[9]));
 		}
 		catch (std::exception& ex)
@@ -169,9 +169,10 @@ int main(int argc, char* argv[])
 //		}
 //	}
 //	SimulatorManager* manager = new SimulatorManager();
-//	manager->RunOneStepSimulation(ER_Random, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
-//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/K01_0", 2, 100);
-//	manager->RunOneStepSimulation(ER_Random, CxHop, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
+//	manager->RunOneStepSimulation(TorusGrid, KxHop, 25, 10000, "", "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K26Hop_0", 1, 100, 2500);
+//	manager->RunOneStepSimulation(TorusGrid, KxHop, 1, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
+//				"/Users/thanhnd/Workspace/Results/TorusGrid/2500/K25Hop_0", 2, 100, 2500);
+//	manager->RunOneStepSimulation(ER_Random, CxHop, 1, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
 //				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/CxHop_0", 2, 100);
 //	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/8/2000", 2, 100);
@@ -181,12 +182,44 @@ int main(int argc, char* argv[])
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/8/4000", 2, 100);
 
 	SimulatorManager* manager = new SimulatorManager();
-//	manager->ReadOneStepResults(ER_Random, K01, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/K01_0",
-//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/K01_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ER_Random, CxHop, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/CxHop_0",
-//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/CxHop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(ER_Random, C01K03, "/Users/thanhnd/Workspace/Results/Erdos_Renyi/14/1000/CxHop_0",
-				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/14/1000/CxHop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K09Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K09Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K15Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K15Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K16Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K16Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K17Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K17Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K18Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K18Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K19Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K19Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K20Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K20Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K21Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K21Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K22Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K22Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K23Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K23Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K24Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K24Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K25Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K25Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K26Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K26Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K27Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K27Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K28Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K28Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K29Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K29Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K30Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K30Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K31Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K31Hop_0.out", 0, 0.01);
+	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K32Hop_0",
+				"/Users/thanhnd/Workspace/server/Grid/2500/K32Hop_0.out", 0, 0.01);
 
 //	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0.out", 0, 0.01);

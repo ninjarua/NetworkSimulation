@@ -20,6 +20,7 @@ NetworkProtocol::~NetworkProtocol() {
 void NetworkProtocol::AddNewMessageToNetwork(Network*& network, Message*& message)
 {
 	network->messages.push_back(message);
+	//network->newMessageCount++;
 	network->messageCount++;
 }
 
@@ -91,26 +92,7 @@ void NetworkProtocol::RunNetworkStep(Network* network)
     		network->messageCount--;
     	}
     }
-//    while (network->messageCount > 0)
-//    {
-//    	int randId = rand() % network->messageCount;
-//        list<Message*>::iterator it = network->messages.begin();
-//    	for (; randId > 0; randId--)
-//    	{
-//    		it++;
-//    	}
-//    	if (it == network->messages.end())
-//    		break;
-//        if ((*it)->status == Sending && (*it)->creationTime < network->currentTimeSlot)
-//        {
-//        	(*it)->receivingAction(this, (*it)->sender, (*it)->receiver, (*it));
-//        	//Logger::Write(*(*it), GetLogFilename(), ofstream::out | ofstream::app);
-//            delete *it;
-//            network->messages.erase(it);
-//            network->messageCount--;
-//            //RemoveMessageFromNetwork(network, it);
-//        }
-//    }
+    Tools::EraseAll(network->messages);
     network->currentTimeSlot++;
 }
 
