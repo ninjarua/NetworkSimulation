@@ -32,8 +32,23 @@ public:
 
 	ThreadArguments(){}
 
+	void set(DeployingType _deploying, TypeOfTolerance _toleranceType, int _threadId,
+			int _numberCPUs, string _inputFolder, string _outputFolder, int _sampleSize)
+	{
+		hopCount = 0;
+		deploying = _deploying;
+		toleranceType = _toleranceType;
+		totalTimes = 0;
+		inputFolder = _inputFolder;
+		output = _outputFolder;
+		numberCPUs = _numberCPUs;
+		sampleSize = _sampleSize;
+		threadId = _threadId;
+		networkSize = 100;
+	}
+
 	void set(DeployingType _deploying, TypeOfTolerance _toleranceType, int _hopCount, int _totalTimes, int _threadId,
-			int _numberCPUs, string _inputFolder, string _outputFolder, int _sampleSize, int _networkSize = 100)
+			int _numberCPUs, string _inputFolder, string _outputFolder, int _sampleSize)
 	{
 		hopCount = _hopCount;
 		deploying = _deploying;
@@ -43,6 +58,21 @@ public:
 		output = _outputFolder;
 		numberCPUs = _numberCPUs;
 		sampleSize = _sampleSize;
+		threadId = _threadId;
+		networkSize = 100;
+	}
+
+	void setForGrid(TypeOfTolerance _toleranceType, int _hopCount, int _totalTimes, int _threadId,
+				int _numberCPUs, string _outputFolder, int _networkSize = 100)
+	{
+		hopCount = _hopCount;
+		deploying = TorusGrid;
+		toleranceType = _toleranceType;
+		totalTimes = _totalTimes;
+		inputFolder = "";
+		output = _outputFolder;
+		numberCPUs = _numberCPUs;
+		sampleSize = 1;
 		threadId = _threadId;
 		networkSize = _networkSize;
 	}

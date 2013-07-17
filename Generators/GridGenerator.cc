@@ -22,7 +22,7 @@ GridGenerator::~GridGenerator() {
 	delete deployment;
 }
 
-bool GridGenerator::GenerateFromFiles(Network* network, string folder, int index)
+bool GridGenerator::generateFromFiles(Network* network, string folder, int index)
 {
 	while (!network->hasTopology)
 	{

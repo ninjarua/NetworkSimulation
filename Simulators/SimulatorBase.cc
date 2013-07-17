@@ -25,29 +25,29 @@ SimulatorBase::SimulatorBase() {
 SimulatorBase::~SimulatorBase() {
 
 }
-string SimulatorBase::GenerateFixedRangeNetwork(int times, int size, string folder,
+string SimulatorBase::generateFixedRangeNetwork(int times, int size, string folder,
 		float xTerr, float yTerr, float range, float d0)
 {
 	generator = new FixedRangeGenerator(size, xTerr, yTerr, range);
-	generator->GenerateToFiles(network, folder, times);
+	generator->generateToFiles(network, folder, times);
 	return "Success";
 }
 
-string SimulatorBase::GenerateER_RandomNetwork(int times, int size, string folder, double prob)
+string SimulatorBase::generateER_RandomNetwork(int times, int size, string folder, double prob)
 {
 	generator = new ERRandomGenerator(size, prob);
-	generator->GenerateToFiles(network, folder, times);
+	generator->generateToFiles(network, folder, times);
 	return "Success";
 }
 
-string SimulatorBase::GenerateScaleFreeNetwork(int times, string folder, int cliqueSize, int size, int edge)
+string SimulatorBase::generateScaleFreeNetwork(int times, string folder, int cliqueSize, int size, int edge)
 {
 	generator = new ScaleFreeGenerator(cliqueSize, edge, size);
-	generator->GenerateToFiles(network, folder, times);
+	generator->generateToFiles(network, folder, times);
 	return "Success";
 }
 
-string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode, int times, string folder,
+string SimulatorBase::generateNetwork(DeployingType deployment, int numberOfNode, int times, string folder,
 			float xTerr, float yTerr, float range, float d0, double prob)
 {
 	string result;
@@ -56,19 +56,19 @@ string SimulatorBase::GenerateNetwork(DeployingType deployment, int numberOfNode
 	{
 	case Grid:
 		generator = new GridGenerator(numberOfNode);
-		generator->GenerateToFiles(network, folder);
+		generator->generateToFiles(network, folder);
 		break;
 	case TorusGrid:
 		generator = new TorusGridGenerator(numberOfNode);
-		generator->GenerateToFiles(network, folder);
+		generator->generateToFiles(network, folder);
 		break;
 	case FixedRange:
-		result = GenerateFixedRangeNetwork(times, numberOfNode, folder, xTerr, yTerr, range, d0);
+		result = generateFixedRangeNetwork(times, numberOfNode, folder, xTerr, yTerr, range, d0);
 		break;
 	case Ring:
 		break;
 	case ER_Random:
-		result = GenerateER_RandomNetwork(times, numberOfNode, folder, prob);
+		result = generateER_RandomNetwork(times, numberOfNode, folder, prob);
 		break;
 	default:
 		break;

@@ -26,16 +26,17 @@ protected:
 public:
 	NetworkGenerator();
 	virtual ~NetworkGenerator();
-	virtual string GenerateToFiles(Network* network, string folder, int times = 1);
-	virtual bool GenerateFromFiles(Network* network, string folder, int index = 0);
-	virtual void WriteNetworkToFile(Network* network, string folder, int index = 0);
-	string GetDeployingName();
+	virtual string generateToFiles(Network* network, string folder, int times = 1);
+	virtual bool generateFromFiles(Network* network, string folder, int index = 0);
+	virtual void writeNetworkToFile(Network* network, string folder, int index = 0);
+	string getDeployingName();
+	void turnOn2HopInfo(bool using2HopInfo);
 
 protected:
-	virtual string GetFilenameByDeployment(string folder, int number);
-	string GetFilename(int id);
-	string GetVerifyFilename(int id);
-	string GetFailureString(int count);
+	virtual string getFilenameByDeployment(string folder, int number);
+	string getFilename(int id);
+	string getVerifyFilename(int id);
+	string getFailureString(int count);
 };
 
 } /* namespace generators */

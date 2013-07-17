@@ -22,25 +22,24 @@ typedef bool (*pNodeCondition)(Node*);
 
 class Deploying {
 public:
+	Topology* topology;
+	bool using2HopInfo;
+
 	Deploying();
 	virtual ~Deploying();
-
-	public:
-		Topology* topology;
-
-    protected:
-        virtual void createInformationOfGraph(Network* network);
-        virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
-        virtual bool isAllDistanceValid(const Network& network, const Node& node);
-        virtual bool isValidDistance(const Node& node, const Node& neighbor);
-        virtual double getCellLength();
-        virtual double getPosX(int nodeSequenceId);
-        virtual double getPosY(int nodeSequenceId);
-        virtual void neighborInitialization(Network* network);
-	public:
-        bool runDeploy(Network* network);
-        virtual string getDeployingName();
-        virtual bool obtainTopology(Network* network);
+protected:
+	virtual void createInformationOfGraph(Network* network);
+	virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
+	virtual bool isAllDistanceValid(const Network& network, const Node& node);
+	virtual bool isValidDistance(const Node& node, const Node& neighbor);
+	virtual double getCellLength();
+	virtual double getPosX(int nodeSequenceId);
+	virtual double getPosY(int nodeSequenceId);
+	virtual void neighborInitialization(Network* network);
+public:
+	bool runDeploy(Network* network);
+	virtual string getDeployingName();
+	virtual bool obtainTopology(Network* network);
 };
 
 } /* namespace deployment */

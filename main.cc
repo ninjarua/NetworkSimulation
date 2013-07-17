@@ -20,18 +20,6 @@ using namespace simulators;
 #include <iostream>
 #include <fstream>
 
-//static void show_usage(string name)
-//{
-//	std::cerr << "Usage: " << name << " <option(s)> SOURCES"
-//			  << "Options:\n"
-//			  << "\t-o,--operation\tThe operation want to execute:\n"
-//			  << "\t\t\t\'generate\' for generating graph\n"
-//			  << "\t\t\t\'simulate\' for simulate tolerance strategy.\n"
-//			  << "\t-t,--topology\tThe type of graph for network topology\n"
-//			  << "\t-s,--strategy\tSpecify the evaluated topology\n"
-//			  << std::endl;
-//}
-
 static void show_missing_generate_arguments(int numbers)
 {
 	std::cerr << "Please input necessary " << numbers << " arguments:\n"
@@ -110,7 +98,7 @@ void generateGraph(int argc, char* argv[])
 	else
 	{
 		ByzantineSimulator* sim = new ByzantineSimulator();
-		sim->GenerateNetwork(GetDeployingType(argv[3]), atoi(argv[4]), atoi(argv[8]), argv[9],
+		sim->generateNetwork(GetDeployingType(argv[3]), atoi(argv[4]), atoi(argv[8]), argv[9],
 				atof(argv[5]), atof(argv[6]), atof(argv[7]), 1);
 		delete sim;
 //		showArgumentDebugGenerateGraph(argv);
@@ -139,7 +127,7 @@ void runSimulation(int argc, char* argv[])
 		try
 		{
 			SimulatorManager* manager = new SimulatorManager();
-						manager->RunSimulation(GetDeployingType(argv[3]),
+						manager->runSimulation(GetDeployingType(argv[3]),
 								GetToleranceType(argv[4]), 1, atoi(argv[5]),
 								argv[6], argv[7], atoi(argv[8]), atoi(argv[9]));
 		}
@@ -153,110 +141,26 @@ void runSimulation(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
 	srand(time(NULL)); // Set random seed for random procedure
-//	if (argc < 2)
-//	{
-//		show_usage(argv[1]);
-//	}
-//	else
-//	{
-//		if (strcmp(argv[1], "-o") == 0 && strcmp(argv[2], "generate") == 0)
-//		{
-//			generateGraph(argc, argv);
-//		}
-//		else if (strcmp(argv[1], "-o") == 0 && strcmp(argv[2], "simulate") == 0)
-//		{
-//			runSimulation(argc, argv);
-//		}
-//	}
-//	SimulatorManager* manager = new SimulatorManager();
-//	manager->RunOneStepSimulation(TorusGrid, KxHop, 25, 10000, "", "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K26Hop_0", 1, 100, 2500);
-//	manager->RunOneStepSimulation(TorusGrid, KxHop, 1, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
-//				"/Users/thanhnd/Workspace/Results/TorusGrid/2500/K25Hop_0", 2, 100, 2500);
-//	manager->RunOneStepSimulation(ER_Random, CxHop, 1, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
-//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/CxHop_0", 2, 100);
-//	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/8/2000", 2, 100);
-//	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/3000",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/8/3000", 2, 100);
-//	manager->RunOneStepSimulation(ScaleFree, K01, 10000, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/4000",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/8/4000", 2, 100);
-
 	SimulatorManager* manager = new SimulatorManager();
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K09Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K09Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K15Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K15Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K16Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K16Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K17Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K17Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K18Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K18Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K19Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K19Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K20Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K20Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K21Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K21Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K22Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K22Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K23Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K23Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K24Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K24Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K25Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K25Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K26Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K26Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K27Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K27Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K28Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K28Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K29Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K29Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K30Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K30Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K31Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K31Hop_0.out", 0, 0.01);
-	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/server/Grid/2500/K32Hop_0",
-				"/Users/thanhnd/Workspace/server/Grid/2500/K32Hop_0.out", 0, 0.01);
+	manager->runOneStepSimulation(ER_Random, CxHop, 1, 10000, 0.25,
+				"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/advanced/1000",
+				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/25/CxHop_0", 2, 100);
+	manager->runOneStepSimulation(ER_Random, CxHop, 1, 10000, 0.25,
+				"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/advanced/10000",
+				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/10000/25/CxHop_0", 2, 100);
+
+//	SimulatorManager* manager = new SimulatorManager();
+//	manager->readOneStepResults(TorusGrid, K01, "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K0Hop_0",
+//				"/Users/thanhnd/Workspace/Results/TorusGrid/2500/K0Hop_0.out", 0, 0.01);
+//	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K01Hop_0",
+//				"/Users/thanhnd/Workspace/Results/TorusGrid/2500/K01Hop_0.out", 0, 0.01);
 
 //	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/4000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/4000/C01K03_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/5000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/5000/C01K03_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/6000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/6000/C01K03_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/7000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/7000/C01K03_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/8000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/8000/C01K03_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/9000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/9000/C01K03_0.out", 0, 0.01);
-//	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/10000/C01K03_0",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/10000/C01K03_0.out", 0, 0.01);
-//	manager->ReadResults(ScaleFree, K03, "/Users/thanhnd/Workspace/Results/ScaleFree/K3",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/K03.out", 50);
 
 //	ByzantineSimulator* sim = new ByzantineSimulator();
 //	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/14/10000",
 //			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/14/advanced/10000", 101);
-//	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/5/5000",
-//			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/5/advanced/5000", 101);
-//	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/5/10000",
-//			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/5/advanced/10000", 101);
 
 //	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000", 7, 1000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/2000", 7, 2000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/3000", 7, 3000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/4000", 7, 4000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/5000", 7, 5000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/6000", 7, 6000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/7000", 7, 7000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/8000", 7, 8000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/9000", 7, 9000, 4);
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/10000", 7, 10000, 4);
-//	sim->GenerateER_RandomNetwork(101, 1000, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000", 0.01);
 }

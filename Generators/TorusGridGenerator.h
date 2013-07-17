@@ -18,7 +18,7 @@ public:
 	TorusGridGenerator();
 	TorusGridGenerator(int size);
 	virtual ~TorusGridGenerator();
-	bool GenerateFromFiles(Network* network, string folder, int index = 0);
+	bool generateFromFiles(Network* network, string folder, int index = 0);
 };
 
 } /* namespace generators */

@@ -18,9 +18,9 @@ NetworkGenerator::~NetworkGenerator() {
 	// TODO Auto-generated destructor stub
 }
 
-bool NetworkGenerator::GenerateFromFiles(Network* network, string folder, int index)
+bool NetworkGenerator::generateFromFiles(Network* network, string folder, int index)
 {
-	string filename = GetFilenameByDeployment(folder, index);
+	string filename = getFilenameByDeployment(folder, index);
 	if (filename == "")
 		return false;
 	ifstream f(filename.c_str(), ifstream::in);
@@ -29,12 +29,17 @@ bool NetworkGenerator::GenerateFromFiles(Network* network, string folder, int in
 	return true;
 }
 
-string NetworkGenerator::GetDeployingName()
+string NetworkGenerator::getDeployingName()
 {
 	return deployment->getDeployingName();
 }
 
-string NetworkGenerator::GetFilename(int id)
+void NetworkGenerator::turnOn2HopInfo(bool using2HopInfo)
+{
+	deployment->using2HopInfo = using2HopInfo;
+}
+
+string NetworkGenerator::getFilename(int id)
 {
 	string filename("graph");
 	if (id > 0)
@@ -47,7 +52,7 @@ string NetworkGenerator::GetFilename(int id)
 	return filename;
 }
 
-string NetworkGenerator::GetVerifyFilename(int id)
+string NetworkGenerator::getVerifyFilename(int id)
 {
 	char number[18];
 	sprintf(number, "%04d_verified.out", id);
@@ -56,7 +61,7 @@ string NetworkGenerator::GetVerifyFilename(int id)
 	return filename;
 }
 
-string NetworkGenerator::GetFailureString(int count)
+string NetworkGenerator::getFailureString(int count)
 {
 	string results("Cannot create all graphs!\n");
 	results = results + "Only create";
@@ -66,9 +71,9 @@ string NetworkGenerator::GetFailureString(int count)
 	return results;
 }
 
-string NetworkGenerator::GetFilenameByDeployment(string folder, int number)
+string NetworkGenerator::getFilenameByDeployment(string folder, int number)
 {
-	string filename(deployment->getDeployingName() + "_" + GetFilename(number));
+	string filename(deployment->getDeployingName() + "_" + getFilename(number));
 	filesystem::path dir(folder);
 	if (!filesystem::exists(dir))
 		filesystem::create_directory(dir);
@@ -81,27 +86,27 @@ string NetworkGenerator::GetFilenameByDeployment(string folder, int number)
 	return file.string();
 }
 
-string NetworkGenerator::GenerateToFiles(Network* network, string folder, int times)
+string NetworkGenerator::generateToFiles(Network* network, string folder, int times)
 {
 	for (int i = 0; i < times; i++)
 	{
 		bool hasTopology = deployment->runDeploy(network);
 		if (hasTopology)
 		{
-			Logger::Write(network, GetFilenameByDeployment(folder, i));
+			Logger::Write(network, getFilenameByDeployment(folder, i));
 			//if (drawNetwork)
 		}
 		else
 		{
-			return GetFailureString(i);
+			return getFailureString(i);
 		}
 	}
 	return "Success";
 }
 
-void NetworkGenerator::WriteNetworkToFile(Network* network, string folder, int index)
+void NetworkGenerator::writeNetworkToFile(Network* network, string folder, int index)
 {
-	Logger::Write(network, GetFilenameByDeployment(folder, index));
+	Logger::Write(network, getFilenameByDeployment(folder, index));
 }
 
 } /* namespace generators */

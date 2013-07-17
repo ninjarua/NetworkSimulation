@@ -10,6 +10,7 @@
 namespace deployment {
 Deploying::Deploying() {
 	topology = new Topology();
+	using2HopInfo = false;
 }
 
 Deploying::~Deploying() {
@@ -70,7 +71,8 @@ bool Deploying::runDeploy(Network* network)
 	if (obtainTopology(network))
 	{
 		neighborInitialization(network);
-		//network->createAdvancedInformation();
+		if (using2HopInfo)
+			network->createAdvancedInformation();
 		return true;
 	}
 	return false;

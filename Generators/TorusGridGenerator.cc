@@ -22,7 +22,7 @@ TorusGridGenerator::~TorusGridGenerator() {
 	delete deployment;
 }
 
-bool TorusGridGenerator::GenerateFromFiles(Network* network, string folder, int index)
+bool TorusGridGenerator::generateFromFiles(Network* network, string folder, int index)
 {
 	while (!network->hasTopology)
 	{

@@ -179,9 +179,9 @@ istream& operator>>(istream& is, Network& network)
 
 void Network::createAdvancedInformation()
 {
-	createMatrixDistance();
-	updateMatrixDistanceFromNeighbors();
-	runFloyd();
+//	createMatrixDistance();
+//	updateMatrixDistanceFromNeighbors();
+//	runFloyd();
 	if (!has2HopInfo)
 		collect2HopInformation();
 }

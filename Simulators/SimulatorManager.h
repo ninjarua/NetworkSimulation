@@ -20,17 +20,27 @@ public:
 	SimulatorManager();
 	virtual ~SimulatorManager();
 
-	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
-					string inputFolder, string outputFolder, int numberCPUs, int sampleSize, int size=100);
-	void RunOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
-						string inputFolder, string outputFolder, int numberCPUs, int sampleSize, int networkSize=100);
-	void RunSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
-					string inputFolder, string outputFolder, int numberCPUs, int sampleSize, int size=100);
-	void RunOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
-						string inputFolder, string outputFolder, int numberCPUs, int sampleSize, int networkSize=100);
-	void ReadResults(DeployingType deploying, TypeOfTolerance toleranceType,
+	void runSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
+					string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
+	void runSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
+					string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
+
+	void runSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, string outputFolder, int numberCPUs, int networkSize=100);
+	void runSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, string outputFolder, int numberCPUs, int networkSize=100);
+
+	void runOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
+			double nothingProb, string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
+	void runOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
+			double nothingProb, string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
+
+	void runOneStepSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, double nothingProb,
+			string outputFolder, int numberCPUs, int networkSize=100);
+	void runOneStepSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
+			string outputFolder, int numberCPUs, int networkSize=100);
+
+	void readResults(DeployingType deploying, TypeOfTolerance toleranceType,
 					string inputFolder, string outputFolder, int numberCPUs);
-	void ReadOneStepResults(DeployingType deploying, TypeOfTolerance toleranceType,
+	void readOneStepResults(DeployingType deploying, TypeOfTolerance toleranceType,
 			string inputFolder, string output, double nothingProb = 0, double intervalByz = 0.01);
 
 };
