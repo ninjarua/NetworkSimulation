@@ -13,6 +13,8 @@
 namespace generators {
 
 class C01Tolerance: public protocols::ToleranceBase {
+	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
+	void ReceiveCutLinkMessage(Message* message);
 public:
 	C01Tolerance();
 	virtual ~C01Tolerance();

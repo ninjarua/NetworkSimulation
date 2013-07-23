@@ -30,6 +30,7 @@ Node::Node(Network* network) {
 }
 
 Node::~Node() {
+	srcLinks.clear();
 	Tools::EraseAll(links);
 	Tools::EraseAll(links2Hop);
 	//neighbors.clear();
@@ -72,6 +73,7 @@ void Node::CreateLists()
 {
 	//neighbors = list<NodePtr>();
 	links = vector<LinkPtr>();
+	srcLinks = vector<LinkPtr>();
 	links2Hop = vector<Link2Hop*>();
 	tempLinks2Hop = list<Link2Hop*>();
 	//detectedByzantines = set<NodePtr>();
@@ -87,9 +89,10 @@ void Node::Reset()
     	(*it)->state = Active;
 }
 
-int Node::addNeighbor(LinkPtr link)
+int Node::addNeighbor(LinkPtr link, LinkPtr srcLink)
 {
 	links.push_back(link);
+	srcLinks.push_back(srcLink);
 	D++;
 	return D;
 }
@@ -187,7 +190,19 @@ istringstream& operator>>(istringstream& is, Node& node)
 	{
 		//node.ownerNetwork->makeNeighbors(node.id, id);
 		//new Link(&node, node.ownerNetwork->nodes[id]);
-		node.addNeighbor(new Link(&node, node.ownerNetwork->nodes[id]));
+		LinkPtr srcLink = NULL;
+		LinkPtr link1 = NULL;
+		if (node.id <= id)
+		{
+			srcLink = new Link(node.ownerNetwork->nodes[id], &node);
+			link1 = new Link(&node, node.ownerNetwork->nodes[id]);
+		}
+		else
+		{
+			srcLink = NetworkTools::GetLinkPtr(node.ownerNetwork->nodes[id]->links, node.id);
+			link1 = NetworkTools::GetSrcLinkPtr(node.ownerNetwork->nodes[id]->srcLinks, node.id);
+		}
+		node.addNeighbor(link1, srcLink);
 		//node.neighbors.push_back(node.ownerNetwork->nodes.at(id));
 	}
 	return is;

@@ -12,7 +12,7 @@
 
 namespace domain {
 
-class DeactivateMessage: public domain::Message {
+class DeactivateMessage: public Message {
 public:
 	int TTL;
 	Link2Hop* link2Hop;
