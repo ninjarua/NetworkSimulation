@@ -36,6 +36,11 @@ void K04Tolerance::TolerateNode(LinkPtr link)
 	}
 }
 
+string K04Tolerance::GetToleranceName()
+{
+	return "K4";
+}
+
 void K04Tolerance::ReceiveDeactivateMessage(Message* message)
 {
 	NodePtr node = message->link->dest;

@@ -35,6 +35,7 @@ public:
 	int diameter;
 	//list<NodePtr> neighbors;
 	vector<LinkPtr> links;
+	vector<LinkPtr> srcLinks;
 	list<Link2Hop*> tempLinks2Hop;
 	vector<Link2Hop*> links2Hop;
 //	set<NodePtr> disconnectedNodes;
@@ -46,7 +47,7 @@ public:
 	virtual ~Node();
 
 	void Reset();
-	int addNeighbor(LinkPtr link);
+	int addNeighbor(LinkPtr link, LinkPtr srcLink);
 
 	bool static isConnectedAreaNumberZero(const Node& node);
 	bool static isConnectedAreaNumberEqual(const Node& node, int number);

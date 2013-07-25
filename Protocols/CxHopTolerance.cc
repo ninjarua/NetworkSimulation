@@ -8,6 +8,7 @@
 #include "CxHopTolerance.h"
 #include "NetworkTools.h"
 #include "DeactivateMessage.h"
+#include "CutLinkMessage.h"
 
 namespace protocols {
 
@@ -24,30 +25,46 @@ string CxHopTolerance::GetToleranceName()
 	return "CxHop";
 }
 
-void CxHopTolerance::TolerateNode(LinkPtr link)
+void CxHopTolerance::TolerateNode(LinkPtr messageLink)
 {
-	ToleranceBase::TolerateNode(link);
-	link->state = Cut;
-	//node->disconnectedNodes.insert(byzantine);
-	NodePtr node = link->dest;
+	ToleranceBase::TolerateNode(messageLink);
+	messageLink->state = Cut;
+	NodePtr node = messageLink->dest;
 	vector<LinkPtr>::iterator it = node->links.begin();
 	for (; it != node->links.end(); it++)
 	{
 		if ((*it)->state == Cut || (*it)->dest->state == Infected || (*it)->dest->state == Inactive)
 			continue;
-		if ((*it)->dest == link->src)
+		if ((*it)->dest == messageLink->src)
 			(*it)->state = Cut;
-		Link2Hop* link2Hop = GetCommonNeighborsExcept((*it)->dest, link->src, node);
+
+		LinkPtr linkToCut = NetworkTools::GetLinkPtr(messageLink->src->links, (*it)->dest->id);
+		if (linkToCut != NULL)
+		{
+			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, node->ownerNetwork->currentTimeSlot);
+			SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
+		}
+
+		Link2Hop* link2Hop = GetCommonNeighborsExcept((*it)->dest, messageLink->src, node);
 		if (link2Hop != NULL)
 		{
 			DeactivateMessage* message = new DeactivateMessage((*it), link2Hop, node->ownerNetwork->currentTimeSlot);
 			message->TTL = 1; // is not used yet, because the receiver of deactivate message does not forward message.
-			SendMessage((*it), CallbackReceiveDeactivateMessage, message);
+			SendMessage((*it), CallbackReceiveCutLink2HopMessage, message);
 		}
 	}
 }
 
-void CxHopTolerance::ReceiveDeactivateMessage(Message* message)
+void CxHopTolerance::ReceiveCutLinkMessage(Message* message)
+{
+	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
+	cuttingMessage->linkToCut->state = Cut;
+	LinkPtr srcLinkToCut = NetworkTools::GetSrcLinkPtr(cuttingMessage->linkToCut->src->srcLinks,
+									cuttingMessage->linkToCut->dest->id);
+	srcLinkToCut->state = Cut;
+}
+
+void CxHopTolerance::ReceiveCutLink2HopMessage(Message* message)
 {
 	NodePtr node = message->link->dest;
 	if (node->state == Infected)
@@ -69,10 +86,16 @@ void CxHopTolerance::ReceiveDeactivateMessage(Message* message)
 	message->status = Expired;
 }
 
-void CxHopTolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* message)
+void CxHopTolerance::CallbackReceiveCutLinkMessage(void* ptr, Message* message)
+{
+	CxHopTolerance* ptrCxHop = (CxHopTolerance*)ptr;
+	ptrCxHop->ReceiveCutLinkMessage(message);
+}
+
+void CxHopTolerance::CallbackReceiveCutLink2HopMessage(void* ptr, Message* message)
 {
 	CxHopTolerance* ptrC1K3 = (CxHopTolerance*)ptr;
-	ptrC1K3->ReceiveDeactivateMessage(message);
+	ptrC1K3->ReceiveCutLink2HopMessage(message);
 }
 
 Link2Hop* CxHopTolerance::GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodePtr exception)
@@ -85,6 +108,7 @@ Link2Hop* CxHopTolerance::GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodeP
 	return NULL;
 }
 
+// Looking for the link in 2 hop that has dest is same as node in parameter
 Link2Hop* CxHopTolerance::LookingForLink2Hop(vector<Link2Hop*> links2Hop, NodePtr node)
 {
 	int size = links2Hop.size();

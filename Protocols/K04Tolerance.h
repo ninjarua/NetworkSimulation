@@ -19,6 +19,7 @@ public:
 	virtual ~K04Tolerance();
 	void TolerateNode(LinkPtr link);
 	void ReceiveDeactivateMessage(Message* message);
+	string GetToleranceName();
 };
 
 } /* namespace protocols */

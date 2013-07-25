@@ -48,6 +48,26 @@ public:
 		return false;
 	}
 
+	static LinkPtr GetSrcLinkPtr(vector<LinkPtr> links, const int& id)
+	{
+		int size = links.size();
+		int left = 0;
+		int right = size - 1;
+		int mid;
+		while (left <= right)
+		{
+			mid = (left + right)/2;
+			LinkPtr linkMid = links.at(mid);
+			if (id > linkMid->src->id)
+				left = mid + 1;
+			else if(id < linkMid->src->id)
+				right = mid - 1;
+			else
+				return linkMid;
+		}
+		return NULL;
+	}
+
 	static LinkPtr GetLinkPtr(vector<LinkPtr> links, const int& id)
 	{
 		int size = links.size();
