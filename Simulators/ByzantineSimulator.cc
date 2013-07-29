@@ -11,6 +11,7 @@
 #include "FixedRangeGenerator.h"
 #include "ERRandomGenerator.h"
 #include "ScaleFreeGenerator.h"
+#include "SmallworldGenerator.h"
 #include "K01Tolerance.h"
 #include "K04Tolerance.h"
 #include "KxHopTolerance.h"
@@ -74,6 +75,9 @@ void ByzantineSimulator::setDeployment(DeployingType deployingType, int networkS
 		break;
 	case FixedRange:
 		generator = new FixedRangeGenerator();
+		break;
+	case Small_world:
+		generator = new SmallworldGenerator();
 		break;
 	case Ring:
 		break;
