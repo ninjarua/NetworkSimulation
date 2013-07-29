@@ -28,10 +28,12 @@ public:
 	string getDeployingName();
 
 	bool obtainTopology(Network* network);
-	double GetPosX(int nodeSequenceId);
-
+	double getPosX(int nodeSequenceId);
 	double getPosY(int nodeSequenceId);
 	double getCellLength();
+
+	virtual void neighborInitialization(Network* network);
+	virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
 };
 
 } /* namespace protocols */

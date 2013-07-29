@@ -89,21 +89,21 @@ void showArgumentDebugGenerateGraph(char* argv[])
 	cout << "string folder: " << argv[9] << "\n";
 }
 
-void generateGraph(int argc, char* argv[])
-{
-	if (argc < 10)
-	{
-		show_missing_generate_arguments(9);
-	}
-	else
-	{
-		ByzantineSimulator* sim = new ByzantineSimulator();
-		sim->generateNetwork(GetDeployingType(argv[3]), atoi(argv[4]), atoi(argv[8]), argv[9],
-				atof(argv[5]), atof(argv[6]), atof(argv[7]), 1);
-		delete sim;
-//		showArgumentDebugGenerateGraph(argv);
-	}
-}
+//void generateGraph(int argc, char* argv[])
+//{
+//	if (argc < 10)
+//	{
+//		show_missing_generate_arguments(9);
+//	}
+//	else
+//	{
+//		ByzantineSimulator* sim = new ByzantineSimulator();
+//		sim->generateNetwork(GetDeployingType(argv[3]), atoi(argv[4]), atoi(argv[8]), argv[9],
+//				atof(argv[5]), atof(argv[6]), atof(argv[7]), 1);
+//		delete sim;
+////		showArgumentDebugGenerateGraph(argv);
+//	}
+//}
 
 void showArgumentDebugSimulation(char* argv[])
 {
@@ -141,13 +141,13 @@ void runSimulation(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
 	srand(time(NULL)); // Set random seed for random procedure
-	SimulatorManager* manager = new SimulatorManager();
-	manager->runOneStepSimulation(ER_Random, K01, 1, 10000, 0.5,
-				"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
-				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/50/K01_0", 2, 100);
-	manager->runOneStepSimulation(ER_Random, K01, 1, 10000, 0.5,
-				"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/10000",
-				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/10000/50/K01_0", 2, 100);
+//	SimulatorManager* manager = new SimulatorManager();
+//	manager->runOneStepSimulation(ER_Random, K01, 1, 10000, 0.5,
+//				"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/1000",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/1000/50/K01_0", 2, 100);
+//	manager->runOneStepSimulation(ER_Random, K01, 1, 10000, 0.5,
+//				"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/10/10000",
+//				"/Users/thanhnd/Workspace/Results/Erdos_Renyi/10/10000/50/K01_0", 2, 100);
 
 //	SimulatorManager* manager = new SimulatorManager();
 //	manager->readOneStepResults(TorusGrid, K01, "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K0Hop_0",
@@ -158,9 +158,9 @@ int main(int argc, char* argv[])
 //	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0.out", 0, 0.01);
 
-//	ByzantineSimulator* sim = new ByzantineSimulator();
+	ByzantineSimulator* sim = new ByzantineSimulator();
 //	sim->Convert2HopInformation(ER_Random, "/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/14/10000",
 //			"/Users/thanhnd/Workspace/Results/Graphs/Erdos_Renyi/14/advanced/10000", 101);
-
-//	sim->GenerateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/8/1000", 7, 1000, 4);
+//	sim->generateFixedRangeNetwork(101, 1000, "/Users/thanhnd/Workspace/Results/Graphs/FixedRange/10/1000", 4000, 4000, 276, 1);
+	sim->generateSmallworldNetwork(101, 1000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/14_5/1000", 5, 4000, 4000, 276, 1);
 }

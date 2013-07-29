@@ -179,6 +179,18 @@ istream& operator>>(istream& is, Network& network)
 	return is;
 }
 
+void Network::calculateAverageDegree()
+{
+	avgDegree = 0;
+	unsigned long totalDegree = 0;
+	vector<NodePtr>::iterator it = nodes.begin();
+	for (; it != nodes.end(); it++)
+	{
+		totalDegree += (*it)->D;
+	}
+	avgDegree = (double)totalDegree / nodes.size();
+}
+
 void Network::createAdvancedInformation()
 {
 //	createMatrixDistance();

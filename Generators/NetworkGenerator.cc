@@ -95,6 +95,8 @@ string NetworkGenerator::generateToFiles(Network* network, string folder, int ti
 		{
 			Logger::Write(network, getFilenameByDeployment(folder, i));
 			//if (drawNetwork)
+			network->calculateAverageDegree();
+			cout << network->avgDegree << endl;
 		}
 		else
 		{

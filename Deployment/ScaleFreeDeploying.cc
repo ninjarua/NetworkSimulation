@@ -27,7 +27,7 @@ ScaleFreeDeploying::ScaleFreeDeploying(int m0, int m, int N)
 }
 
 ScaleFreeDeploying::~ScaleFreeDeploying() {
-	// TODO Auto-generated destructor stub
+	delete topology;
 }
 
 string ScaleFreeDeploying::getDeployingName()

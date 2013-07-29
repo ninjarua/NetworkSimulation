@@ -11,7 +11,7 @@
 
 enum DeployingType { Ring = 0, TorusGrid = 1,
 					Grid = 2, ER_Random = 3,
-					FixedRange = 4, ScaleFree = 5};
+					FixedRange = 4, ScaleFree = 5, Small_world = 6 };
 
 
 #endif /* ENUMS_H_ */

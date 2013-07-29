@@ -11,7 +11,7 @@ namespace deployment {
 
 TorusGridDeploying::TorusGridDeploying()
 {
-
+    topology->range = 1;
 }
 
 TorusGridDeploying::TorusGridDeploying(int size) : Deploying() {

@@ -10,11 +10,12 @@
 namespace deployment {
 
 GridDeploying::GridDeploying() : Deploying() {
-
+    topology->range = 1;
 }
 
 GridDeploying::GridDeploying(int size) : Deploying() {
 	topology->numNodes = size;
+	topology->range = 1;
 	int sqrtNumNodes = (int)sqrt(topology->numNodes);
 	if (sqrtNumNodes != sqrt(topology->numNodes))
 	{

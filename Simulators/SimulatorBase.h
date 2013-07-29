@@ -37,9 +37,11 @@ protected:
 
 public:
 	int timeslot;
-	string generateNetwork(DeployingType deployment, int numberOfNode, int times, string folder,
-			float xTerr = 100, float yTerr = 100, float range = 1, float d0 = 1, double prob = 1);
+	string generateGridNetwork(int times, int size, string folder);
+	string generateTorusGridNetwork(int times, int size, string folder);
 	string generateFixedRangeNetwork(int times, int size, string folder,
+			float xTerr, float yTerr, float range, float d0);
+	string generateSmallworldNetwork(int times, int size, string folder, int numberOfLongEdge,
 			float xTerr, float yTerr, float range, float d0);
 	string generateER_RandomNetwork(int times, int size, string folder, double prob);
 	string generateScaleFreeNetwork(int times, string folder, int cliqueSize, int size, int edge);

@@ -32,6 +32,7 @@ public:
     int diameter;
     int size;
     double avgDiameter;
+    double avgDegree;
 
     vector<Node*> nodes;
     vector<vector<int> > distance;
@@ -57,6 +58,7 @@ public:
 	void makeNeighbors(int id1, int id2);
 	static bool noNewMessageInNetwork(const Network& network);
 	static int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
+	void calculateAverageDegree();
 	void createAdvancedInformation();
 
 private:
