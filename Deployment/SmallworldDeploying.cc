@@ -46,7 +46,7 @@ bool SmallworldDeploying::isNeighbors(const Network& network, const Node& node, 
 void SmallworldDeploying::neighborInitialization(Network* network)
 {
 	unsigned int networkSize = network->nodes.size();
-	for (int i=0; i < networkSize; i++)
+	for (unsigned int i=0; i < networkSize; i++)
 	{
 		for (unsigned int j = i + 1; j < networkSize; j++)
 		{

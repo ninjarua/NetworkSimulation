@@ -29,10 +29,14 @@ Node::Node(Network* network) {
     D = 0;
 }
 
-Node::~Node() {
+void Node::ClearToDelete()
+{
 	srcLinks.clear();
 	Tools::EraseAll(links);
 	Tools::EraseAll(links2Hop);
+}
+
+Node::~Node() {
 	//neighbors.clear();
 }
 

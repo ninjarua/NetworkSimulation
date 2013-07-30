@@ -11,7 +11,7 @@
 namespace generators {
 
 SmallworldGenerator::SmallworldGenerator() {
-
+	deployment = new SmallworldDeploying();
 }
 
 SmallworldGenerator::SmallworldGenerator(int numberNodes, int xTerr, int yTerr, int range, int numberOfLongEdge) {

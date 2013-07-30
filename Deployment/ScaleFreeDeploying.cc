@@ -53,6 +53,7 @@ void ScaleFreeDeploying::increaseClique(Network* network, int newSize)
 bool insertToSortedList(list<int>& lstInt, const int& number)
 {
 	list<int>::iterator right = lstInt.end();
+	right--;
 	while (right != lstInt.begin() && number < (*right))
 	{
 		right--;

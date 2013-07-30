@@ -29,6 +29,7 @@ public:
 	int sampleSize;
 	int networkSize;
 	int hopCount;
+	bool selectHub;
 
 	ThreadArguments(){}
 
@@ -60,6 +61,12 @@ public:
 		sampleSize = _sampleSize;
 		threadId = _threadId;
 		networkSize = 100;
+	}
+
+	void setForScaleFree(TypeOfTolerance _toleranceType, int _hopCount, int _totalTimes, int _threadId,
+			int _numberCPUs, string _inputFolder, string _outputFolder, bool selectHub, int _sampleSize)
+	{
+
 	}
 
 	void setForGrid(TypeOfTolerance _toleranceType, int _hopCount, int _totalTimes, int _threadId,

@@ -177,7 +177,11 @@ void ByzantineSimulator::runSimulationByInterval()
 				count++;
 				i++;
 			}
-			sampleId++;
+			if (sampleId < params.sampleSize)
+				sampleId++;
+			else
+				sampleId = 0;
+
 		}
 		byzantine.report->Summarize(0.05);
 		if (stopPrediction(byzantine.report))

@@ -34,6 +34,9 @@ void Network::Reset()
 {
 	messageCount = 0;
 	newMessageCount = 0;
+	vector<Node*>::iterator nodeIt = nodes.begin();
+	for(; nodeIt != nodes.end(); nodeIt++)
+		(*nodeIt)->ClearToDelete();
 	Tools::EraseAll(nodes);
 	Tools::EraseAll(messages);
 	diameter = 0;
@@ -175,7 +178,7 @@ istream& operator>>(istream& is, Network& network)
 		}
 		it++;
 	}
-	network.createAdvancedInformation();
+	//network.createAdvancedInformation();
 	return is;
 }
 
@@ -244,7 +247,7 @@ stack<NodePtr> Network::LookingForNode(const vector<LinkPtr>& links, bool (*node
 }
 
 void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
-				const NodeState& state, int number, bool (*filter)(NodePtr, NodePtr, int))
+				const NodeState& state, int number, bool (*filter)(LinkPtr, int))
 {
 	vector<LinkPtr>::const_iterator it = consideringNode->links.begin();
 	for(; it != consideringNode->links.end(); it++)
@@ -252,7 +255,8 @@ void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr considerin
 		bool isSameState = nodeCondition(*(*it)->dest, state);
 		// Check to take neighbors which has same state, connectedAreaNumber=0
 		// and is not disconnected node with considering node
-		if (isSameState && filter((*it)->dest, consideringNode, number))
+		//if (isSameState && filter((*it)->dest, consideringNode, number))
+		if (isSameState && filter(*it, number))
 		{
 //			Logger::Write(*(*it), &DebugString, prefix, "debug.out", ofstream::out|ofstream::app);
 			stack.push((*it)->dest);
@@ -261,10 +265,12 @@ void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr considerin
 	}
 }
 
-bool Network::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(NodePtr n1, NodePtr n2, int number)
+bool Network::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(LinkPtr link, int number)
 {
-	return n1->connectedAreaNumber != number && NetworkTools::GetLinkPtr(n2->links, n1->id)->state != Cut
-			&& NetworkTools::GetLinkPtr(n1->links, n2->id)->state != Cut;
+//	LinkPtr linkPtr_n2Ton1 = NetworkTools::GetLinkPtr(n2->links, n1->id);
+//	LinkPtr linkPtr_n1Ton2 = NetworkTools::GetLinkPtr(n1->links, n2->id);
+	return link->dest->connectedAreaNumber != number && link->state != Cut;
+			//&& (linkPtr_n1Ton2 != NULL && linkPtr_n1Ton2->state != Cut);
 }
 
 string Network::DebugString(const Node& node, string original)

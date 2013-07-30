@@ -45,6 +45,7 @@ public:
 	Node(Network* network);
 	Node(double posX, double posY);
 	virtual ~Node();
+	void ClearToDelete();
 
 	void Reset();
 	int addNeighbor(LinkPtr link, LinkPtr srcLink);

@@ -72,8 +72,8 @@ private:
 	static stack<NodePtr> LookingForNode(const vector<LinkPtr>& links, bool (*nodeCondition)(const Node&, const NodeState&),
 			const NodeState& state, int settingNumber);
 	static void AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
-    		const NodeState& state, int number, bool (*filter)(NodePtr, NodePtr, int));
-	static bool FilterDisconnectedNodeAndDifferentConnectedAreaNumber(NodePtr n1, NodePtr n2, int number);
+    		const NodeState& state, int number, bool (*filter)(LinkPtr, int));
+	static bool FilterDisconnectedNodeAndDifferentConnectedAreaNumber(LinkPtr link, int number);
 	static string DebugString(const Node& node, string original);
 	static bool HasOverlappedNeighbors(const NodePtr n1, const NodePtr n2);
 };

@@ -24,6 +24,7 @@ bool NetworkGenerator::generateFromFiles(Network* network, string folder, int in
 	if (filename == "")
 		return false;
 	ifstream f(filename.c_str(), ifstream::in);
+	//cout << filename << endl;
 	f >> (*network);
 	f.close();
 	return true;
