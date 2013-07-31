@@ -97,6 +97,21 @@ void SimulatorManager::runOneStepSimulationForGrid(TypeOfTolerance toleranceType
 	threads.join_all();
 }
 
+void SimulatorManager::runOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
+		string inputFolder, string outputFolder, int numberCPUs, int sampleSize, bool hubOnly)
+{
+	ThreadArguments thread_data[numberCPUs];
+	boost::thread_group threads;
+
+	for (int i = 0; i < numberCPUs; i++)
+	{
+		thread_data[i].setForScaleFree(toleranceType, hopCount, totalTimes, i, numberCPUs, inputFolder,
+				outputFolder, sampleSize, hubOnly);
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, thread_data[i], nothingProb));
+	}
+	threads.join_all();
+}
+
 void SimulatorManager::readResults(DeployingType deploying, TypeOfTolerance toleranceType,
 		string inputFolder, string output, int numberCPUs)
 {

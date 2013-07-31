@@ -32,10 +32,10 @@ void ByzantineProtocol::Initialize(Network* network, double byzantineP, double n
     //RandomByzantine(network);
 }
 
-void ByzantineProtocol::Refresh(Network* network)
+void ByzantineProtocol::Refresh(Network* network, bool hubOnly)
 {
     Reset(network);
-    RandomByzantine(network);
+    RandomByzantine(network, hubOnly);
 }
 
 void ByzantineProtocol::Reset(Network* network)
@@ -53,11 +53,11 @@ void ByzantineProtocol::Reset(Network* network)
     statisticInfo->Reset();
 }
 
-void ByzantineProtocol::RandomByzantine(Network* network, bool selectHub, int averageDegree)
+void ByzantineProtocol::RandomByzantine(Network* network, bool selectHub)
 {
     int seed = rand() % network->nodes.size();
 
-    while (selectHub && network->nodes[seed]->D < averageDegree * 3)
+    while (selectHub && network->nodes[seed]->D < 42)//network->avgDegree * 3)
     {
     	seed = rand() % network->nodes.size();
     }
@@ -78,7 +78,7 @@ void ByzantineProtocol::CallbackReceiveByzantineMessage(void* ptr, Message* mess
 void ByzantineProtocol::ReceiveByzantineMessage(Message* message)
 {
 	NodeState destState = message->link->dest->state;
-    if (destState == Infected || destState == Inactive || message->link->state == Cut)
+    if (destState == Infected)
     {
         message->status = Expired;
         return;

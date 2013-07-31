@@ -38,7 +38,7 @@ void C01Tolerance::TolerateNode(LinkPtr messageLink)
 			(*it)->state = Cut;
 
 		LinkPtr linkToCut = NetworkTools::GetLinkPtr(messageLink->src->links, (*it)->dest->id);
-		if (linkToCut != NULL)
+		if (linkToCut != NULL && linkToCut->state != Cut)
 		{
 			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, node->ownerNetwork->currentTimeSlot);
 			SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
@@ -54,10 +54,18 @@ void C01Tolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
 void C01Tolerance::ReceiveCutLinkMessage(Message* message)
 {
 	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
+	if (cuttingMessage->linkToCut->state == Cut)
+	{
+		cuttingMessage->status = Expired;
+		return;
+	}
 	cuttingMessage->linkToCut->state = Cut;
+	//cout << cuttingMessage->linkToCut->src->id << " to " << cuttingMessage->linkToCut->dest->id << endl;
 	LinkPtr srcLinkToCut = NetworkTools::GetSrcLinkPtr(cuttingMessage->linkToCut->src->srcLinks,
 									cuttingMessage->linkToCut->dest->id);
+	//cout << srcLinkToCut->src->id << " to " << srcLinkToCut->dest->id << endl;
 	srcLinkToCut->state = Cut;
+	cuttingMessage->status = Expired;
 }
 
 } /* namespace generators */

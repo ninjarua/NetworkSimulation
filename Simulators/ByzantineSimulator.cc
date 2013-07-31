@@ -171,7 +171,7 @@ void ByzantineSimulator::runSimulationByInterval()
 			int i = 0;
 			while (i < sampleRepeat)
 			{
-				byzantine.Refresh(network);
+				byzantine.Refresh(network, true); // temporary change to check with hub in ScaleFree
 				byzantine.RunFault(network);
 				addOneStepReport();
 				count++;
@@ -181,7 +181,6 @@ void ByzantineSimulator::runSimulationByInterval()
 				sampleId++;
 			else
 				sampleId = 0;
-
 		}
 		byzantine.report->Summarize(0.05);
 		if (stopPrediction(byzantine.report))

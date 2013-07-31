@@ -142,12 +142,12 @@ int main(int argc, char* argv[])
 {
 	srand(time(NULL)); // Set random seed for random procedure
 	SimulatorManager* manager = new SimulatorManager();
-//	manager->runOneStepSimulation(ScaleFree, K01, 1, 10000, 0.25,
-//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_5/1000",
-//				"/Users/thanhnd/Workspace/Results/Smallworld/10_5/1000/25/K01_0", 2, 100);
-	manager->runOneStepSimulation(ScaleFree, C01, 1, 10000, 0.25,
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/1000",
-				"/Users/thanhnd/Workspace/Results/ScaleFree/25D/1000/C01_0", 1, 92);
+	manager->runOneStepSimulation(ScaleFree, K01, 1, 10000, 0.5,
+				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000",
+				"/Users/thanhnd/Workspace/Results/ScaleFree/50/10000/K01_0", 2, 100);
+	manager->runOneStepSimulation(ScaleFree, C01, 1, 10000, 0.5,
+				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000",
+				"/Users/thanhnd/Workspace/Results/ScaleFree/50/10000/C01_0", 2, 100);
 
 //	SimulatorManager* manager = new SimulatorManager();
 //	manager->readOneStepResults(TorusGrid, K01, "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K0Hop_0",
