@@ -142,12 +142,12 @@ int main(int argc, char* argv[])
 {
 	srand(time(NULL)); // Set random seed for random procedure
 	SimulatorManager* manager = new SimulatorManager();
-	manager->runOneStepSimulation(ScaleFree, K01, 1, 10000, 0.5,
+	manager->runOneStepSimulationForScaleFree(K01, 1, 10000, 0.5,
 				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000",
-				"/Users/thanhnd/Workspace/Results/ScaleFree/50/10000/K01_0", 2, 100);
-	manager->runOneStepSimulation(ScaleFree, C01, 1, 10000, 0.5,
+				"/Users/thanhnd/Workspace/Results/ScaleFree/50/10000/K01_0", 2, 100, true);
+	manager->runOneStepSimulationForScaleFree(C01, 1, 10000, 0.5,
 				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000",
-				"/Users/thanhnd/Workspace/Results/ScaleFree/50/10000/C01_0", 2, 100);
+				"/Users/thanhnd/Workspace/Results/ScaleFree/50/10000/C01_0", 2, 100, true);
 
 //	SimulatorManager* manager = new SimulatorManager();
 //	manager->readOneStepResults(TorusGrid, K01, "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K0Hop_0",
@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
 //	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0.out", 0, 0.01);
 
-	ByzantineSimulator* sim = new ByzantineSimulator();
+//	ByzantineSimulator* sim = new ByzantineSimulator();
 //	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000", 9, 10000, 7);
 //	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/9000", 9, 9000, 7);
 //	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/8000", 9, 8000, 7);

@@ -15,7 +15,6 @@
 #include "ByzantineReport.h"
 #include "ByzantineProtocol.h"
 #include "Parameters.h"
-#include "ThreadArguments.h"
 #include "SimulatorBase.h"
 
 using namespace protocols;
@@ -46,38 +45,20 @@ private:
 	virtual void setTolerance(TypeOfTolerance toleranceType, DeployingType deployingType, int networkSize, int hopCount=1);
 
 public:
-	ByzantineSimulator();
+	ByzantineSimulator(Parameters _params);
 	virtual ~ByzantineSimulator();
 
-	static void callbackThread(ThreadArguments args);
-	static void callbackThreadOneStep(ThreadArguments args, double nothingProb);
-	static void callbackReader(ThreadArguments args, bool isFirstInSlot);
-	static void callbackOneStepReader(DeployingType deployingType, TypeOfTolerance toleranceType,
-			string inputFolder, string output, double nothingProb, double intervalByz = 0.01);
+	static void callbackThread(Parameters args);
+	static void callbackThreadOneStep(Parameters args);
+	static void callbackReader(Parameters args, bool isFirstInSlot);
+	static void callbackOneStepReader(Parameters args);
 
-	void runReaderByThreadId(DeployingType deployingType, TypeOfTolerance toleranceType, int threadId, int totalThread,
-			string resultsFolder, string outputFilename, bool isFirstInSlot, double intervalNothing = 0.01);
+	void runReaderByThreadId(bool isFirstInSlot);
 	void readOneStep(DeployingType deployingType, TypeOfTolerance toleranceType,
 			string resultsFolder, string outputFilename, double nothingProb, double intervalByz);
-	void read(DeployingType deployingType, TypeOfTolerance toleranceType,
-			string resultsFolder, string outputFilename,
-			double startingNothing, double startingByz,
-			double intervalNothing = 0.01, double intervalByz = 0.01);
-	void runSimulationByThreadId(DeployingType deployingType, TypeOfTolerance toleranceType,
-					int hopCount, int threadId, int totalThread, int totalTimes,
-					string inputFolder, string outputFolder,
-					double intervalByz, double intervalNothing, int sampleSize = 1, int networkSize = 100);
-	void runSimulation(DeployingType deployingType, TypeOfTolerance toleranceType, int totalTimes,
-					string inputfolder, string outputFolder,
-					double startingNothing = 0, double startingByzantine = 0,
-					double endingNothing = 1, double endingByzantine = 1,
-					double intervalByz = 0.01, double intervalNothing = 0.01, int sampleSize = 1, int networkSize = 100);
-	void runSimulation(DeployingType deployingType, TypeOfTolerance toleranceType,
-					int hopCount,int totalTimes,
-					string inputfolder, string outputFolder,
-					double startingNothing = 0, double startingByzantine = 0,
-					double endingNothing = 1, double endingByzantine = 1,
-					double intervalByz = 0.01, double intervalNothing = 0.01, int sampleSize = 1, int networkSize = 100);
+	void read();
+	void runSimulationByThreadId();
+	void runSimulation();
 	void convert2HopInformation(DeployingType deployingType,
 			string inputfolder, string outputFolder, int sampleSize);
 };

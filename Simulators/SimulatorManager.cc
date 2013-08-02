@@ -6,7 +6,7 @@
  */
 
 #include "SimulatorManager.h"
-#include "ThreadArguments.h"
+#include "Parameters.h"
 namespace simulators
 {
 
@@ -27,13 +27,14 @@ void SimulatorManager::runSimulation(DeployingType deploying, TypeOfTolerance to
 void SimulatorManager::runSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
 					string inputFolder, string outputFolder, int numberCPUs, int sampleSize)
 {
-	ThreadArguments thread_data[numberCPUs];
+	Parameters thread_params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		thread_data[i].set(deploying, toleranceType, hopCount, totalTimes, i, numberCPUs, inputFolder, outputFolder, sampleSize);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThread, thread_data[i]));
+		thread_params[i].set(deploying, toleranceType, hopCount, totalTimes, i, numberCPUs,
+				inputFolder, outputFolder, sampleSize, Parameters::setAllStepsRunningByThreadId);
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThread, thread_params[i]));
 	}
 	threads.join_all();
 	cout << "Success!" << endl;
@@ -46,13 +47,14 @@ void SimulatorManager::runSimulationForGrid(TypeOfTolerance toleranceType, int t
 
 void SimulatorManager::runSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, string outputFolder, int numberCPUs, int networkSize)
 {
-	ThreadArguments thread_data[numberCPUs];
+	Parameters thread_params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		thread_data[i].setForGrid(toleranceType, hopCount, totalTimes, i, numberCPUs, outputFolder, networkSize);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThread, thread_data[i]));
+		thread_params[i].setForGrid(toleranceType, hopCount, totalTimes, i, numberCPUs,
+				outputFolder, networkSize, Parameters::setAllStepsRunningByThreadId);
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThread, thread_params[i]));
 	}
 	threads.join_all();
 	cout << "Success!" << endl;
@@ -66,13 +68,15 @@ void SimulatorManager::runOneStepSimulation(DeployingType deploying, TypeOfToler
 void SimulatorManager::runOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
 		double nothingProb, string inputFolder, string outputFolder, int numberCPUs, int sampleSize)
 {
-	ThreadArguments thread_data[numberCPUs];
+	Parameters thread_params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		thread_data[i].set(deploying, toleranceType, hopCount, totalTimes, i, numberCPUs, inputFolder, outputFolder, sampleSize);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, thread_data[i], nothingProb));
+		thread_params[i].nothingStart = (int)round(nothingProb * 100);
+		thread_params[i].set(deploying, toleranceType, hopCount, totalTimes, i, numberCPUs,
+				inputFolder, outputFolder, sampleSize, Parameters::setOneStepRunningByThreadId);
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, thread_params[i]));
 	}
 	threads.join_all();
 }
@@ -86,13 +90,15 @@ void SimulatorManager::runOneStepSimulationForGrid(TypeOfTolerance toleranceType
 void SimulatorManager::runOneStepSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 		string outputFolder, int numberCPUs, int networkSize)
 {
-	ThreadArguments thread_data[numberCPUs];
+	Parameters thread_params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		thread_data[i].setForGrid(toleranceType, hopCount, totalTimes, i, numberCPUs, outputFolder, networkSize);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, thread_data[i], nothingProb));
+		thread_params[i].nothingStart = (int)round(nothingProb * 100);
+		thread_params[i].setForGrid(toleranceType, hopCount, totalTimes, i, numberCPUs,
+				outputFolder, networkSize, Parameters::setOneStepRunningByThreadId);
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, thread_params[i]));
 	}
 	threads.join_all();
 }
@@ -100,14 +106,15 @@ void SimulatorManager::runOneStepSimulationForGrid(TypeOfTolerance toleranceType
 void SimulatorManager::runOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 		string inputFolder, string outputFolder, int numberCPUs, int sampleSize, bool hubOnly)
 {
-	ThreadArguments thread_data[numberCPUs];
+	Parameters thread_params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		thread_data[i].setForScaleFree(toleranceType, hopCount, totalTimes, i, numberCPUs, inputFolder,
-				outputFolder, sampleSize, hubOnly);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, thread_data[i], nothingProb));
+		thread_params[i].nothingStart = (int)round(nothingProb * 100);
+		thread_params[i].setForScaleFree(toleranceType, hopCount, totalTimes, i, numberCPUs, inputFolder,
+				outputFolder, sampleSize, hubOnly, Parameters::setOneStepRunningByThreadId);
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, thread_params[i]));
 	}
 	threads.join_all();
 }
@@ -117,15 +124,15 @@ void SimulatorManager::readResults(DeployingType deploying, TypeOfTolerance tole
 {
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		ThreadArguments thread_data;
-		thread_data.set(deploying, toleranceType, i, numberCPUs, inputFolder, output, 0);
-		ByzantineSimulator::callbackReader(thread_data, true);
+		Parameters thread_params;
+		thread_params.setToRead(deploying, toleranceType, i, numberCPUs, inputFolder, output, 0);
+		ByzantineSimulator::callbackReader(thread_params, true);
 	}
 	for (int j = numberCPUs - 1; j >= 0; j--)
 	{
-		ThreadArguments thread_data;
-		thread_data.set(deploying, toleranceType, j, numberCPUs, inputFolder, output, 0);
-		ByzantineSimulator::callbackReader(thread_data, false);
+		Parameters thread_params;
+		thread_params.setToRead(deploying, toleranceType, j, numberCPUs, inputFolder, output, 0);
+		ByzantineSimulator::callbackReader(thread_params, false);
 	}
 	cout << "Success!" << endl;
 }
@@ -133,7 +140,9 @@ void SimulatorManager::readResults(DeployingType deploying, TypeOfTolerance tole
 void SimulatorManager::readOneStepResults(DeployingType deploying, TypeOfTolerance toleranceType,
 			string inputFolder, string output, double nothingProb, double intervalByz)
 {
-	ByzantineSimulator::callbackOneStepReader(deploying, toleranceType, inputFolder, output, nothingProb, intervalByz);
+	Parameters param;
+	param.setToRead(deploying, toleranceType, nothingProb, 100, inputFolder, output, Parameters::setOneStepRunningByThreadId);
+	ByzantineSimulator::callbackOneStepReader(param);// deploying, toleranceType, inputFolder, output, nothingProb, intervalByz);
 }
 
 }

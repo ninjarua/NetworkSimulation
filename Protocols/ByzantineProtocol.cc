@@ -57,7 +57,7 @@ void ByzantineProtocol::RandomByzantine(Network* network, bool selectHub)
 {
     int seed = rand() % network->nodes.size();
 
-    while (selectHub && network->nodes[seed]->D < 42)//network->avgDegree * 3)
+    while (selectHub && network->nodes[seed]->D < 98)//network->avgDegree * 3)
     {
     	seed = rand() % network->nodes.size();
     }
