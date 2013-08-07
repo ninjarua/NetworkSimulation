@@ -40,7 +40,6 @@ public:
     // is used to overcome the size() function of list
     list<Message*> messages;
     int messageCount;
-    int newMessageCount;
 
     NetworkInfo info;
     bool hasTopology;

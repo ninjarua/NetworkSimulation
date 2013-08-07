@@ -41,8 +41,8 @@ private:
 
 	void addOneStepReport();
 	ByzantineReport* finishReport();
-	virtual void setDeployment(DeployingType deployingType, int networkSize);
-	virtual void setTolerance(TypeOfTolerance toleranceType, DeployingType deployingType, int networkSize, int hopCount=1);
+	virtual void setDeployment();
+	virtual void setTolerance();
 
 public:
 	ByzantineSimulator(Parameters _params);
@@ -52,15 +52,14 @@ public:
 	static void callbackThreadOneStep(Parameters args);
 	static void callbackReader(Parameters args, bool isFirstInSlot);
 	static void callbackOneStepReader(Parameters args);
+	static void callbackConvert(Parameters args, bool using2HopInfo);
 
 	void runReaderByThreadId(bool isFirstInSlot);
-	void readOneStep(DeployingType deployingType, TypeOfTolerance toleranceType,
-			string resultsFolder, string outputFilename, double nothingProb, double intervalByz);
+	void readOneStep();
 	void read();
-	void runSimulationByThreadId();
+	void runAllStepsSimulationByThreadId();
 	void runSimulation();
-	void convert2HopInformation(DeployingType deployingType,
-			string inputfolder, string outputFolder, int sampleSize);
+	void addingAdditionalInfo(bool using2HopInfo);
 };
 
 } /* namespace deployment */

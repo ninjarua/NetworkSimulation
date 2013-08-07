@@ -20,14 +20,14 @@ public:
 	int x;
 	double variance;
 	double mean;
-	double sum;
+	double summation;
 	long length;
 	double standardDeviation;
 	double median;
 
-	void Reset();
-	double GetConfidenceInterval(double significance);
-	StatisticSummary* Summarize(const vector<long>& elements);
+	void reset();
+	double getConfidenceInterval(double significance);
+	StatisticSummary* summarize(const vector<long>& elements);
 };
 
 #endif /* STATISTICSUMMARY_H_ */

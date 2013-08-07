@@ -26,6 +26,8 @@ bool NetworkGenerator::generateFromFiles(Network* network, string folder, int in
 	ifstream f(filename.c_str(), ifstream::in);
 	//cout << filename << endl;
 	f >> (*network);
+	if (deployment->using2HopInfo && !network->has2HopInfo)
+		network->createAdvancedInformation();
 	f.close();
 	return true;
 }

@@ -60,6 +60,21 @@ void Parameters::setToRead(DeployingType _deploying, TypeOfTolerance _toleranceT
 	hubOnly = false;
 }
 
+void Parameters::setToConvert(DeployingType _deploying, string _inputFolder, string _outputFolder, int _sampleSize)
+{
+	nothingInterval = byzantineInterval = 0.01;
+	hopCount = 0;
+	deployingType = _deploying;
+	toleranceType = K01;
+	totalTimes = 0;
+	inputFolder = _inputFolder;
+	output = _outputFolder;
+	sampleSize = _sampleSize;
+	networkSize = 100;
+	hubOnly = false;
+
+}
+
 void Parameters::set(DeployingType _deploying, TypeOfTolerance _toleranceType, int _hopCount, int _totalTimes,
 		int _threadId, int _totalThread, string _inputFolder, string _outputFolder, int _sampleSize,
 		void (*setRunning)(Parameters* params, int, int))

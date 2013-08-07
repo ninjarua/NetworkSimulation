@@ -18,7 +18,6 @@ Network::Network() {
 	sequenceId = 0;
 	currentTimeSlot = 0;
 	messageCount = 0;
-	newMessageCount = 0;
 	info = NetworkInfo();
 	nodes = vector<NodePtr>();
 	messages = list<Message*>();
@@ -33,13 +32,14 @@ Network::~Network() {
 void Network::Reset()
 {
 	messageCount = 0;
-	newMessageCount = 0;
 	vector<Node*>::iterator nodeIt = nodes.begin();
 	for(; nodeIt != nodes.end(); nodeIt++)
 		(*nodeIt)->ClearToDelete();
 	Tools::EraseAll(nodes);
 	Tools::EraseAll(messages);
 	diameter = 0;
+	avgDiameter = 0;
+	avgDegree = 0;
 	sequenceId = 0;
 	vector<vector<int> >::iterator it = distance.begin();
 	for(; it != distance.end(); it++)
@@ -133,7 +133,9 @@ void Network::makeNeighbors(int id1, int id2)
 
 ofstream& operator<<(ofstream& os, const Network& network)
 {
-	os << network.nodes.size() << Constants::tab << network.diameter << Constants::tab << network.avgDiameter << Constants::endline;
+	os << network.nodes.size() << Constants::tab << network.avgDegree
+			<< Constants::tab << network.diameter
+			<< Constants::tab << network.avgDiameter << Constants::endline;
 	if (network.has2HopInfo)
 		os << Constants::has2Hop << Constants::endline;
 	vector<NodePtr>::const_iterator it = network.nodes.begin();
@@ -148,7 +150,7 @@ istream& operator>>(istream& is, Network& network)
 	string line("");
 	getline(is, line);
 	istringstream firstline(line);
-	firstline >> network.size >> network.diameter >> network.avgDiameter;
+	firstline >> network.size >> network.avgDegree >> network.diameter >> network.avgDiameter;
 	network.createEmptyNodes(network.size);
 
 	getline(is, line);
@@ -178,7 +180,8 @@ istream& operator>>(istream& is, Network& network)
 		}
 		it++;
 	}
-	//network.createAdvancedInformation();
+	if (network.avgDegree == 0)
+		network.calculateAverageDegree();
 	return is;
 }
 

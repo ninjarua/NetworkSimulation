@@ -23,6 +23,7 @@ public:
 	TypeOfTolerance toleranceType;
 
 	int networkSize;
+
 	int hopCount;
 	bool hubOnly;
 
@@ -49,6 +50,7 @@ public:
 	void setToRead(DeployingType _deploying, TypeOfTolerance _toleranceType, int _threadId,
 				int _totalThread, string _inputFolder, string _outputFolder,
 				void (*setRunning)(Parameters* params, int, int));
+	void setToConvert(DeployingType _deploying, string _inputFolder, string _outputFolder, int sampleSize);
 	void set(DeployingType _deploying, TypeOfTolerance _toleranceType, int _hopCount, int _totalTimes, int _threadId,
 			int _totalThread, string _inputFolder, string _outputFolder, int _sampleSize,
 			void (*setRunning)(Parameters* params, int, int));
