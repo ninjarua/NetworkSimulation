@@ -33,9 +33,11 @@ public:
     int size;
     double avgDiameter;
     double avgDegree;
+    double avgCommonNeighbors;
 
     vector<Node*> nodes;
     vector<vector<int> > distance;
+    vector<vector<int> > commonNbs;
 
     // is used to overcome the size() function of list
     list<Message*> messages;
@@ -56,24 +58,26 @@ public:
 	void createEmptyNodes(int n);
 	void makeNeighbors(int id1, int id2);
 	static bool noNewMessageInNetwork(const Network& network);
-	static int FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
+	static int findMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 	void calculateAverageDegree();
+	void calculateCommonNeighbors();
 	void createAdvancedInformation();
 
 private:
 	void collect2HopInformation();
+	void createMatrixCommonNeighbors();
 	void createMatrixDistance();
 	void updateMatrixDistanceFromNeighbors();
 	void runFloyd();
 
-	static int ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
+	static int connectedAreaSpreading(NodePtr seed, int spreadingValue,
 			bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 	static stack<NodePtr> LookingForNode(const vector<LinkPtr>& links, bool (*nodeCondition)(const Node&, const NodeState&),
 			const NodeState& state, int settingNumber);
-	static void AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
+	static void addingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
     		const NodeState& state, int number, bool (*filter)(LinkPtr, int));
-	static bool FilterDisconnectedNodeAndDifferentConnectedAreaNumber(LinkPtr link, int number);
-	static string DebugString(const Node& node, string original);
+	static bool filterDisconnectedNodeAndDifferentConnectedAreaNumber(LinkPtr link, int number);
+	static string debugString(const Node& node, string original);
 	static bool HasOverlappedNeighbors(const NodePtr n1, const NodePtr n2);
 };
 

@@ -41,10 +41,17 @@ void Network::Reset()
 	avgDiameter = 0;
 	avgDegree = 0;
 	sequenceId = 0;
+
 	vector<vector<int> >::iterator it = distance.begin();
 	for(; it != distance.end(); it++)
 		(*it).clear();
 	distance.clear();
+
+	vector<vector<int> >::iterator itCommon = commonNbs.begin();
+	for(; itCommon != commonNbs.end(); itCommon++)
+		(*itCommon).clear();
+	commonNbs.clear();
+
 	has2HopInfo = false;
 }
 
@@ -55,6 +62,18 @@ void Network::createEmptyNodes(int n)
 	{
 		NodePtr newNode(new Node());
 		addNode(newNode);
+	}
+}
+
+void Network::createMatrixCommonNeighbors()
+{
+	for(int i = 0; i < size; i++)
+	{
+		vector<int> common_i(size);
+		for (int j = 0; j < size; j++)
+			common_i[j] = 0;
+		common_i[i] = 0;
+		commonNbs.push_back(common_i);
 	}
 }
 
@@ -134,6 +153,7 @@ void Network::makeNeighbors(int id1, int id2)
 ofstream& operator<<(ofstream& os, const Network& network)
 {
 	os << network.nodes.size() << Constants::tab << network.avgDegree
+			<< Constants::tab << network.avgCommonNeighbors
 			<< Constants::tab << network.diameter
 			<< Constants::tab << network.avgDiameter << Constants::endline;
 	if (network.has2HopInfo)
@@ -150,7 +170,7 @@ istream& operator>>(istream& is, Network& network)
 	string line("");
 	getline(is, line);
 	istringstream firstline(line);
-	firstline >> network.size >> network.avgDegree >> network.diameter >> network.avgDiameter;
+	firstline >> network.size >> network.avgCommonNeighbors >> network.avgDegree >> network.diameter >> network.avgDiameter;
 	network.createEmptyNodes(network.size);
 
 	getline(is, line);
@@ -182,7 +202,49 @@ istream& operator>>(istream& is, Network& network)
 	}
 	if (network.avgDegree == 0)
 		network.calculateAverageDegree();
+	if (network.avgCommonNeighbors == 0)
+		network.calculateCommonNeighbors();
 	return is;
+}
+
+void Network::calculateCommonNeighbors()
+{
+	createMatrixCommonNeighbors();
+	vector<NodePtr>::iterator it = nodes.begin();
+	int sum = 0;
+	int countLink = 0;
+	for (; it != nodes.end(); it++)
+	{
+		vector<Link*>::iterator itNb = (*it)->links.begin();
+		for (; itNb != (*it)->links.end(); itNb++)
+		{
+			if ((*it)->id > (*itNb)->dest->id)
+			{
+				continue;
+			}
+			vector<Link*>::iterator it1 = (*it)->links.begin();
+			vector<Link*>::iterator it2 = (*itNb)->dest->links.begin();
+			int count = 0;
+			while (it1 != (*it)->links.end() || it2 != (*it)->links.end())
+			{
+				if ((*it1)->dest->id == (*it2)->dest->id)
+				{
+					count++;
+					it1++;
+					it2++;
+				}
+				else if ((*it1)->dest->id < (*it2)->dest->id)
+					it1++;
+				else
+					it2++;
+			}
+			commonNbs[(*it)->id][(*itNb)->dest->id] = count;
+			commonNbs[(*itNb)->dest->id][(*it)->id] = count;
+			sum += count;
+			countLink++;
+		}
+	}
+	avgCommonNeighbors = ((double)sum / countLink) * 2;
 }
 
 void Network::calculateAverageDegree()
@@ -249,7 +311,7 @@ stack<NodePtr> Network::LookingForNode(const vector<LinkPtr>& links, bool (*node
 	return results;
 }
 
-void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
+void Network::addingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
 				const NodeState& state, int number, bool (*filter)(LinkPtr, int))
 {
 	vector<LinkPtr>::const_iterator it = consideringNode->links.begin();
@@ -268,7 +330,7 @@ void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr considerin
 	}
 }
 
-bool Network::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(LinkPtr link, int number)
+bool Network::filterDisconnectedNodeAndDifferentConnectedAreaNumber(LinkPtr link, int number)
 {
 //	LinkPtr linkPtr_n2Ton1 = NetworkTools::GetLinkPtr(n2->links, n1->id);
 //	LinkPtr linkPtr_n1Ton2 = NetworkTools::GetLinkPtr(n1->links, n2->id);
@@ -276,7 +338,7 @@ bool Network::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(LinkPtr link
 			//&& (linkPtr_n1Ton2 != NULL && linkPtr_n1Ton2->state != Cut);
 }
 
-string Network::DebugString(const Node& node, string original)
+string Network::debugString(const Node& node, string original)
 {
 	string out(Node::printNodeWithConnectedAreaNumber(node));
 	out = original + out + "\n";
@@ -286,7 +348,7 @@ string Network::DebugString(const Node& node, string original)
 // Spread a connected value via neighbors list in every node to find the connected area with a given node
 // Put into stack the neighbors of seed.
 // For each node in stack find all neighbors that have connectedNumberArea = 0 and not in detect list of that node.
-int Network::ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
+int Network::connectedAreaSpreading(NodePtr seed, int spreadingValue,
 		bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
 {
 	int count = 0;
@@ -299,14 +361,14 @@ int Network::ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
 		stackNodes.pop();
 		count++;
 //		Logger::Write(*node, &DebugString, "Seed spread: ", "debug.out", ofstream::out|ofstream::app);
-		AddingNewNodesWithFilter(stackNodes, node, nodeCondition, state, spreadingValue,
-				&FilterDisconnectedNodeAndDifferentConnectedAreaNumber);
+		addingNewNodesWithFilter(stackNodes, node, nodeCondition, state, spreadingValue,
+				&filterDisconnectedNodeAndDifferentConnectedAreaNumber);
 		size = stackNodes.size();
 	}
 	return count;
 }
 
-int Network::FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
+int Network::findMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
 {
 	int spreadingValue = 0;
 	int max = 0;
@@ -314,7 +376,7 @@ int Network::FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(co
 	while (it != network->nodes.end())
 	{
 		spreadingValue++; // increase spreadingValue to a new value for another connected area
-		int count = ConnectedAreaSpreading(*it, spreadingValue, (*nodeCondition), state);
+		int count = connectedAreaSpreading(*it, spreadingValue, (*nodeCondition), state);
 		//int count = Tools::DetachWithPredicate(spreadingNodes, &Node::isConnectedAreaNumberEqual, spreadingValue);
 		if (count > max)
 			max = count;

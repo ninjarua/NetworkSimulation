@@ -352,7 +352,7 @@ void ByzantineSimulator::callbackOneStepReader(Parameters args)
 void ByzantineSimulator::callbackConvert(Parameters args, bool using2HopInfo)
 {
 	ByzantineSimulator* sim = new ByzantineSimulator(args);
-	sim->readOneStep();
+	sim->addingAdditionalInfo(using2HopInfo);
 }
 
 } /* namespace deployment */
