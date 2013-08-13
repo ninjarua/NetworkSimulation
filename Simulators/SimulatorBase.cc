@@ -72,33 +72,4 @@ string SimulatorBase::generateTorusGridNetwork(int times, int size, string folde
 	return "Success";
 }
 
-//string SimulatorBase::generateNetwork(DeployingType deployment, int numberOfNode, int times, string folder,
-//			float xTerr, float yTerr, float range, float d0, double prob)
-//{
-//	string result;
-//	network->transRange = range;
-//	switch(deployment)
-//	{
-//	case Grid:
-//		generator = new GridGenerator(numberOfNode);
-//		generator->generateToFiles(network, folder);
-//		break;
-//	case TorusGrid:
-//		generator = new TorusGridGenerator(numberOfNode);
-//		generator->generateToFiles(network, folder);
-//		break;
-//	case FixedRange:
-//		result = generateFixedRangeNetwork(times, numberOfNode, folder, xTerr, yTerr, range, d0);
-//		break;
-//	case Ring:
-//		break;
-//	case ER_Random:
-//		result = generateER_RandomNetwork(times, numberOfNode, folder, prob);
-//		break;
-//	default:
-//		break;
-//	}
-//	return result;
-//}
-
 } /* namespace deployment */

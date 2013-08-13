@@ -170,7 +170,7 @@ istream& operator>>(istream& is, Network& network)
 	string line("");
 	getline(is, line);
 	istringstream firstline(line);
-	firstline >> network.size >> network.avgCommonNeighbors >> network.avgDegree >> network.diameter >> network.avgDiameter;
+	firstline >> network.size >> network.avgDegree >> network.avgCommonNeighbors >> network.diameter >> network.avgDiameter;
 	network.createEmptyNodes(network.size);
 
 	getline(is, line);
@@ -225,7 +225,7 @@ void Network::calculateCommonNeighbors()
 			vector<Link*>::iterator it1 = (*it)->links.begin();
 			vector<Link*>::iterator it2 = (*itNb)->dest->links.begin();
 			int count = 0;
-			while (it1 != (*it)->links.end() || it2 != (*it)->links.end())
+			while (it1 != (*it)->links.end() && it2 != (*itNb)->dest->links.end())
 			{
 				if ((*it1)->dest->id == (*it2)->dest->id)
 				{
@@ -234,7 +234,9 @@ void Network::calculateCommonNeighbors()
 					it2++;
 				}
 				else if ((*it1)->dest->id < (*it2)->dest->id)
+				{
 					it1++;
+				}
 				else
 					it2++;
 			}

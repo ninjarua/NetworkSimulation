@@ -141,49 +141,27 @@ void runSimulation(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
 	srand(time(NULL)); // Set random seed for random procedure
-	SimulatorManager* manager = new SimulatorManager();
-//	manager->runOneStepSimulationForScaleFree(K01, 1, 10000, 0.5,
-//				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/50/10000/K01_0", 2, 100, true);
-//	manager->runOneStepSimulationForScaleFree(C01, 1, 10000, 0.5,
-//				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000",
-//				"/Users/thanhnd/Workspace/Results/ScaleFree/50/10000/C01_0", 2, 100, true);
-
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/1000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/1000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/2000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/2000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/3000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/3000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/4000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/4000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/5000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/5000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/6000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/6000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/7000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/7000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/8000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/8000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/9000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/9000", 100, false);
-	manager->convert2HopInformation(ScaleFree, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000",
-				"/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/degree/10000", 100, false);
 
 //	SimulatorManager* manager = new SimulatorManager();
-//	manager->readOneStepResults(TorusGrid, K01, "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K0Hop_0",
-//				"/Users/thanhnd/Workspace/Results/TorusGrid/2500/K0Hop_0.out", 0, 0.01);
+//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/14_5/10000",
+//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/14_5/degree/10000", 100, false);
+//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_5/1000",
+//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_5/degree/1000", 100, false);
+
+//	SimulatorManager* manager = new SimulatorManager();
+//	manager->readOneStepResults(Small_world, C01, "/Users/thanhnd/Workspace/Results/Smallworld/14_5/25/1000/C01_new_0",
+//				"/Users/thanhnd/Workspace/Results/Smallworld/14_5/25/1000/C01_new_0.out", 0.25, 0.01);
+//	manager->readOneStepResults(Small_world, K01, "/Users/thanhnd/Workspace/Results/Smallworld/14_5/25/1000/K01_0",
+//				"/Users/thanhnd/Workspace/Results/Smallworld/14_5/25/1000/K01_0.out", 0.25, 0.01);
+
 //	manager->ReadOneStepResults(TorusGrid, KxHop, "/Users/thanhnd/Workspace/Results/TorusGrid/2500/K01Hop_0",
 //				"/Users/thanhnd/Workspace/Results/TorusGrid/2500/K01Hop_0.out", 0, 0.01);
 
 //	manager->ReadOneStepResults(ScaleFree, C01K03, "/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0",
 //				"/Users/thanhnd/Workspace/Results/ScaleFree/3000/C01K03_0.out", 0, 0.01);
 
-//	ByzantineSimulator* sim = new ByzantineSimulator();
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/10000", 9, 10000, 7);
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/9000", 9, 9000, 7);
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/8000", 9, 8000, 7);
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/7000", 9, 7000, 7);
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/5000", 9, 5000, 7);
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/6000", 9, 6000, 7);
+	SimulatorBase* sim = new SimulatorBase();
+//	sim->generateSmallworldNetwork(101, 4000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/14_5/4000", 5, 4000, 4000, 135.5, 1);
+//	sim->generateSmallworldNetwork(101, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/14_5/10000", 5, 4000, 4000, 85.2, 1);
+	sim->generateFixedRangeNetwork(101, 1000, "/Users/thanhnd/Workspace/Results/Graphs/FixedRange/14/1000", 4000, 4000, 135.5, 1);
 }

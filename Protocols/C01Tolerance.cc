@@ -45,6 +45,7 @@ void C01Tolerance::TolerateNode(LinkPtr messageLink)
 		}
 	}
 }
+
 void C01Tolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
 {
 	C01Tolerance* ptrC01 = (C01Tolerance*)ptr;

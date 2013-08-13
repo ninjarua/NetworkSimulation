@@ -33,14 +33,15 @@ void Parameters::setAllStepsRunningByThreadId(Parameters* params, int _threadId,
 	params->nothingStart = _threadId * slotSize;
 	params->nothingEnd = params->nothingStart + (slotSize - 1);
 	params->byzantineStart = 0;
-	params->byzantineEnd = 1 - params->nothingEnd;
+	params->byzantineEnd = 100 - params->nothingEnd;
 }
 
 void Parameters::compensateAllStepsRunningByThreadId(Parameters* params)
 {
+	int oldStart = params->nothingStart;
 	params->nothingStart = 99 - params->nothingEnd;
-	params->nothingEnd = 99 - params->nothingStart;
-	params->byzantineEnd = 1 - params->nothingEnd;
+	params->nothingEnd = 99 - oldStart;
+	params->byzantineEnd = 100 - params->nothingEnd;
 }
 
 void Parameters::setToRead(DeployingType _deploying, TypeOfTolerance _toleranceType, int _threadId,
