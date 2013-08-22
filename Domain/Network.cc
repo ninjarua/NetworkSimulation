@@ -246,7 +246,7 @@ void Network::calculateCommonNeighbors()
 			countLink++;
 		}
 	}
-	avgCommonNeighbors = ((double)sum / countLink) * 2;
+	avgCommonNeighbors = (double)sum / countLink;
 }
 
 void Network::calculateAverageDegree()
