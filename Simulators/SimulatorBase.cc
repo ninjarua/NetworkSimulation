@@ -35,11 +35,11 @@ string SimulatorBase::generateFixedRangeNetwork(int times, int size, string fold
 	return "Success";
 }
 
-string SimulatorBase::generateSmallworldNetwork(int times, int size, string folder, int numberOfLongEdge,
+string SimulatorBase::generateSmallworldNetwork(int times, int size, string folder, int numberOfShortEdges, int numberOfLongEdges,
 			float xTerr, float yTerr, float range, float d0)
 {
 	network->transRange = range;
-	generator = new SmallworldGenerator(size, xTerr, yTerr, range, numberOfLongEdge);
+	generator = new SmallworldGenerator(size, xTerr, yTerr, range, numberOfShortEdges, numberOfLongEdges);
 	generator->generateToFiles(network, folder, times);
 	return "Success";
 }

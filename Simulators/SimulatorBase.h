@@ -41,7 +41,7 @@ public:
 	string generateTorusGridNetwork(int times, int size, string folder);
 	string generateFixedRangeNetwork(int times, int size, string folder,
 			float xTerr, float yTerr, float range, float d0);
-	string generateSmallworldNetwork(int times, int size, string folder, int numberOfLongEdge,
+	string generateSmallworldNetwork(int times, int size, string folder, int numberOfShortEdges, int numberOfLongEdges,
 			float xTerr, float yTerr, float range, float d0);
 	string generateER_RandomNetwork(int times, int size, string folder, double prob);
 	string generateScaleFreeNetwork(int times, string folder, int cliqueSize, int size, int edge);

@@ -67,10 +67,10 @@ void Network::createEmptyNodes(int n)
 
 void Network::createMatrixCommonNeighbors()
 {
-	for(int i = 0; i < size; i++)
+	for(unsigned int i = 0; i < size; i++)
 	{
 		vector<int> common_i(size);
-		for (int j = 0; j < size; j++)
+		for (unsigned int j = 0; j < size; j++)
 			common_i[j] = 0;
 		common_i[i] = 0;
 		commonNbs.push_back(common_i);
@@ -79,10 +79,10 @@ void Network::createMatrixCommonNeighbors()
 
 void Network::createMatrixDistance()
 {
-	for(int i = 0; i < size; i++)
+	for(unsigned int i = 0; i < size; i++)
 	{
 		vector<int> distance_i(size);
-		for (int j = 0; j < size; j++)
+		for (unsigned int j = 0; j < size; j++)
 			distance_i[j] = 0x7fff;
 		distance_i[i] = 0;
 		distance.push_back(distance_i);
@@ -111,9 +111,9 @@ void Network::runFloyd()
 //	int local_i = cpu_rank / cpu_width;
 //	int local_j = cpu_rank % cpu_width;
 
-	for (int k = 0; k < size; k++)
-		for (int i = 0; i < size; i++)
-			for (int j = i + 1; j < size; j++)
+	for (unsigned int k = 0; k < size; k++)
+		for (unsigned int i = 0; i < size; i++)
+			for (unsigned int j = i + 1; j < size; j++)
 			{
 				int d_ik = distance[i][k];
 				int d_kj = distance[k][j];
@@ -125,10 +125,10 @@ void Network::runFloyd()
 			}
 	diameter = 0;
 	int sumDiameter = 0;
-	for(int i = 0; i < size; i++)
+	for(unsigned int i = 0; i < size; i++)
 	{
 		nodes[i]->diameter = 0;
-		for (int j = i + 1; j < size; j++)
+		for (unsigned int j = i + 1; j < size; j++)
 		{
 			int d_ij = distance[i][j];
 			if (d_ij != 0x7fff && d_ij > nodes[i]->diameter)

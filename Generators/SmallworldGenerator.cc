@@ -14,8 +14,8 @@ SmallworldGenerator::SmallworldGenerator() {
 	deployment = new SmallworldDeploying();
 }
 
-SmallworldGenerator::SmallworldGenerator(int numberNodes, int xTerr, int yTerr, int range, int numberOfLongEdge) {
-	deployment = new SmallworldDeploying(numberNodes, xTerr, yTerr, range, numberOfLongEdge);
+SmallworldGenerator::SmallworldGenerator(int numberNodes, int xTerr, int yTerr, int range, int numberOfShortEdges, int numberOfLongEdges) {
+	deployment = new SmallworldDeploying(numberNodes, xTerr, yTerr, range, numberOfShortEdges, numberOfLongEdges);
 }
 
 SmallworldGenerator::~SmallworldGenerator() {

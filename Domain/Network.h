@@ -30,7 +30,7 @@ public:
     int sequenceId;
     int currentTimeSlot;
     int diameter;
-    int size;
+    unsigned int size;
     double avgDiameter;
     double avgDegree;
     double avgCommonNeighbors;

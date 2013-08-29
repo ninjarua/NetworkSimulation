@@ -12,10 +12,10 @@
 
 namespace protocols {
 
-class K01Tolerance : public ToleranceBase {
+class KSelfTolerance : public ToleranceBase {
 public:
-	K01Tolerance();
-	virtual ~K01Tolerance();
+	KSelfTolerance();
+	virtual ~KSelfTolerance();
 
 	virtual void TolerateNode(LinkPtr link);
 

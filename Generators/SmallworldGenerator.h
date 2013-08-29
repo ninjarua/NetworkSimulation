@@ -15,7 +15,7 @@ namespace generators {
 class SmallworldGenerator: public NetworkGenerator {
 public:
 	SmallworldGenerator();
-	SmallworldGenerator(int numberNodes, int xTerr, int yTerr, int range, int numberOfLongEdge);
+	SmallworldGenerator(int numberNodes, int xTerr, int yTerr, int range, int numberOfShortEdges, int numberOfLongEdges);
 	virtual ~SmallworldGenerator();
 };
 

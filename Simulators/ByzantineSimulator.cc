@@ -12,12 +12,13 @@
 #include "ERRandomGenerator.h"
 #include "ScaleFreeGenerator.h"
 #include "SmallworldGenerator.h"
-#include "K01Tolerance.h"
+#include "KSelfTolerance.h"
 #include "K04Tolerance.h"
 #include "KxHopTolerance.h"
-#include "C01Tolerance.h"
+#include "CSelfTolerance.h"
 #include "C01K03Tolerance.h"
 #include "CxHopTolerance.h"
+#include "KCommonTolerance.h"
 
 using namespace generators;
 
@@ -40,7 +41,7 @@ void ByzantineSimulator::setTolerance()
 	switch(params.toleranceType)
 	{
 	case K01:
-		byzantine.tolerance = new K01Tolerance();
+		byzantine.tolerance = new KSelfTolerance();
 		break;
 	case K04:
 		byzantine.tolerance = new K04Tolerance();
@@ -49,7 +50,7 @@ void ByzantineSimulator::setTolerance()
 		byzantine.tolerance = new KxHopTolerance(params.hopCount);
 		break;
 	case C01:
-		byzantine.tolerance = new C01Tolerance();
+		byzantine.tolerance = new CSelfTolerance();
 		break;
 	case C01K03:
 		byzantine.tolerance = new C01K03Tolerance();
@@ -57,6 +58,9 @@ void ByzantineSimulator::setTolerance()
 	case CxHop:
 		byzantine.tolerance = new CxHopTolerance();
 		generator->turnOn2HopInfo(true);
+		break;
+	case KCommon:
+		byzantine.tolerance = new KCommonTolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();
