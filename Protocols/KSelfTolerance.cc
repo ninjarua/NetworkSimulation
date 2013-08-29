@@ -19,7 +19,7 @@ KSelfTolerance::~KSelfTolerance() {
 
 string KSelfTolerance::GetToleranceName()
 {
-	return "K1";
+	return "KSelf";
 }
 
 void KSelfTolerance::TolerateNode(LinkPtr link)

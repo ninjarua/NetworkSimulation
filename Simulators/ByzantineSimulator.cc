@@ -13,7 +13,7 @@
 #include "ScaleFreeGenerator.h"
 #include "SmallworldGenerator.h"
 #include "KSelfTolerance.h"
-#include "K04Tolerance.h"
+#include "K1HopTolerance.h"
 #include "KxHopTolerance.h"
 #include "CSelfTolerance.h"
 #include "C01K03Tolerance.h"
@@ -40,16 +40,16 @@ void ByzantineSimulator::setTolerance()
 	setDeployment();
 	switch(params.toleranceType)
 	{
-	case K01:
+	case KSelf:
 		byzantine.tolerance = new KSelfTolerance();
 		break;
-	case K04:
-		byzantine.tolerance = new K04Tolerance();
+	case K1Hop:
+		byzantine.tolerance = new K1HopTolerance();
 		break;
 	case KxHop:
 		byzantine.tolerance = new KxHopTolerance(params.hopCount);
 		break;
-	case C01:
+	case CSelf:
 		byzantine.tolerance = new CSelfTolerance();
 		break;
 	case C01K03:

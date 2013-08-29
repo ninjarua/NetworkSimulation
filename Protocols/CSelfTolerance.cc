@@ -21,7 +21,7 @@ CSelfTolerance::~CSelfTolerance() {
 
 string CSelfTolerance::GetToleranceName()
 {
-	return "C1";
+	return "CSelf";
 }
 
 void CSelfTolerance::TolerateNode(LinkPtr messageLink)

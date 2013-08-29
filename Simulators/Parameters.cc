@@ -66,7 +66,7 @@ void Parameters::setToConvert(DeployingType _deploying, string _inputFolder, str
 	nothingInterval = byzantineInterval = 0.01;
 	hopCount = 0;
 	deployingType = _deploying;
-	toleranceType = K01;
+	toleranceType = KSelf;
 	totalTimes = 0;
 	inputFolder = _inputFolder;
 	output = _outputFolder;
