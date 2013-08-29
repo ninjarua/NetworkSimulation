@@ -11,15 +11,15 @@
 
 namespace protocols {
 
-KSelfCCommon::KSelfCCommon() {
+KSelfCCommonTolerance::KSelfCCommonTolerance() {
 
 }
 
-KSelfCCommon::~KSelfCCommon() {
+KSelfCCommonTolerance::~KSelfCCommonTolerance() {
 
 }
 
-void KSelfCCommon::TolerateNode(LinkPtr messageLink)
+void KSelfCCommonTolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	NodePtr node = messageLink->dest;
@@ -42,18 +42,18 @@ void KSelfCCommon::TolerateNode(LinkPtr messageLink)
 	node->ownerNetwork->info.numberOfInactiveNodes++;
 }
 
-string KSelfCCommon::GetToleranceName()
+string KSelfCCommonTolerance::GetToleranceName()
 {
 	return "KSelfCCommon";
 }
 
-void KSelfCCommon::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
+void KSelfCCommonTolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
 {
 	CCommonTolerance* ptrC01 = (CCommonTolerance*)ptr;
 	ptrC01->ReceiveCutLinkMessage(message);
 }
 
-void KSelfCCommon::ReceiveCutLinkMessage(Message* message)
+void KSelfCCommonTolerance::ReceiveCutLinkMessage(Message* message)
 {
 	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
 	if (cuttingMessage->linkToCut->state == Cut)
