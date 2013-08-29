@@ -19,6 +19,7 @@
 #include "C01K03Tolerance.h"
 #include "CxHopTolerance.h"
 #include "KCommonTolerance.h"
+#include "KSelfCCommonTolerance.h"
 
 using namespace generators;
 
@@ -61,6 +62,9 @@ void ByzantineSimulator::setTolerance()
 		break;
 	case KCommon:
 		byzantine.tolerance = new KCommonTolerance();
+		break;
+	case KSelfCCommon:
+		byzantine.tolerance = new KSelfCCommonTolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();

@@ -12,10 +12,16 @@
 
 namespace protocols {
 
-class KSelfCCommon: public protocols::ToleranceBase {
+class KSelfCCommon: public ToleranceBase {
+	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
+	void ReceiveCutLinkMessage(Message* message);
 public:
 	KSelfCCommon();
 	virtual ~KSelfCCommon();
+
+	virtual void TolerateNode(LinkPtr link);
+
+	string GetToleranceName();
 };
 
 } /* namespace protocols */

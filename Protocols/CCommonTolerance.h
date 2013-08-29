@@ -13,7 +13,6 @@
 namespace protocols {
 
 class CCommonTolerance: public ToleranceBase {
-
 	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
 	void ReceiveCutLinkMessage(Message* message);
 public:
