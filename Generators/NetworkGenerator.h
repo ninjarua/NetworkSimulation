@@ -30,7 +30,7 @@ public:
 	virtual bool generateFromFiles(Network* network, string folder, int index = 0);
 	virtual void writeNetworkToFile(Network* network, string folder, int index = 0);
 	string getDeployingName();
-	void turnOn2HopInfo(bool using2HopInfo);
+	void switch2HopInfo(bool using2HopInfo);
 
 protected:
 	virtual string getFilenameByDeployment(string folder, int number);

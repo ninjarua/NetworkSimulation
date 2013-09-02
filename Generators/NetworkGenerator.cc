@@ -37,7 +37,7 @@ string NetworkGenerator::getDeployingName()
 	return deployment->getDeployingName();
 }
 
-void NetworkGenerator::turnOn2HopInfo(bool using2HopInfo)
+void NetworkGenerator::switch2HopInfo(bool using2HopInfo)
 {
 	deployment->using2HopInfo = using2HopInfo;
 }

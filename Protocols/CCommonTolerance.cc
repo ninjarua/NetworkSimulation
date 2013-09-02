@@ -32,13 +32,18 @@ void CCommonTolerance::TolerateNode(LinkPtr messageLink)
 		if ((*it)->dest == messageLink->src)
 			(*it)->state = Cut;
 
+		// check if (*it)->dest is also neighbor of messageLink->src
+		// return link from messageLink->src to (*it)->dest if they are neighbors
 		LinkPtr linkToCut = NetworkTools::GetLinkPtr(messageLink->src->links, (*it)->dest->id);
 		if (linkToCut != NULL && linkToCut->state != Cut)
 		{
-			LinkPtr srcLinkToCut = NetworkTools::GetSrcLinkPtr(node->srcLinks, (*it)->dest->id);
+			// looking for the link from that common neighbor (*it)->dest to current node
+			// then cut that link
+			LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(*it);	//	NetworkTools::GetSrcLinkPtr(node->srcLinks, (*it)->dest->id);
 			srcLinkToCut->state = Cut;
 
 			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, node->ownerNetwork->currentTimeSlot);
+			cuttingMessage->cutCarrierLink = true;
 			SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
 		}
 	}
@@ -51,14 +56,15 @@ string CCommonTolerance::GetToleranceName()
 
 void CCommonTolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
 {
-	CCommonTolerance* ptrC01 = (CCommonTolerance*)ptr;
-	ptrC01->ReceiveCutLinkMessage(message);
+	CCommonTolerance* ptrCCommon = (CCommonTolerance*)ptr;
+	ptrCCommon->ReceiveCutLinkMessage(message);
 }
 
 void CCommonTolerance::ReceiveCutLinkMessage(Message* message)
 {
-	message->link->state = Cut;
 	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
+	if (cuttingMessage->cutCarrierLink)
+		cuttingMessage->link->state = Cut;
 	if (cuttingMessage->linkToCut->state == Cut)
 	{
 		cuttingMessage->status = Expired;
@@ -66,9 +72,8 @@ void CCommonTolerance::ReceiveCutLinkMessage(Message* message)
 	}
 	cuttingMessage->linkToCut->state = Cut;
 	//cout << cuttingMessage->linkToCut->src->id << " to " << cuttingMessage->linkToCut->dest->id << endl;
-	LinkPtr srcLinkToCut = NetworkTools::GetSrcLinkPtr(cuttingMessage->linkToCut->src->srcLinks,
-									cuttingMessage->linkToCut->dest->id);
 	//cout << srcLinkToCut->src->id << " to " << srcLinkToCut->dest->id << endl;
+	LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(cuttingMessage->linkToCut);
 	srcLinkToCut->state = Cut;
 	cuttingMessage->status = Expired;
 }

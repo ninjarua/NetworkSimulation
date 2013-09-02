@@ -19,6 +19,7 @@ SmallworldDeploying::SmallworldDeploying(int numberNodes, int xTerr, int yTerr, 
 	: FixedRangeRandomDeploying(numberNodes, xTerr, yTerr, range)
 {
 	numberOfLongEdge = noOfLongEdge;
+	numberOfShortEdge = noOfShortEdge;
 }
 
 SmallworldDeploying::~SmallworldDeploying() {
@@ -50,12 +51,15 @@ bool SmallworldDeploying::isLongEdgeNeighbors(const Network& network, const Node
 void SmallworldDeploying::neighborInitialization(Network* network)
 {
 	//unsigned int networkSize = network->nodes.size();
-	unsigned int matrix[network->size][network->size];
+	vector<vector<unsigned int> > matrix;//(network->size)
 
 	for (unsigned int i=0; i < network->size; i++)
+	{
+		vector<unsigned int> v_i(network->size);
 		for (unsigned int j=0; j < network->size; j++)
-			matrix[i][j] = 0;
-
+			v_i[j] = 0;
+		matrix.push_back(v_i);
+	}
 	for (unsigned int i=0; i < network->size; i++)
 	{
 		//for (unsigned int j = i + 1; j < networkSize; j++)

@@ -11,7 +11,7 @@
 
 namespace protocols {
 
-KSelfCCommonTolerance::KSelfCCommonTolerance() {
+KSelfCCommonTolerance::KSelfCCommonTolerance() : ToleranceBase() {
 
 }
 
@@ -49,7 +49,7 @@ string KSelfCCommonTolerance::GetToleranceName()
 
 void KSelfCCommonTolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
 {
-	CCommonTolerance* ptrC01 = (CCommonTolerance*)ptr;
+	KSelfCCommonTolerance* ptrC01 = (KSelfCCommonTolerance*)ptr;
 	ptrC01->ReceiveCutLinkMessage(message);
 }
 
@@ -63,8 +63,7 @@ void KSelfCCommonTolerance::ReceiveCutLinkMessage(Message* message)
 	}
 	cuttingMessage->linkToCut->state = Cut;
 	//cout << cuttingMessage->linkToCut->src->id << " to " << cuttingMessage->linkToCut->dest->id << endl;
-	LinkPtr srcLinkToCut = NetworkTools::GetSrcLinkPtr(cuttingMessage->linkToCut->src->srcLinks,
-									cuttingMessage->linkToCut->dest->id);
+	LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(cuttingMessage->linkToCut);
 	//cout << srcLinkToCut->src->id << " to " << srcLinkToCut->dest->id << endl;
 	srcLinkToCut->state = Cut;
 	cuttingMessage->status = Expired;

@@ -10,11 +10,11 @@
 
 #include "stdafx.h"
 #include "Constants.h"
-#include <set>
 #include <string>
 #include <sstream>
 #include <fstream>
 #include <list>
+#include <map>
 #include "Link.h"
 #include "Link2Hop.h"
 
@@ -38,6 +38,8 @@ public:
 	vector<LinkPtr> srcLinks;
 	list<Link2Hop*> tempLinks2Hop;
 	vector<Link2Hop*> links2Hop;
+	map<int, vector<LinkPtr> > commonNeighbors;	// this map saves common neighbors of current node with neighbor having id in int variable
+	//vector<LinkPtr> noCommonNeighbors2Hop;
 //	set<NodePtr> disconnectedNodes;
 	int connectedAreaNumber;
 
@@ -59,9 +61,11 @@ public:
 	friend ostream& operator<<(ostream& os, const Node& node);
 	friend ofstream& operator<<(ofstream& os, const Node& node);
 	friend istringstream& operator>>(istringstream& os, Node& node);
-	void Collect2HopInformation();
-	void ChangeListToVector();
-	void Get2HopInformation(string lst2Hop);
+	void collect2HopInformation();
+	void collect2HopNeighbors();
+	void changeListToVector();
+	void getMidNodesOfNeighborsIn2Hop(string lst2Hop);
+	void getCommonNeighbors(string commonNeighborsLine);
 	static string printNodeWithConnectedAreaNumber(const Node& node);
 private:
 	void CreateLists();

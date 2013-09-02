@@ -194,16 +194,13 @@ istream& operator>>(istream& is, Network& network)
 		{
 			while (line.find(Constants::begin2HopList) == 0)
 			{
-				(*it)->Get2HopInformation(line.substr(3));
+				//(*it)->getMidNodesOfNeighborsIn2Hop(line.substr(3));
+				(*it)->getCommonNeighbors(line.substr(3));
 				getline(is, line);
 			}
 		}
 		it++;
 	}
-	if (network.avgDegree == 0)
-		network.calculateAverageDegree();
-	if (network.avgCommonNeighbors == 0)
-		network.calculateCommonNeighbors();
 	return is;
 }
 
@@ -266,6 +263,10 @@ void Network::createAdvancedInformation()
 //	createMatrixDistance();
 //	updateMatrixDistanceFromNeighbors();
 //	runFloyd();
+	if (avgDegree == 0)
+		calculateAverageDegree();
+	if (avgCommonNeighbors == 0)
+		calculateCommonNeighbors();
 	if (!has2HopInfo)
 		collect2HopInformation();
 }
@@ -275,11 +276,11 @@ void Network::collect2HopInformation()
 	vector<NodePtr>::iterator it = nodes.begin();
 	for (; it != nodes.end(); it++)
 	{
-		(*it)->Collect2HopInformation();
+		(*it)->collect2HopInformation();
 	}
-	it = nodes.begin();
-	for (; it != nodes.end(); it++)
-		(*it)->ChangeListToVector();
+//	it = nodes.begin();
+//	for (; it != nodes.end(); it++)
+//		(*it)->changeListToVector();
 	has2HopInfo = true;
 }
 

@@ -58,7 +58,7 @@ void ByzantineSimulator::setTolerance()
 		break;
 	case CxHop:
 		byzantine.tolerance = new CxHopTolerance();
-		generator->turnOn2HopInfo(true);
+		generator->switch2HopInfo(true);
 		break;
 	case KCommon:
 		byzantine.tolerance = new KCommonTolerance();
@@ -138,6 +138,7 @@ bool ByzantineSimulator::stopPrediction(ByzantineReport* report)
 void ByzantineSimulator::addingAdditionalInfo(bool using2HopInfo)
 {
 	setDeployment();
+	generator->switch2HopInfo(using2HopInfo);
 	//setParameters(1, inputfolder, outputFolder, 0, 0, 0, 0, 0.01, 0.01, sampleSize);
 
 	for (int i = 0; i <= 100; i++)
