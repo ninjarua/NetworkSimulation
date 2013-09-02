@@ -24,9 +24,9 @@ int main(int argc, char* argv[])
 {
 	srand(time(NULL)); // Set random seed for random procedure
 
-//	SimulatorManager* manager = new SimulatorManager();
-//	manager->runOneStepSimulation(Small_world, KCommon, 10000, 0, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/degree/14_5/1000",
-//			"/Users/thanhnd/Workspace/Results/Smallworld/14_5/1000/KCommon_0", 2, 100);
+	SimulatorManager* manager = new SimulatorManager();
+	manager->runOneStepSimulation(Small_world, CBridges, 10000, 0, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/1000",
+			"/Users/thanhnd/Workspace/Results/Smallworld/10_5/1000/CBridges_0", 1, 100);
 
 //	manager->readOneStepResults(Small_world, C01, "/Users/thanhnd/Workspace/Results/Smallworld/14_5/25/1000/C01_new_0",
 //				"/Users/thanhnd/Workspace/Results/Smallworld/14_5/25/1000/C01_new_0.out", 0.25, 0.01);
@@ -62,30 +62,16 @@ int main(int argc, char* argv[])
 //	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/1000", 7, 2000, 7);
 //	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/1000", 7, 3000, 7);
 
-	SimulatorManager* manager = new SimulatorManager();
-//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_2/1000",
-//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_2/1000", 100, true);
-	manager->convert2HopInformation(FixedRange, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10/4000",
-				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10/4000", 100, true);
-//	manager->convert2HopInformation(FixedRange, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10/10000",
-//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10/10000", 100, false);
-//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_3/1000",
-//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_3/1000", 100, true);
-	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_3/4000",
-				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_3/4000", 100, true);
-//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_1/10000",
-//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_1/10000", 100, false);
-//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_4/1000",
-//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_4/1000", 100, true);
-	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_4/4000",
-				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_4/4000", 100, true);
-//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_5/1000",
-//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/1000", 100, true);
-	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_5/4000",
-				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/4000", 100, true);
-	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_10/4000",
-				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_10/4000", 100, true);
-//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_10/10000",
-//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_10/10000", 100, false);
+//	SimulatorManager* manager = new SimulatorManager();
+//	manager->convert2HopInformation(FixedRange, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10/4000",
+//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10/4000", 100, true);
+//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_3/4000",
+//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_3/4000", 100, true);
+//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_4/4000",
+//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_4/4000", 100, true);
+//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_5/4000",
+//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/4000", 100, true);
+//	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_10/4000",
+//				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_10/4000", 100, true);
 }
 

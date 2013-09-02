@@ -12,7 +12,7 @@
 
 namespace protocols {
 
-class COtherBridgesTolerance : ToleranceBase {
+class COtherBridgesTolerance : public ToleranceBase {
 	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
 	void ReceiveCutLinkMessage(Message* message);
 public:

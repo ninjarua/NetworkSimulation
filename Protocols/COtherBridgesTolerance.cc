@@ -35,7 +35,7 @@ void COtherBridgesTolerance::TolerateNode(LinkPtr messageLink)
 		srcLinkToCut->state = Cut;
 
 		// get link from (*it)->dest to messageLink->src to cut
-		LinkPtr linkToCut = NetworkTools::GetSrcLinkPtr(messageLink->src->links, (*it)->dest->id);
+		LinkPtr linkToCut = NetworkTools::GetSrcLinkPtr(messageLink->src->srcLinks, (*it)->dest->id);
 		if (linkToCut->state != Cut)
 		{
 			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, node->ownerNetwork->currentTimeSlot);
@@ -61,7 +61,7 @@ void COtherBridgesTolerance::TolerateNode(LinkPtr messageLink)
 				LinkPtr linkToCut = NetworkTools::GetLinkPtr((*nbIt)->dest->links, mapIt->first);
 				CutLinkMessage* cuttingMessage = new CutLinkMessage(*nbIt, linkToCut, node->ownerNetwork->currentTimeSlot);
 				cuttingMessage->cutCarrierLink = false;
-				SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
+				SendMessage(*nbIt, CallbackReceiveCutLinkMessage, cuttingMessage);
 			}
 		}
 	}
