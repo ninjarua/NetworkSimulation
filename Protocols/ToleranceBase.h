@@ -20,6 +20,8 @@ enum TypeOfTolerance{ KSelf = 0, K03 = 1, K1Hop = 2, K05 = 3, K07 = 4, K08 = 5, 
     KCommon = 14, CCommon = 15, KSelfCCommon = 16, CBridges = 17 };
 
 class ToleranceBase : public NetworkProtocol {
+protected:
+	void CutLink(LinkPtr linkToCut);
 public:
 	ToleranceBase();
 	virtual ~ToleranceBase();

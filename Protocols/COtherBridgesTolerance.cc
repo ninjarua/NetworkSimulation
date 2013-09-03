@@ -22,15 +22,18 @@ COtherBridgesTolerance::~COtherBridgesTolerance() {
 void COtherBridgesTolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
-	messageLink->state = Cut;
+	CutLink(messageLink);
+
 	NodePtr node = messageLink->dest;
 	vector<LinkPtr> messageLinkCommonNbs = node->commonNeighbors[messageLink->src->id];
 	vector<LinkPtr>::iterator it = messageLinkCommonNbs.begin();
+	// Cut link like in CCommonTolerance strategy
 	for (; it != messageLinkCommonNbs.end(); it++)
 	{
 		// Get reverselink of *it to cut
 		// It is different than CCommon because the loop here on an item of the map of commonNeighbor
 		// It means that it is already common neighbor between infected (messageLink->src) and detector (messageLink->dest)
+		// (*it) will be cut when sending cuttingMessage
 		LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(*it);
 		srcLinkToCut->state = Cut;
 
@@ -88,11 +91,7 @@ void COtherBridgesTolerance::ReceiveCutLinkMessage(Message* message)
 		cuttingMessage->status = Expired;
 		return;
 	}
-	cuttingMessage->linkToCut->state = Cut;
-	//cout << cuttingMessage->linkToCut->src->id << " to " << cuttingMessage->linkToCut->dest->id << endl;
-	LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(cuttingMessage->linkToCut);
-	//cout << srcLinkToCut->src->id << " to " << srcLinkToCut->dest->id << endl;
-	srcLinkToCut->state = Cut;
+	CutLink(cuttingMessage->linkToCut);
 	cuttingMessage->status = Expired;
 }
 
