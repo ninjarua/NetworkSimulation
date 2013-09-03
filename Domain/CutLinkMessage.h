@@ -17,6 +17,7 @@ public:
 	LinkPtr linkToCut;
 	CutLinkMessage(LinkPtr messageLink, LinkPtr cutLink, const int& timeSlot);
 	virtual ~CutLinkMessage();
+	bool cutCarrierLink;
 };
 
 } /* namespace domain */

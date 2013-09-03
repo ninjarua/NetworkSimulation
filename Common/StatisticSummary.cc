@@ -15,48 +15,40 @@ StatisticSummary::StatisticSummary() {
 StatisticSummary::~StatisticSummary() {
 
 }
-//
-//StatisticSummary* StatisticSummary::_instance = NULL;
-//StatisticSummary* StatisticSummary::GetInstance()
-//{
-//	if (_instance == NULL)
-//		_instance = new StatisticSummary();
-//	return _instance;
-//}
 
-void StatisticSummary::Reset()
+void StatisticSummary::reset()
 {
-    sum = variance = mean = standardDeviation = 0;
+    summation = variance = mean = standardDeviation = 0;
     x = 0;
     length = 0;
 }
 
-double StatisticSummary::GetConfidenceInterval(double significance)
+double StatisticSummary::getConfidenceInterval(double significance)
 {
 	normal_distribution<double> dist = normal_distribution<double>(0, 1);
 	double delta = quantile(complement(dist, significance/2));
 	return delta * standardDeviation / sqrt(length);
 }
 
-double Sum(const vector<long>& values)
+double sum(const vector<long>& values)
 {
-	double sum = 0;
+	double summation = 0;
 	vector<long>::const_iterator it = values.begin();
 	for (; it != values.end(); it++)
 	{
-		sum += (double)(*it);
+		summation += (double)(*it);
 	}
-	return sum;
+	return summation;
 }
 
-StatisticSummary* StatisticSummary::Summarize(const vector<long>& elements)
+StatisticSummary* StatisticSummary::summarize(const vector<long>& elements)
 {
-	Reset();
+	reset();
 	length = elements.size();
 	//list<double> doubleValues = elements.ConvertAll<double>(c => Convert.ToDouble(c));
-	sum = Sum(elements);
+	summation = sum(elements);
 	// mean value
-	mean = sum / length;
+	mean = summation / length;
 
 	// variance
 	variance = 0;

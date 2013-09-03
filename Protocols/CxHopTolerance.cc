@@ -42,6 +42,7 @@ void CxHopTolerance::TolerateNode(LinkPtr messageLink)
 		if (linkToCut != NULL)
 		{
 			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, node->ownerNetwork->currentTimeSlot);
+			cuttingMessage->cutCarrierLink = true;
 			SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
 		}
 
@@ -58,9 +59,10 @@ void CxHopTolerance::TolerateNode(LinkPtr messageLink)
 void CxHopTolerance::ReceiveCutLinkMessage(Message* message)
 {
 	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
-	cuttingMessage->linkToCut->state = Cut;
-	LinkPtr srcLinkToCut = NetworkTools::GetSrcLinkPtr(cuttingMessage->linkToCut->src->srcLinks,
-									cuttingMessage->linkToCut->dest->id);
+	if (cuttingMessage->cutCarrierLink)
+		cuttingMessage->linkToCut->state = Cut;
+	LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(cuttingMessage->linkToCut);//->src->srcLinks,
+									//cuttingMessage->linkToCut->dest->id);
 	srcLinkToCut->state = Cut;
 }
 
@@ -98,6 +100,7 @@ void CxHopTolerance::CallbackReceiveCutLink2HopMessage(void* ptr, Message* messa
 	ptrC1K3->ReceiveCutLink2HopMessage(message);
 }
 
+// Check if there is other common neighbors betweeen n1 and n2 except the 'exception' node.
 Link2Hop* CxHopTolerance::GetCommonNeighborsExcept(NodePtr n1, NodePtr n2, NodePtr exception)
 {
 	Link2Hop* link2Hop = LookingForLink2Hop(n1->links2Hop, n2);

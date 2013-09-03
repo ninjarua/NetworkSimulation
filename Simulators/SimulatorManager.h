@@ -38,10 +38,15 @@ public:
 	void runOneStepSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 			string outputFolder, int numberCPUs, int networkSize=100);
 
+	void runOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
+			string inputFolder, string outputFolder, int numberCPUs, int sampleSize, bool hubOnly);
+
 	void readResults(DeployingType deploying, TypeOfTolerance toleranceType,
 					string inputFolder, string outputFolder, int numberCPUs);
 	void readOneStepResults(DeployingType deploying, TypeOfTolerance toleranceType,
 			string inputFolder, string output, double nothingProb = 0, double intervalByz = 0.01);
+
+	void convert2HopInformation(DeployingType deployingType, string inputfolder, string outputFolder, int sampleSize, bool using2HopInfo);
 
 };
 

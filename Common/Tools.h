@@ -13,6 +13,7 @@ using namespace std;
 #include <vector>
 #include <list>
 #include <map>
+#include <typeinfo>
 //#include <boost/smart_ptr/shared_ptr.hpp>
 #include "Logger.h"
 
@@ -52,13 +53,16 @@ public:
 	template<typename T>
 	static void EraseAll(vector<T*>& listInput)
 	{
-		vector<T*> result = vector<T*>();
+		//vector<T*> result = vector<T*>();
 		typename vector<T*>::iterator it = listInput.end();
-		while(it != listInput.begin())
+		while(it > listInput.begin())
 		{
 			it--;
-			delete *it;
-			it = listInput.erase(it);
+			if (it != listInput.end() && *it != NULL)
+			{
+				delete *it;
+				it = listInput.erase(it);
+			}
 		}
 		listInput.clear();
 	}

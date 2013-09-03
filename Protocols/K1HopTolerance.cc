@@ -5,20 +5,20 @@
  *      Author: thanhnd
  */
 
-#include "K04Tolerance.h"
+#include "K1HopTolerance.h"
 #include "DeactivateMessage.h"
 
 namespace protocols {
 
-K04Tolerance::K04Tolerance() : ToleranceBase() {
+K1HopTolerance::K1HopTolerance() : ToleranceBase() {
 
 }
 
-K04Tolerance::~K04Tolerance() {
+K1HopTolerance::~K1HopTolerance() {
 
 }
 
-void K04Tolerance::TolerateNode(LinkPtr link)
+void K1HopTolerance::TolerateNode(LinkPtr link)
 {
 	ToleranceBase::TolerateNode(link);
 	NodePtr node = link->dest;
@@ -36,12 +36,12 @@ void K04Tolerance::TolerateNode(LinkPtr link)
 	}
 }
 
-string K04Tolerance::GetToleranceName()
+string K1HopTolerance::GetToleranceName()
 {
-	return "K4";
+	return "K1Hop";
 }
 
-void K04Tolerance::ReceiveDeactivateMessage(Message* message)
+void K1HopTolerance::ReceiveDeactivateMessage(Message* message)
 {
 	NodePtr node = message->link->dest;
 	if (node->state == Infected || node->state == Inactive)
@@ -54,9 +54,9 @@ void K04Tolerance::ReceiveDeactivateMessage(Message* message)
 	message->status = Expired;
 }
 
-void K04Tolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* message)
+void K1HopTolerance::CallbackReceiveDeactivateMessage(void* ptr, Message* message)
 {
-	K04Tolerance* ptrK4 = (K04Tolerance*)ptr;
+	K1HopTolerance* ptrK4 = (K1HopTolerance*)ptr;
 	ptrK4->ReceiveDeactivateMessage(message);
 }
 } /* namespace protocols */

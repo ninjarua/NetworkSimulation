@@ -22,7 +22,7 @@ ERRandomGenerator::ERRandomGenerator(int numberNodes, double p)
 }
 
 ERRandomGenerator::~ERRandomGenerator() {
-
+	delete deployment;
 }
 
 } /* namespace generators */

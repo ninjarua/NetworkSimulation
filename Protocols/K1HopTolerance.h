@@ -12,11 +12,11 @@
 
 namespace protocols {
 
-class K04Tolerance: public ToleranceBase {
+class K1HopTolerance: public ToleranceBase {
 	static void CallbackReceiveDeactivateMessage(void* ptr, Message* message);
 public:
-	K04Tolerance();
-	virtual ~K04Tolerance();
+	K1HopTolerance();
+	virtual ~K1HopTolerance();
 	void TolerateNode(LinkPtr link);
 	void ReceiveDeactivateMessage(Message* message);
 	string GetToleranceName();

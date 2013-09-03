@@ -24,7 +24,10 @@ bool NetworkGenerator::generateFromFiles(Network* network, string folder, int in
 	if (filename == "")
 		return false;
 	ifstream f(filename.c_str(), ifstream::in);
+	//cout << filename << endl;
 	f >> (*network);
+	if (deployment->using2HopInfo && !network->has2HopInfo)
+		network->createAdvancedInformation();
 	f.close();
 	return true;
 }
@@ -34,7 +37,7 @@ string NetworkGenerator::getDeployingName()
 	return deployment->getDeployingName();
 }
 
-void NetworkGenerator::turnOn2HopInfo(bool using2HopInfo)
+void NetworkGenerator::switch2HopInfo(bool using2HopInfo)
 {
 	deployment->using2HopInfo = using2HopInfo;
 }
@@ -95,6 +98,8 @@ string NetworkGenerator::generateToFiles(Network* network, string folder, int ti
 		{
 			Logger::Write(network, getFilenameByDeployment(folder, i));
 			//if (drawNetwork)
+			network->calculateAverageDegree();
+			cout << network->avgDegree << endl;
 		}
 		else
 		{

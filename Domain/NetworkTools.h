@@ -28,7 +28,7 @@ public:
 		return false;
 	}
 
-	static bool ContainNode(vector<LinkPtr> links, NodePtr node)
+	static bool ContainNode(vector<LinkPtr>& links, NodePtr node)
 	{
 		int size = links.size();
 		int left = 0;
@@ -47,6 +47,26 @@ public:
 		}
 		return false;
 	}
+
+//	static LinkPtr GetLinkByDest(vector<LinkPtr>& links, NodePtr node)
+//	{
+//		int size = links.size();
+//		int left = 0;
+//		int right = size - 1;
+//		int mid;
+//		while (left <= right)
+//		{
+//			mid = (left + right)/2;
+//			LinkPtr linkMid = links[mid];
+//			if (node->id > linkMid->dest->id)
+//				left = mid + 1;
+//			else if(node->id < linkMid->dest->id)
+//				right = mid - 1;
+//			else
+//				return linkMid;
+//		}
+//		return NULL;
+//	}
 
 	static LinkPtr GetSrcLinkPtr(vector<LinkPtr> links, const int& id)
 	{
@@ -138,6 +158,12 @@ public:
 			vectorLinks.push_back(lstLinks.front());
 			lstLinks.pop_front();
 		}
+	}
+
+	static LinkPtr GetReverseLink(LinkPtr link)
+	{
+		LinkPtr srcLink = GetSrcLinkPtr(link->src->srcLinks, link->dest->id);
+		return srcLink;
 	}
 };
 }

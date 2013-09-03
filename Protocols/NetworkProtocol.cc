@@ -85,7 +85,10 @@ void NetworkProtocol::RunNetworkStep(Network* network)
 		list<Message*>::iterator it = network->messages.begin();
     	if (it != network->messages.end())
     	{
-    		(*it)->receivingAction(this, (*it));
+    		if ((*it)->link->state != Cut && (*it)->link->dest->state != Inactive)
+    			(*it)->receivingAction(this, (*it));
+    		else
+    			(*it)->status = Expired;
     		//Logger::Write(*(*it), GetLogFilename(), ofstream::out | ofstream::app);
     		delete *it;
     		network->messages.pop_front();

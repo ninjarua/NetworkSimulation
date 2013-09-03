@@ -5,24 +5,24 @@
  *      Author: thanhnd
  */
 
-#include "K01Tolerance.h"
+#include "KSelfTolerance.h"
 
 namespace protocols {
 
-K01Tolerance::K01Tolerance() : ToleranceBase() {
+KSelfTolerance::KSelfTolerance() : ToleranceBase() {
 
 }
 
-K01Tolerance::~K01Tolerance() {
+KSelfTolerance::~KSelfTolerance() {
 
 }
 
-string K01Tolerance::GetToleranceName()
+string KSelfTolerance::GetToleranceName()
 {
-	return "K1";
+	return "KSelf";
 }
 
-void K01Tolerance::TolerateNode(LinkPtr link)
+void KSelfTolerance::TolerateNode(LinkPtr link)
 {
 	ToleranceBase::TolerateNode(link);
 	link->dest->state = Inactive;

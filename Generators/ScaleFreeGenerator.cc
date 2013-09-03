@@ -22,7 +22,7 @@ ScaleFreeGenerator::ScaleFreeGenerator(int m0, int m, int N)
 }
 
 ScaleFreeGenerator::~ScaleFreeGenerator() {
-
+	delete deployment;
 }
 
 } /* namespace generators */

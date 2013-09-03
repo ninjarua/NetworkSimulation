@@ -18,7 +18,6 @@ Network::Network() {
 	sequenceId = 0;
 	currentTimeSlot = 0;
 	messageCount = 0;
-	newMessageCount = 0;
 	info = NetworkInfo();
 	nodes = vector<NodePtr>();
 	messages = list<Message*>();
@@ -33,15 +32,26 @@ Network::~Network() {
 void Network::Reset()
 {
 	messageCount = 0;
-	newMessageCount = 0;
+	vector<Node*>::iterator nodeIt = nodes.begin();
+	for(; nodeIt != nodes.end(); nodeIt++)
+		(*nodeIt)->ClearToDelete();
 	Tools::EraseAll(nodes);
 	Tools::EraseAll(messages);
 	diameter = 0;
+	avgDiameter = 0;
+	avgDegree = 0;
 	sequenceId = 0;
+
 	vector<vector<int> >::iterator it = distance.begin();
 	for(; it != distance.end(); it++)
 		(*it).clear();
 	distance.clear();
+
+	vector<vector<int> >::iterator itCommon = commonNbs.begin();
+	for(; itCommon != commonNbs.end(); itCommon++)
+		(*itCommon).clear();
+	commonNbs.clear();
+
 	has2HopInfo = false;
 }
 
@@ -55,12 +65,24 @@ void Network::createEmptyNodes(int n)
 	}
 }
 
+void Network::createMatrixCommonNeighbors()
+{
+	for(unsigned int i = 0; i < size; i++)
+	{
+		vector<int> common_i(size);
+		for (unsigned int j = 0; j < size; j++)
+			common_i[j] = 0;
+		common_i[i] = 0;
+		commonNbs.push_back(common_i);
+	}
+}
+
 void Network::createMatrixDistance()
 {
-	for(int i = 0; i < size; i++)
+	for(unsigned int i = 0; i < size; i++)
 	{
 		vector<int> distance_i(size);
-		for (int j = 0; j < size; j++)
+		for (unsigned int j = 0; j < size; j++)
 			distance_i[j] = 0x7fff;
 		distance_i[i] = 0;
 		distance.push_back(distance_i);
@@ -89,9 +111,9 @@ void Network::runFloyd()
 //	int local_i = cpu_rank / cpu_width;
 //	int local_j = cpu_rank % cpu_width;
 
-	for (int k = 0; k < size; k++)
-		for (int i = 0; i < size; i++)
-			for (int j = i + 1; j < size; j++)
+	for (unsigned int k = 0; k < size; k++)
+		for (unsigned int i = 0; i < size; i++)
+			for (unsigned int j = i + 1; j < size; j++)
 			{
 				int d_ik = distance[i][k];
 				int d_kj = distance[k][j];
@@ -103,10 +125,10 @@ void Network::runFloyd()
 			}
 	diameter = 0;
 	int sumDiameter = 0;
-	for(int i = 0; i < size; i++)
+	for(unsigned int i = 0; i < size; i++)
 	{
 		nodes[i]->diameter = 0;
-		for (int j = i + 1; j < size; j++)
+		for (unsigned int j = i + 1; j < size; j++)
 		{
 			int d_ij = distance[i][j];
 			if (d_ij != 0x7fff && d_ij > nodes[i]->diameter)
@@ -130,7 +152,10 @@ void Network::makeNeighbors(int id1, int id2)
 
 ofstream& operator<<(ofstream& os, const Network& network)
 {
-	os << network.nodes.size() << Constants::tab << network.diameter << Constants::tab << network.avgDiameter << Constants::endline;
+	os << network.nodes.size() << Constants::tab << network.avgDegree
+			<< Constants::tab << network.avgCommonNeighbors
+			<< Constants::tab << network.diameter
+			<< Constants::tab << network.avgDiameter << Constants::endline;
 	if (network.has2HopInfo)
 		os << Constants::has2Hop << Constants::endline;
 	vector<NodePtr>::const_iterator it = network.nodes.begin();
@@ -145,7 +170,7 @@ istream& operator>>(istream& is, Network& network)
 	string line("");
 	getline(is, line);
 	istringstream firstline(line);
-	firstline >> network.size >> network.diameter >> network.avgDiameter;
+	firstline >> network.size >> network.avgDegree >> network.avgCommonNeighbors >> network.diameter >> network.avgDiameter;
 	network.createEmptyNodes(network.size);
 
 	getline(is, line);
@@ -169,14 +194,68 @@ istream& operator>>(istream& is, Network& network)
 		{
 			while (line.find(Constants::begin2HopList) == 0)
 			{
-				(*it)->Get2HopInformation(line.substr(3));
+				//(*it)->getMidNodesOfNeighborsIn2Hop(line.substr(3));
+				(*it)->getCommonNeighbors(line.substr(3));
 				getline(is, line);
 			}
 		}
 		it++;
 	}
-	network.createAdvancedInformation();
 	return is;
+}
+
+void Network::calculateCommonNeighbors()
+{
+	createMatrixCommonNeighbors();
+	vector<NodePtr>::iterator it = nodes.begin();
+	int sum = 0;
+	int countLink = 0;
+	for (; it != nodes.end(); it++)
+	{
+		vector<Link*>::iterator itNb = (*it)->links.begin();
+		for (; itNb != (*it)->links.end(); itNb++)
+		{
+			if ((*it)->id > (*itNb)->dest->id)
+			{
+				continue;
+			}
+			vector<Link*>::iterator it1 = (*it)->links.begin();
+			vector<Link*>::iterator it2 = (*itNb)->dest->links.begin();
+			int count = 0;
+			while (it1 != (*it)->links.end() && it2 != (*itNb)->dest->links.end())
+			{
+				if ((*it1)->dest->id == (*it2)->dest->id)
+				{
+					count++;
+					it1++;
+					it2++;
+				}
+				else if ((*it1)->dest->id < (*it2)->dest->id)
+				{
+					it1++;
+				}
+				else
+					it2++;
+			}
+			commonNbs[(*it)->id][(*itNb)->dest->id] = count;
+			commonNbs[(*itNb)->dest->id][(*it)->id] = count;
+			sum += count;
+			countLink++;
+		}
+	}
+	avgCommonNeighbors = (double)sum / countLink;
+}
+
+void Network::calculateAverageDegree()
+{
+	avgDegree = 0;
+	unsigned long totalDegree = 0;
+	vector<NodePtr>::iterator it = nodes.begin();
+	for (; it != nodes.end(); it++)
+	{
+		totalDegree += (*it)->D;
+	}
+	avgDegree = (double)totalDegree / nodes.size();
 }
 
 void Network::createAdvancedInformation()
@@ -184,6 +263,10 @@ void Network::createAdvancedInformation()
 //	createMatrixDistance();
 //	updateMatrixDistanceFromNeighbors();
 //	runFloyd();
+	if (avgDegree == 0)
+		calculateAverageDegree();
+	if (avgCommonNeighbors == 0)
+		calculateCommonNeighbors();
 	if (!has2HopInfo)
 		collect2HopInformation();
 }
@@ -193,11 +276,11 @@ void Network::collect2HopInformation()
 	vector<NodePtr>::iterator it = nodes.begin();
 	for (; it != nodes.end(); it++)
 	{
-		(*it)->Collect2HopInformation();
+		(*it)->collect2HopInformation();
 	}
-	it = nodes.begin();
-	for (; it != nodes.end(); it++)
-		(*it)->ChangeListToVector();
+//	it = nodes.begin();
+//	for (; it != nodes.end(); it++)
+//		(*it)->changeListToVector();
 	has2HopInfo = true;
 }
 
@@ -231,8 +314,8 @@ stack<NodePtr> Network::LookingForNode(const vector<LinkPtr>& links, bool (*node
 	return results;
 }
 
-void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
-				const NodeState& state, int number, bool (*filter)(NodePtr, NodePtr, int))
+void Network::addingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr consideringNode, bool (*nodeCondition)(const Node&, const NodeState&),
+				const NodeState& state, int number, bool (*filter)(LinkPtr, int))
 {
 	vector<LinkPtr>::const_iterator it = consideringNode->links.begin();
 	for(; it != consideringNode->links.end(); it++)
@@ -240,7 +323,8 @@ void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr considerin
 		bool isSameState = nodeCondition(*(*it)->dest, state);
 		// Check to take neighbors which has same state, connectedAreaNumber=0
 		// and is not disconnected node with considering node
-		if (isSameState && filter((*it)->dest, consideringNode, number))
+		//if (isSameState && filter((*it)->dest, consideringNode, number))
+		if (isSameState && filter(*it, number))
 		{
 //			Logger::Write(*(*it), &DebugString, prefix, "debug.out", ofstream::out|ofstream::app);
 			stack.push((*it)->dest);
@@ -249,13 +333,15 @@ void Network::AddingNewNodesWithFilter(stack<NodePtr>& stack, NodePtr considerin
 	}
 }
 
-bool Network::FilterDisconnectedNodeAndDifferentConnectedAreaNumber(NodePtr n1, NodePtr n2, int number)
+bool Network::filterDisconnectedNodeAndDifferentConnectedAreaNumber(LinkPtr link, int number)
 {
-	return n1->connectedAreaNumber != number && NetworkTools::GetLinkPtr(n2->links, n1->id)->state != Cut
-			&& NetworkTools::GetLinkPtr(n1->links, n2->id)->state != Cut;
+//	LinkPtr linkPtr_n2Ton1 = NetworkTools::GetLinkPtr(n2->links, n1->id);
+//	LinkPtr linkPtr_n1Ton2 = NetworkTools::GetLinkPtr(n1->links, n2->id);
+	return link->dest->connectedAreaNumber != number && link->state != Cut;
+			//&& (linkPtr_n1Ton2 != NULL && linkPtr_n1Ton2->state != Cut);
 }
 
-string Network::DebugString(const Node& node, string original)
+string Network::debugString(const Node& node, string original)
 {
 	string out(Node::printNodeWithConnectedAreaNumber(node));
 	out = original + out + "\n";
@@ -265,7 +351,7 @@ string Network::DebugString(const Node& node, string original)
 // Spread a connected value via neighbors list in every node to find the connected area with a given node
 // Put into stack the neighbors of seed.
 // For each node in stack find all neighbors that have connectedNumberArea = 0 and not in detect list of that node.
-int Network::ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
+int Network::connectedAreaSpreading(NodePtr seed, int spreadingValue,
 		bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
 {
 	int count = 0;
@@ -278,14 +364,14 @@ int Network::ConnectedAreaSpreading(NodePtr seed, int spreadingValue,
 		stackNodes.pop();
 		count++;
 //		Logger::Write(*node, &DebugString, "Seed spread: ", "debug.out", ofstream::out|ofstream::app);
-		AddingNewNodesWithFilter(stackNodes, node, nodeCondition, state, spreadingValue,
-				&FilterDisconnectedNodeAndDifferentConnectedAreaNumber);
+		addingNewNodesWithFilter(stackNodes, node, nodeCondition, state, spreadingValue,
+				&filterDisconnectedNodeAndDifferentConnectedAreaNumber);
 		size = stackNodes.size();
 	}
 	return count;
 }
 
-int Network::FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
+int Network::findMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state)
 {
 	int spreadingValue = 0;
 	int max = 0;
@@ -293,7 +379,7 @@ int Network::FindMaximumConnectedArea(Network* network, bool (*nodeCondition)(co
 	while (it != network->nodes.end())
 	{
 		spreadingValue++; // increase spreadingValue to a new value for another connected area
-		int count = ConnectedAreaSpreading(*it, spreadingValue, (*nodeCondition), state);
+		int count = connectedAreaSpreading(*it, spreadingValue, (*nodeCondition), state);
 		//int count = Tools::DetachWithPredicate(spreadingNodes, &Node::isConnectedAreaNumberEqual, spreadingValue);
 		if (count > max)
 			max = count;

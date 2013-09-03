@@ -38,6 +38,7 @@ protected:
 	virtual void neighborInitialization(Network* network);
 public:
 	bool runDeploy(Network* network);
+
 	virtual string getDeployingName();
 	virtual bool obtainTopology(Network* network);
 };

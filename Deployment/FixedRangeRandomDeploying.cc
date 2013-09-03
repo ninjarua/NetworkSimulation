@@ -26,6 +26,16 @@ FixedRangeRandomDeploying::~FixedRangeRandomDeploying() {
 
 }
 
+void FixedRangeRandomDeploying::neighborInitialization(Network* network)
+{
+	Deploying::neighborInitialization(network);
+}
+
+bool FixedRangeRandomDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
+{
+	return Deploying::isNeighbors(network, node, neighbor);
+}
+
 string FixedRangeRandomDeploying::getDeployingName()
 {
 	return "FixedRange";
@@ -37,18 +47,17 @@ bool FixedRangeRandomDeploying::obtainTopology(Network* network)
 	if ((topology->xTerr < 0) | (topology->yTerr < 0))
 	{
 		string errorMessage = "Error: values of TERRAIN_DIMENSIONS must be positive";
-		//Logger.GetInstance().Debug(errorMessage);
 		throw nsException(errorMessage);
 	}
 	for (int i = 0; i < topology->numNodes; i++)
 	{
-		NodePtr newNode(new Node(GetPosX(i), getPosY(i)));
+		NodePtr newNode(new Node(getPosX(i), getPosY(i)));
 		network->addNode(newNode);
 	}
 	return true;
 }
 
-double FixedRangeRandomDeploying::GetPosX(int nodeSequenceId)
+double FixedRangeRandomDeploying::getPosX(int nodeSequenceId)
 {
 	return (double)rand()/RAND_MAX * topology->xTerr;
 }

@@ -40,65 +40,65 @@ void ByzantineReport::Clear()
 	diameters.clear();
 }
 
-void ByzantineReport::AddByzantineValue(long value)
+void ByzantineReport::addByzantineValue(long value)
 {
 	numberOfByzantines.push_back(value);
 }
 
-void ByzantineReport::AddDetectorValue(long value)
+void ByzantineReport::addDetectorValue(long value)
 {
 	numberOfDetectors.push_back(value);
 }
 
-void ByzantineReport::AddNormalValue(long value)
+void ByzantineReport::addNormalValue(long value)
 {
 	numberOfNormals.push_back(value);
 }
 
-void ByzantineReport::AddSacrificeValue(long value)
+void ByzantineReport::addSacrificeValue(long value)
 {
 	numberOfSacrifices.push_back(value);
 }
 
-void ByzantineReport::AddLargestConnectedAreaValue(long value)
+void ByzantineReport::addLargestConnectedAreaValue(long value)
 {
 	largestConnectedAreas.push_back(value);
 }
 
-void ByzantineReport::AddDegrees(int value)
+void ByzantineReport::addDegrees(int value)
 {
 	degrees.push_back(value);
 }
 
-void ByzantineReport::AddDiameters(int value)
+void ByzantineReport::addDiameters(int value)
 {
 	diameters.push_back(value);
 }
 
-ByzantineReport* ByzantineReport::Summarize(double significance)
+ByzantineReport* ByzantineReport::summarize(double significance)
 {
 	StatisticSummary summary = StatisticSummary();
-	summary.Summarize(numberOfByzantines);
+	summary.summarize(numberOfByzantines);
 	averageOfByzantines = summary.mean;
-	ciOfByzantines = summary.GetConfidenceInterval(significance);
-	summary.Summarize(numberOfDetectors);
+	ciOfByzantines = summary.getConfidenceInterval(significance);
+	summary.summarize(numberOfDetectors);
 	averageOfDetectors = summary.mean;
-	ciOfDetectors = summary.GetConfidenceInterval(significance);
-	summary.Summarize(numberOfSacrifices);
+	ciOfDetectors = summary.getConfidenceInterval(significance);
+	summary.summarize(numberOfSacrifices);
 	averageOfSacrifices = summary.mean;
-	ciOfSacrifices = summary.GetConfidenceInterval(significance);
-	summary.Summarize(numberOfNormals);
+	ciOfSacrifices = summary.getConfidenceInterval(significance);
+	summary.summarize(numberOfNormals);
 	averageOfNormals = summary.mean;
-	ciOfNormals = summary.GetConfidenceInterval(significance);
-	summary.Summarize(largestConnectedAreas);
+	ciOfNormals = summary.getConfidenceInterval(significance);
+	summary.summarize(largestConnectedAreas);
 	averageOfLargestConnectedAreas = summary.mean;
-	ciOfLargestConnectedAreas = summary.GetConfidenceInterval(significance);
-	summary.Summarize(degrees);
+	ciOfLargestConnectedAreas = summary.getConfidenceInterval(significance);
+	summary.summarize(degrees);
 	averageOfDegree = summary.mean;
-	ciOfDegrees = summary.GetConfidenceInterval(significance);
-	summary.Summarize(diameters);
+	ciOfDegrees = summary.getConfidenceInterval(significance);
+	summary.summarize(diameters);
 	averageOfDiameter = summary.mean;
-	ciOfDiameters = summary.GetConfidenceInterval(significance);
+	ciOfDiameters = summary.getConfidenceInterval(significance);
 	size = summary.length;
 	return this;
 }

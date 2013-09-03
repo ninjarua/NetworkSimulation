@@ -6,6 +6,7 @@
  */
 
 #include "ToleranceBase.h"
+#include "NetworkTools.h"
 
 namespace protocols {
 
@@ -22,22 +23,16 @@ string ToleranceBase::GetToleranceName()
 	return "Base";
 }
 
-//ToleranceBase ToleranceBase::GetBase()
-//{
-//    if (_instance == NULL)
-//        _instance = new ToleranceBase();
-//    return _instance;
-//}
-
 void ToleranceBase::TolerateNode(LinkPtr link)
 {
-//	node->detectedByzantines.insert(byzantine);
 }
-//
-//void ToleranceBase::CallbackReceiveDeactivateMessage(void* ptr, Node& sender, Node& receiver, Message& message)
-//{
-//	ToleranceBase* basePtr = (ToleranceBase*)ptr;
-//	basePtr->ReceiveDeactivateMessage(sender, receiver, message);
-//}
+
+void ToleranceBase::CutLink(LinkPtr linkToCut)
+{
+	linkToCut->state = Cut;
+	// Find reverseLink to cut
+	LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(linkToCut);
+	srcLinkToCut->state = Cut;
+}
 
 } /* namespace protocols */

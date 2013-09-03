@@ -12,12 +12,10 @@
 
 namespace generators {
 
-class C01Tolerance: public protocols::ToleranceBase {
-	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
-	void ReceiveCutLinkMessage(Message* message);
+class CSelfTolerance: public protocols::ToleranceBase {
 public:
-	C01Tolerance();
-	virtual ~C01Tolerance();
+	CSelfTolerance();
+	virtual ~CSelfTolerance();
 
 	virtual void TolerateNode(LinkPtr link);
 

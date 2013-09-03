@@ -42,8 +42,8 @@ public:
 
 	static NetworkInfo* GetNetworkInfo(Network* network);
 	void Initialize(Network* network, double byzantineProb, double nothingProb);
-	void Refresh(Network* network);
-	void RandomByzantine(Network* network, bool selectHub=false, int averageDegree=14);
+	void Refresh(Network* network, bool hubOnly);
+	void RandomByzantine(Network* network, bool selectHub=false);
 	void ReceiveByzantineMessage(Message* message);
 	static void CallbackReceiveByzantineMessage(void* ptr, Message* message);
 	bool RunStepCheckFinish(Network* network, bool (*stopCondition)(const Network&));

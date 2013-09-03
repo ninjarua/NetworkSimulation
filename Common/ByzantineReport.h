@@ -49,14 +49,14 @@ public:
 	double ciOfDiameters;
 
 	void Clear();
-	void AddByzantineValue(long value);
-	void AddDetectorValue(long value);
-	void AddNormalValue(long value);
-	void AddSacrificeValue(long value);
-	void AddLargestConnectedAreaValue(long value);
-	void AddDegrees(int value);
-	void AddDiameters(int value);
-	ByzantineReport* Summarize(double significance);
+	void addByzantineValue(long value);
+	void addDetectorValue(long value);
+	void addNormalValue(long value);
+	void addSacrificeValue(long value);
+	void addLargestConnectedAreaValue(long value);
+	void addDegrees(int value);
+	void addDiameters(int value);
+	ByzantineReport* summarize(double significance);
 	friend ofstream& operator<<(ofstream& ofs, const ByzantineReport& report);
 };
 
