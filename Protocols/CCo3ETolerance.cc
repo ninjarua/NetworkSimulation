@@ -6,6 +6,8 @@
  */
 
 #include "CCo3ETolerance.h"
+#include "CutLinkMessage.h"
+#include "NetworkTools.h"
 
 namespace protocols {
 
