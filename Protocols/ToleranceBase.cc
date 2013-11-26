@@ -6,6 +6,7 @@
  */
 
 #include "ToleranceBase.h"
+#include "CutLinkMessage.h"
 #include "NetworkTools.h"
 
 namespace protocols {
@@ -70,10 +71,10 @@ void ToleranceBase::CutLinkCoNEFromCoNMinus1(NodePtr detector, NodePtr nodeInCoN
 	//itCo2 is link from detector to commonNeighbor with it->dest.
 	for (; itCoN != lstCoN.end(); itCoN++)
 	{
-		if (itCoN->dest->id == infectedId)
+		if ((*itCoN)->dest->id == infectedId)
 			continue;
 		// Get link from (*itCo2)->dest to (*it)->dest;
-		LinkPtr linkCoNEToCut = NetworkTools::GetLinkPtr(itCoN->dest->links, nodeInCoNMinus1->id);
+		LinkPtr linkCoNEToCut = NetworkTools::GetLinkPtr((*itCoN)->dest->links, nodeInCoNMinus1->id);
 		if (linkCoNEToCut->state != Active) // if this link is SetToCut or Cut.
 			continue;
 		SetToBeCut(linkCoNEToCut);

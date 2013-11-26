@@ -6,6 +6,8 @@
  */
 
 #include "CCoInfyETolerance.h"
+#include "CutLinkMessage.h"
+#include "NetworkTools.h"
 
 namespace protocols {
 

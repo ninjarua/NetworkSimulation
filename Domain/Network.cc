@@ -10,7 +10,7 @@
 #include "Link.h"
 #include <math.h>
 #include <stdint.h>
-#include <mpi.h>
+//#include <mpi.h>
 
 namespace domain {
 
