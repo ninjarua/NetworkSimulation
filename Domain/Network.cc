@@ -23,6 +23,12 @@ Network::Network() {
 	messages = list<Message*>();
 	hasTopology = false;
 	has2HopInfo = false;
+	diameter = 0;
+	avgDiameter = 0;
+	avgDegree = 0;
+	size = 0;
+	avgCommonNeighbors = 0;
+	transRange = 1;
 }
 
 Network::~Network() {

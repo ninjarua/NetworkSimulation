@@ -7,6 +7,8 @@
 
 #include "SimulatorManager.h"
 #include "Parameters.h"
+#include <cmath>
+
 namespace simulators
 {
 
@@ -27,14 +29,14 @@ void SimulatorManager::addSimulation(DeployingType deploying, TypeOfTolerance to
 void SimulatorManager::addSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
 					string inputFolder, string outputFolder, int numberCPUs, int sampleSize)
 {
-	Parameters params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		params[i].set(deploying, toleranceType, hopCount, totalTimes, i, numberCPUs,
+		Parameters params;
+		params.set(deploying, toleranceType, hopCount, totalTimes, i, numberCPUs,
 				inputFolder, outputFolder, sampleSize, Parameters::setAllStepsRunningByThreadId);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThread, params[i]));
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThread, params));
 	}
 	threads.join_all();
 	cout << "Success!" << endl;
@@ -47,14 +49,14 @@ void SimulatorManager::addSimulationForGrid(TypeOfTolerance toleranceType, int t
 
 void SimulatorManager::addSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, string outputFolder, int numberCPUs, int networkSize)
 {
-	Parameters params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		params[i].setForGrid(toleranceType, hopCount, totalTimes, i, numberCPUs,
+		Parameters params;
+		params.setForGrid(toleranceType, hopCount, totalTimes, i, numberCPUs,
 				outputFolder, networkSize, Parameters::setAllStepsRunningByThreadId);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThread, params[i]));
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThread, params));
 	}
 	threads.join_all();
 	cout << "Success!" << endl;
@@ -68,15 +70,15 @@ void SimulatorManager::addOneStepSimulation(DeployingType deploying, TypeOfToler
 void SimulatorManager::addOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
 		double nothingProb, string inputFolder, string outputFolder, int numberCPUs, int sampleSize)
 {
-	Parameters params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		params[i].nothingStart = (int)round(nothingProb * 100);
-		params[i].set(deploying, toleranceType, hopCount, totalTimes, i, numberCPUs,
+		Parameters params;
+		params.nothingStart = (int)round(nothingProb * 100);
+		params.set(deploying, toleranceType, hopCount, totalTimes, i, numberCPUs,
 				inputFolder, outputFolder, sampleSize, Parameters::setOneStepRunningByThreadId);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, params[i]));
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, params));
 	}
 	threads.join_all();
 }
@@ -90,15 +92,15 @@ void SimulatorManager::addOneStepSimulationForGrid(TypeOfTolerance toleranceType
 void SimulatorManager::addOneStepSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 		string outputFolder, int numberCPUs, int networkSize)
 {
-	Parameters params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		params[i].nothingStart = (int)round(nothingProb * 100);
-		params[i].setForGrid(toleranceType, hopCount, totalTimes, i, numberCPUs,
+		Parameters params;
+		params.nothingStart = (int)round(nothingProb * 100);
+		params.setForGrid(toleranceType, hopCount, totalTimes, i, numberCPUs,
 				outputFolder, networkSize, Parameters::setOneStepRunningByThreadId);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, params[i]));
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, params));
 	}
 	threads.join_all();
 }
@@ -106,15 +108,15 @@ void SimulatorManager::addOneStepSimulationForGrid(TypeOfTolerance toleranceType
 void SimulatorManager::addOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 		string inputFolder, string outputFolder, int numberCPUs, int sampleSize, bool hubOnly)
 {
-	Parameters params[numberCPUs];
 	boost::thread_group threads;
 
 	for (int i = 0; i < numberCPUs; i++)
 	{
-		params[i].nothingStart = (int)round(nothingProb * 100);
-		params[i].setForScaleFree(toleranceType, hopCount, totalTimes, i, numberCPUs, inputFolder,
+		Parameters params;
+		params.nothingStart = (int)round(nothingProb * 100);
+		params.setForScaleFree(toleranceType, hopCount, totalTimes, i, numberCPUs, inputFolder,
 				outputFolder, sampleSize, hubOnly, Parameters::setOneStepRunningByThreadId);
-		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, params[i]));
+		threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, params));
 	}
 	threads.join_all();
 }

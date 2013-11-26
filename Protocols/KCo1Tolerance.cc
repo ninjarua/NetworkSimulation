@@ -7,7 +7,7 @@
 
 #include "KCo1Tolerance.h"
 #include "DeactivateMessage.h"
-#include "NetworkTools.h";
+#include "NetworkTools.h"
 
 namespace protocols {
 

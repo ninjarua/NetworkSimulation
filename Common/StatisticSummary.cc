@@ -9,7 +9,7 @@
 
 using namespace boost::math;
 StatisticSummary::StatisticSummary() {
-
+	reset();
 }
 
 StatisticSummary::~StatisticSummary() {
