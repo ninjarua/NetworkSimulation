@@ -12,12 +12,12 @@
 
 namespace protocols {
 
-class KOtherBridgesTolerance : public ToleranceBase {
+class KCo2Tolerance : public ToleranceBase {
 	static void CallbackReceiveKillingMessage(void *ptr, Message* message);
 	void ReceiveKillingMessage(Message* message);
 public:
-	KOtherBridgesTolerance();
-	virtual ~KOtherBridgesTolerance();
+	KCo2Tolerance();
+	virtual ~KCo2Tolerance();
 
 	virtual void TolerateNode(LinkPtr messageLink);
 	string GetToleranceName();

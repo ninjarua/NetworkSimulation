@@ -14,6 +14,8 @@ using namespace protocols;
 
 namespace simulators{
 
+enum ParamType {AllSteps = 0, OneStep = 1};
+
 class Parameters
 {
 public:
@@ -21,6 +23,7 @@ public:
 	~Parameters();
 	DeployingType deployingType;
 	TypeOfTolerance toleranceType;
+	ParamType paramType;
 
 	int networkSize;
 

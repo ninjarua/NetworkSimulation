@@ -5,21 +5,21 @@
  *      Author: thanhnd
  */
 
-#include "KSelfCCommonTolerance.h"
+#include "KSelfCCo1ETolerance.h"
 #include "CutLinkMessage.h"
 #include "NetworkTools.h"
 
 namespace protocols {
 
-KSelfCCommonTolerance::KSelfCCommonTolerance() : ToleranceBase() {
+KSelfCCo1ETolerance::KSelfCCo1ETolerance() : ToleranceBase() {
 
 }
 
-KSelfCCommonTolerance::~KSelfCCommonTolerance() {
+KSelfCCo1ETolerance::~KSelfCCo1ETolerance() {
 
 }
 
-void KSelfCCommonTolerance::TolerateNode(LinkPtr messageLink)
+void KSelfCCo1ETolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	NodePtr node = messageLink->dest;
@@ -42,18 +42,18 @@ void KSelfCCommonTolerance::TolerateNode(LinkPtr messageLink)
 	node->ownerNetwork->info.numberOfInactiveNodes++;
 }
 
-string KSelfCCommonTolerance::GetToleranceName()
+string KSelfCCo1ETolerance::GetToleranceName()
 {
 	return "KSelfCCommon";
 }
 
-void KSelfCCommonTolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
+void KSelfCCo1ETolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
 {
-	KSelfCCommonTolerance* ptrC01 = (KSelfCCommonTolerance*)ptr;
+	KSelfCCo1ETolerance* ptrC01 = (KSelfCCo1ETolerance*)ptr;
 	ptrC01->ReceiveCutLinkMessage(message);
 }
 
-void KSelfCCommonTolerance::ReceiveCutLinkMessage(Message* message)
+void KSelfCCo1ETolerance::ReceiveCutLinkMessage(Message* message)
 {
 	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
 	if (cuttingMessage->linkToCut->state == Cut)

@@ -12,12 +12,12 @@
 
 namespace protocols {
 
-class COtherBridgesTolerance : public ToleranceBase {
+class CCo2ETolerance : public ToleranceBase {
 	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
 	void ReceiveCutLinkMessage(Message* message);
 public:
-	COtherBridgesTolerance();
-	virtual ~COtherBridgesTolerance();
+	CCo2ETolerance();
+	virtual ~CCo2ETolerance();
 
 	virtual void TolerateNode(LinkPtr messageLink);
 	string GetToleranceName();

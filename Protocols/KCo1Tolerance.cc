@@ -5,20 +5,20 @@
  *      Author: thanhnd
  */
 
-#include "KCommonTolerance.h"
+#include "KCo1Tolerance.h"
 #include "DeactivateMessage.h"
 #include "NetworkTools.h";
 
 namespace protocols {
 
-KCommonTolerance::KCommonTolerance() : ToleranceBase() {
+KCo1Tolerance::KCo1Tolerance() : ToleranceBase() {
 
 }
 
-KCommonTolerance::~KCommonTolerance() {
+KCo1Tolerance::~KCo1Tolerance() {
 }
 
-void KCommonTolerance::TolerateNode(LinkPtr messageLink)
+void KCo1Tolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	//messageLink->state = Cut;
@@ -42,18 +42,18 @@ void KCommonTolerance::TolerateNode(LinkPtr messageLink)
 	node->ownerNetwork->info.numberOfInactiveNodes++;
 }
 
-string KCommonTolerance::GetToleranceName()
+string KCo1Tolerance::GetToleranceName()
 {
 	return "KCommon";
 }
 
-void KCommonTolerance::CallbackReceiveKillingMessage(void *ptr, Message* message)
+void KCo1Tolerance::CallbackReceiveKillingMessage(void *ptr, Message* message)
 {
-	KCommonTolerance* ptrCommon = (KCommonTolerance*)ptr;
+	KCo1Tolerance* ptrCommon = (KCo1Tolerance*)ptr;
 	ptrCommon->ReceiveKillingMessage(message);
 }
 
-void KCommonTolerance::ReceiveKillingMessage(Message* message)
+void KCo1Tolerance::ReceiveKillingMessage(Message* message)
 {
 	NodePtr node = message->link->dest;
 	if (node->state == Infected || node->state == Inactive)

@@ -12,12 +12,12 @@
 
 namespace protocols {
 
-class KSelfCCommonTolerance: public ToleranceBase {
+class KSelfCCo1ETolerance: public ToleranceBase {
 	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
 	void ReceiveCutLinkMessage(Message* message);
 public:
-	KSelfCCommonTolerance();
-	virtual ~KSelfCCommonTolerance();
+	KSelfCCo1ETolerance();
+	virtual ~KSelfCCo1ETolerance();
 
 	virtual void TolerateNode(LinkPtr link);
 

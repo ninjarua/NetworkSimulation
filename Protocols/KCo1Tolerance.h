@@ -14,13 +14,13 @@ using namespace domain;
 
 namespace protocols {
 
-class KCommonTolerance: public ToleranceBase {
+class KCo1Tolerance: public ToleranceBase {
 	static void CallbackReceiveKillingMessage(void *ptr, Message* message);
 	void ReceiveKillingMessage(Message* message);
 
 public:
-	KCommonTolerance();
-	virtual ~KCommonTolerance();
+	KCo1Tolerance();
+	virtual ~KCo1Tolerance();
 
 	virtual void TolerateNode(LinkPtr link);
 	string GetToleranceName();

@@ -15,14 +15,14 @@
 #include "KSelfTolerance.h"
 #include "K1HopTolerance.h"
 #include "KxHopTolerance.h"
-#include "CSelfTolerance.h"
+#include "CCo0ETolerance.h"
 #include "C01K03Tolerance.h"
 #include "CxHopTolerance.h"
-#include "KCommonTolerance.h"
-#include "CCommonTolerance.h"
-#include "KSelfCCommonTolerance.h"
-#include "COtherBridgesTolerance.h"
-#include "KOtherBridgesTolerance.h"
+#include "KCo1Tolerance.h"
+#include "CCo1ETolerance.h"
+#include "KSelfCCo1ETolerance.h"
+#include "CCo2ETolerance.h"
+#include "KCo2Tolerance.h"
 
 using namespace generators;
 
@@ -54,7 +54,7 @@ void ByzantineSimulator::setTolerance()
 		byzantine.tolerance = new KxHopTolerance(params.hopCount);
 		break;
 	case CSelf:
-		byzantine.tolerance = new CSelfTolerance();
+		byzantine.tolerance = new CCo0ETolerance();
 		break;
 	case C01K03:
 		byzantine.tolerance = new C01K03Tolerance();
@@ -63,20 +63,20 @@ void ByzantineSimulator::setTolerance()
 		byzantine.tolerance = new CxHopTolerance();
 		generator->switch2HopInfo(true);
 		break;
-	case KCommon:
-		byzantine.tolerance = new KCommonTolerance();
+	case KCo1:
+		byzantine.tolerance = new KCo1Tolerance();
 		break;
-	case CCommon:
-		byzantine.tolerance = new CCommonTolerance();
+	case CCo1E:
+		byzantine.tolerance = new CCo1ETolerance();
 		break;
-	case KSelfCCommon:
-		byzantine.tolerance = new KSelfCCommonTolerance();
+	case KSelfCCo1E:
+		byzantine.tolerance = new KSelfCCo1ETolerance();
 		break;
-	case CBridges:
-		byzantine.tolerance = new COtherBridgesTolerance();
+	case CCo2E:
+		byzantine.tolerance = new CCo2ETolerance();
 		break;
-	case KBridges:
-		byzantine.tolerance = new KOtherBridgesTolerance();
+	case KCo2:
+		byzantine.tolerance = new KCo2Tolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();

@@ -41,6 +41,7 @@ string SimulatorBase::generateSmallworldNetwork(int times, int size, string fold
 	network->transRange = range;
 	generator = new SmallworldGenerator(size, xTerr, yTerr, range, numberOfShortEdges, numberOfLongEdges);
 	generator->generateToFiles(network, folder, times);
+	cout << endl;
 	return "Success";
 }
 

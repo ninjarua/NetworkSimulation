@@ -5,21 +5,21 @@
  *      Author: thanhnd
  */
 
-#include "KOtherBridgesTolerance.h"
+#include "KCo2Tolerance.h"
 #include "NetworkTools.h"
 #include "DeactivateMessage.h"
 
 namespace protocols {
 
-KOtherBridgesTolerance::KOtherBridgesTolerance() : ToleranceBase() {
+KCo2Tolerance::KCo2Tolerance() : ToleranceBase() {
 
 }
 
-KOtherBridgesTolerance::~KOtherBridgesTolerance() {
+KCo2Tolerance::~KCo2Tolerance() {
 
 }
 
-void KOtherBridgesTolerance::TolerateNode(LinkPtr messageLink)
+void KCo2Tolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	CutLink(messageLink);
@@ -56,18 +56,18 @@ void KOtherBridgesTolerance::TolerateNode(LinkPtr messageLink)
 	}
 }
 
-string KOtherBridgesTolerance::GetToleranceName()
+string KCo2Tolerance::GetToleranceName()
 {
 	return "KBridges";
 }
 
-void KOtherBridgesTolerance::CallbackReceiveKillingMessage(void *ptr, Message* message)
+void KCo2Tolerance::CallbackReceiveKillingMessage(void *ptr, Message* message)
 {
-	KOtherBridgesTolerance* ptrCCommon = (KOtherBridgesTolerance*)ptr;
+	KCo2Tolerance* ptrCCommon = (KCo2Tolerance*)ptr;
 	ptrCCommon->ReceiveKillingMessage(message);
 }
 
-void KOtherBridgesTolerance::ReceiveKillingMessage(Message* message)
+void KCo2Tolerance::ReceiveKillingMessage(Message* message)
 {
 	NodePtr node = message->link->dest;
 	if (node->state == Infected || node->state == Inactive)

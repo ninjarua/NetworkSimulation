@@ -16,30 +16,34 @@ namespace simulators
 {
 
 class SimulatorManager {
+	list<ByzantineSimulator>* listSims;
 public:
 	SimulatorManager();
 	virtual ~SimulatorManager();
 
-	void runSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
+	void addSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
 					string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
-	void runSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
-					string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
+	void addSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
+			string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
 
-	void runSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, string outputFolder, int numberCPUs, int networkSize=100);
-	void runSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, string outputFolder, int numberCPUs, int networkSize=100);
+	void addSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, string outputFolder, int numberCPUs, int networkSize=100);
+	void addSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, string outputFolder, int numberCPUs, int networkSize=100);
 
-	void runOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
+
+	void addOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
 			double nothingProb, string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
-	void runOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
+	void addOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
 			double nothingProb, string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
 
-	void runOneStepSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, double nothingProb,
+	void addOneStepSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, double nothingProb,
 			string outputFolder, int numberCPUs, int networkSize=100);
-	void runOneStepSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
+	void addOneStepSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 			string outputFolder, int numberCPUs, int networkSize=100);
 
-	void runOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
+	void addOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 			string inputFolder, string outputFolder, int numberCPUs, int sampleSize, bool hubOnly);
+
+	void runSimulations();
 
 	void readResults(DeployingType deploying, TypeOfTolerance toleranceType,
 					string inputFolder, string outputFolder, int numberCPUs);

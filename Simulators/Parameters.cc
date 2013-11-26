@@ -22,6 +22,7 @@ Parameters::~Parameters()
 void Parameters::setOneStepRunningByThreadId(Parameters* params, int _threadId, int _totalThread)
 {
 	int interval = (101 - params->nothingStart)/_totalThread;
+	params->paramType = OneStep;
 	params->nothingEnd = params->nothingStart;
 	params->byzantineStart = _threadId * interval;
 	params->byzantineEnd = (double)(_threadId + 1) * interval - 1;
@@ -30,6 +31,7 @@ void Parameters::setOneStepRunningByThreadId(Parameters* params, int _threadId, 
 void Parameters::setAllStepsRunningByThreadId(Parameters* params, int _threadId, int _totalThread)
 {
 	int slotSize = 50 / _totalThread;
+	params->paramType = AllSteps;
 	params->nothingStart = _threadId * slotSize;
 	params->nothingEnd = params->nothingStart + (slotSize - 1);
 	params->byzantineStart = 0;

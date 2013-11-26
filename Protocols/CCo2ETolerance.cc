@@ -5,21 +5,21 @@
  *      Author: thanhnd
  */
 
-#include "COtherBridgesTolerance.h"
+#include "CCo2ETolerance.h"
 #include "CutLinkMessage.h"
 #include "NetworkTools.h"
 
 namespace protocols {
 
-COtherBridgesTolerance::COtherBridgesTolerance() : ToleranceBase() {
+CCo2ETolerance::CCo2ETolerance() : ToleranceBase() {
 
 }
 
-COtherBridgesTolerance::~COtherBridgesTolerance() {
+CCo2ETolerance::~CCo2ETolerance() {
 
 }
 
-void COtherBridgesTolerance::TolerateNode(LinkPtr messageLink)
+void CCo2ETolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	CutLink(messageLink);
@@ -70,18 +70,18 @@ void COtherBridgesTolerance::TolerateNode(LinkPtr messageLink)
 	}
 }
 
-string COtherBridgesTolerance::GetToleranceName()
+string CCo2ETolerance::GetToleranceName()
 {
 	return "CBridges";
 }
 
-void COtherBridgesTolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
+void CCo2ETolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
 {
-	COtherBridgesTolerance* ptrCCommon = (COtherBridgesTolerance*)ptr;
+	CCo2ETolerance* ptrCCommon = (CCo2ETolerance*)ptr;
 	ptrCCommon->ReceiveCutLinkMessage(message);
 }
 
-void COtherBridgesTolerance::ReceiveCutLinkMessage(Message* message)
+void CCo2ETolerance::ReceiveCutLinkMessage(Message* message)
 {
 	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
 	if (cuttingMessage->cutCarrierLink)

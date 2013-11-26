@@ -5,21 +5,21 @@
  *      Author: thanhnd
  */
 
-#include "CCommonTolerance.h"
+#include "CCo1ETolerance.h"
 #include "CutLinkMessage.h"
 #include "NetworkTools.h"
 
 namespace protocols {
 
-CCommonTolerance::CCommonTolerance() : ToleranceBase() {
+CCo1ETolerance::CCo1ETolerance() : ToleranceBase() {
 
 }
 
-CCommonTolerance::~CCommonTolerance() {
+CCo1ETolerance::~CCo1ETolerance() {
 
 }
 
-void CCommonTolerance::TolerateNode(LinkPtr messageLink)
+void CCo1ETolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	messageLink->state = Cut;
@@ -49,18 +49,18 @@ void CCommonTolerance::TolerateNode(LinkPtr messageLink)
 	}
 }
 
-string CCommonTolerance::GetToleranceName()
+string CCo1ETolerance::GetToleranceName()
 {
 	return "CCommon";
 }
 
-void CCommonTolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
+void CCo1ETolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
 {
-	CCommonTolerance* ptrCCommon = (CCommonTolerance*)ptr;
+	CCo1ETolerance* ptrCCommon = (CCo1ETolerance*)ptr;
 	ptrCCommon->ReceiveCutLinkMessage(message);
 }
 
-void CCommonTolerance::ReceiveCutLinkMessage(Message* message)
+void CCo1ETolerance::ReceiveCutLinkMessage(Message* message)
 {
 	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
 	if (cuttingMessage->cutCarrierLink)

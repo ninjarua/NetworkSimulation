@@ -12,10 +12,10 @@
 
 namespace generators {
 
-class CSelfTolerance: public protocols::ToleranceBase {
+class CCo0ETolerance: public protocols::ToleranceBase {
 public:
-	CSelfTolerance();
-	virtual ~CSelfTolerance();
+	CCo0ETolerance();
+	virtual ~CCo0ETolerance();
 
 	virtual void TolerateNode(LinkPtr link);
 

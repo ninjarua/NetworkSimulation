@@ -5,26 +5,26 @@
  *      Author: thanh
  */
 
-#include "CSelfTolerance.h"
+#include "CCo0ETolerance.h"
 #include "CutLinkMessage.h"
 #include "NetworkTools.h"
 
 namespace generators {
 
-CSelfTolerance::CSelfTolerance() : ToleranceBase() {
+CCo0ETolerance::CCo0ETolerance() : ToleranceBase() {
 
 }
 
-CSelfTolerance::~CSelfTolerance() {
+CCo0ETolerance::~CCo0ETolerance() {
 
 }
 
-string CSelfTolerance::GetToleranceName()
+string CCo0ETolerance::GetToleranceName()
 {
 	return "CSelf";
 }
 
-void CSelfTolerance::TolerateNode(LinkPtr messageLink)
+void CCo0ETolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	messageLink->state = Cut;	// cut link with the infected node
