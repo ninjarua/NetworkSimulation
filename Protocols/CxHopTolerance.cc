@@ -56,16 +56,6 @@ void CxHopTolerance::TolerateNode(LinkPtr messageLink)
 	}
 }
 
-void CxHopTolerance::ReceiveCutLinkMessage(Message* message)
-{
-	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
-	if (cuttingMessage->cutCarrierLink)
-		cuttingMessage->linkToCut->state = Cut;
-	LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(cuttingMessage->linkToCut);//->src->srcLinks,
-									//cuttingMessage->linkToCut->dest->id);
-	srcLinkToCut->state = Cut;
-}
-
 void CxHopTolerance::ReceiveCutLink2HopMessage(Message* message)
 {
 	NodePtr node = message->link->dest;
@@ -86,12 +76,6 @@ void CxHopTolerance::ReceiveCutLink2HopMessage(Message* message)
 		}
 	}
 	message->status = Expired;
-}
-
-void CxHopTolerance::CallbackReceiveCutLinkMessage(void* ptr, Message* message)
-{
-	CxHopTolerance* ptrCxHop = (CxHopTolerance*)ptr;
-	ptrCxHop->ReceiveCutLinkMessage(message);
 }
 
 void CxHopTolerance::CallbackReceiveCutLink2HopMessage(void* ptr, Message* message)

@@ -10,7 +10,7 @@
 
 namespace domain {
 
-enum LinkState { Active = 0, Cut = 1 };
+enum LinkState { Active = 0, Cut = 1, SetToCut = -1 };
 class Node;
 class Link {
 public:

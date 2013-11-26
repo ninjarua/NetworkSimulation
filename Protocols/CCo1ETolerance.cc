@@ -51,31 +51,6 @@ void CCo1ETolerance::TolerateNode(LinkPtr messageLink)
 
 string CCo1ETolerance::GetToleranceName()
 {
-	return "CCommon";
+	return "CCo1E";
 }
-
-void CCo1ETolerance::CallbackReceiveCutLinkMessage(void *ptr, Message* message)
-{
-	CCo1ETolerance* ptrCCommon = (CCo1ETolerance*)ptr;
-	ptrCCommon->ReceiveCutLinkMessage(message);
-}
-
-void CCo1ETolerance::ReceiveCutLinkMessage(Message* message)
-{
-	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
-	if (cuttingMessage->cutCarrierLink)
-		cuttingMessage->link->state = Cut;
-	if (cuttingMessage->linkToCut->state == Cut)
-	{
-		cuttingMessage->status = Expired;
-		return;
-	}
-	cuttingMessage->linkToCut->state = Cut;
-	//cout << cuttingMessage->linkToCut->src->id << " to " << cuttingMessage->linkToCut->dest->id << endl;
-	//cout << srcLinkToCut->src->id << " to " << srcLinkToCut->dest->id << endl;
-	LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(cuttingMessage->linkToCut);
-	srcLinkToCut->state = Cut;
-	cuttingMessage->status = Expired;
-}
-
 } /* namespace protocols */

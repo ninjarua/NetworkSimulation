@@ -1,25 +1,24 @@
 /*
- * COtherBridgesTolerance.cc
+ * CCo3ETolerance.cc
  *
- *  Created on: Aug 31, 2013
+ *  Created on: Nov 26, 2013
  *      Author: thanhnd
  */
 
-#include "CCo2ETolerance.h"
-#include "CutLinkMessage.h"
-#include "NetworkTools.h"
+#include "CCo3ETolerance.h"
 
 namespace protocols {
 
-CCo2ETolerance::CCo2ETolerance() : ToleranceBase() {
+CCo3ETolerance::CCo3ETolerance() {
+	// TODO Auto-generated constructor stub
 
 }
 
-CCo2ETolerance::~CCo2ETolerance() {
-
+CCo3ETolerance::~CCo3ETolerance() {
+	// TODO Auto-generated destructor stub
 }
 
-void CCo2ETolerance::TolerateNode(LinkPtr messageLink)
+void CCo3ETolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	CutLink(messageLink);
@@ -50,16 +49,19 @@ void CCo2ETolerance::TolerateNode(LinkPtr messageLink)
 	}
 
 	it = messageLinkCommonNbs.begin();
-	vector<LinkPtr> nodeInCo2 = vector<LinkPtr>();
+	vector<LinkPtr> nodesInCo2 = vector<LinkPtr>();
 	for (; it != messageLinkCommonNbs.end(); it++)
-	{
-		CutLinkCoNEFromCoNMinus1(detector, (*it)->dest, infectedNode->id, nodeInCo2);
-	}
+		CutLinkCoNEFromCoNMinus1(detector, (*it)->dest, infectedNode->id, nodesInCo2);
+
+	it = nodesInCo2.begin();
+	vector<LinkPtr> nodesInCo3 = vector<LinkPtr>();
+	for (; it != nodesInCo2.end(); it++)
+		CutLinkCoNEFromCoNMinus1(detector, (*it)->dest, infectedNode->id, nodesInCo3);
 }
 
-string CCo2ETolerance::GetToleranceName()
+string CCo3ETolerance::GetToleranceName()
 {
-	return "CCo2E";
+	return "CCo3E";
 }
 
 } /* namespace protocols */

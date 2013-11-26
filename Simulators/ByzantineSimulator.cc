@@ -23,6 +23,8 @@
 #include "KSelfCCo1ETolerance.h"
 #include "CCo2ETolerance.h"
 #include "KCo2Tolerance.h"
+#include "CCo3ETolerance.h"
+#include "CCoInfyETolerance.h"
 
 using namespace generators;
 
@@ -77,6 +79,12 @@ void ByzantineSimulator::setTolerance()
 		break;
 	case KCo2:
 		byzantine.tolerance = new KCo2Tolerance();
+		break;
+	case CCo3E:
+		byzantine.tolerance = new CCo3ETolerance();
+		break;
+	case CCoInfyE:
+		byzantine.tolerance = new CCoInfyETolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();

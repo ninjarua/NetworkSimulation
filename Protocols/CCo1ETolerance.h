@@ -13,8 +13,8 @@
 namespace protocols {
 
 class CCo1ETolerance: public ToleranceBase {
-	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
-	void ReceiveCutLinkMessage(Message* message);
+//	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
+//	void ReceiveCutLinkMessage(Message* message);
 public:
 	CCo1ETolerance();
 	virtual ~CCo1ETolerance();

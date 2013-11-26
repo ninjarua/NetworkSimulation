@@ -29,7 +29,7 @@ public:
 	virtual void SendMessage(LinkPtr link, MessageReaction receivingAction);//, string content);
 	virtual void SendMessage(LinkPtr link, MessageReaction receivingAction, Message* message);
 
-	virtual void Initialize(Network* network);
+	void Initialize(Network* network);
 	virtual void Reset(Network* network);
 
 	virtual void RunNetwork(Network* network, void (*startAction)(void* ptr, Network*), bool (*networkCondition)(const Network&));
