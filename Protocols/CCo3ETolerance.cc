@@ -58,7 +58,7 @@ void CCo3ETolerance::TolerateNode(LinkPtr messageLink)
 	it = nodesInCo2.begin();
 	vector<LinkPtr> nodesInCo3 = vector<LinkPtr>();
 	for (; it != nodesInCo2.end(); it++)
-		CutLinkCoNEFromCoNMinus1(detector, (*it)->dest, infectedNode->id, nodesInCo3);
+		CutLinkCoNELast(detector, (*it)->dest, infectedNode->id, nodesInCo3);
 }
 
 string CCo3ETolerance::GetToleranceName()

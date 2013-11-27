@@ -53,7 +53,7 @@ void CCo2ETolerance::TolerateNode(LinkPtr messageLink)
 	vector<LinkPtr> nodeInCo2 = vector<LinkPtr>();
 	for (; it != messageLinkCommonNbs.end(); it++)
 	{
-		CutLinkCoNEFromCoNMinus1(detector, (*it)->dest, infectedNode->id, nodeInCo2);
+		CutLinkCoNELast(detector, (*it)->dest, infectedNode->id, nodeInCo2);
 	}
 }
 

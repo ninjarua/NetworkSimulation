@@ -24,8 +24,9 @@ void CCoInfyETolerance::TolerateNode(LinkPtr messageLink)
 	ToleranceBase::TolerateNode(messageLink);
 	CutLink(messageLink);
 
-	NodePtr node = messageLink->dest;
-	vector<LinkPtr> messageLinkCommonNbs = node->commonNeighbors[messageLink->src->id];
+	NodePtr detector = messageLink->dest;
+	NodePtr infected = messageLink->src;
+	vector<LinkPtr> messageLinkCommonNbs = detector->commonNeighbors[infected->id];
 	vector<LinkPtr>::iterator it = messageLinkCommonNbs.begin();
 	// Cut link like in CCommonTolerance strategy
 	for (; it != messageLinkCommonNbs.end(); it++)
@@ -38,10 +39,10 @@ void CCoInfyETolerance::TolerateNode(LinkPtr messageLink)
 		srcLinkToCut->state = Cut;
 
 		// get link from (*it)->dest to messageLink->src to cut
-		LinkPtr linkToCut = NetworkTools::GetSrcLinkPtr(messageLink->src->srcLinks, (*it)->dest->id);
+		LinkPtr linkToCut = NetworkTools::GetSrcLinkPtr(infected->srcLinks, (*it)->dest->id);
 		if (linkToCut->state != Cut)
 		{
-			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, node->ownerNetwork->currentTimeSlot);
+			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, detector->ownerNetwork->currentTimeSlot);
 			cuttingMessage->cutCarrierLink = true;
 			SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
 		}
@@ -50,19 +51,19 @@ void CCoInfyETolerance::TolerateNode(LinkPtr messageLink)
 	// for each neighbor having id = mapIt->first (called mapIt) of messageLink->dest (detector)
 	// find neighbors that is common neighbor between detector and mapIt
 	//	but is not neighbor of messageLink->src (infected node)
-	map<int, vector<LinkPtr> >::iterator mapIt = node->commonNeighbors.begin();
-	for (; mapIt != node->commonNeighbors.end(); mapIt++)
+	map<int, vector<LinkPtr> >::iterator mapIt = detector->commonNeighbors.begin();
+	for (; mapIt != detector->commonNeighbors.end(); mapIt++)
 	{
-		if (mapIt->first == messageLink->src->id)
+		if (mapIt->first == infected->id)
 			continue;
 		vector<LinkPtr>::iterator nbIt = mapIt->second.begin();
 		for (; nbIt != mapIt->second.end(); nbIt++)
 		{
 			// check if nbIt is neighbor of infected node or not
-			if (!NetworkTools::ContainNode(node->commonNeighbors[messageLink->src->id], (*nbIt)->dest))
+			if ((*nbIt)->dest->id != infected->id && !NetworkTools::ContainNode(detector->commonNeighbors[infected->id], (*nbIt)->dest))
 			{
 				LinkPtr linkToCut = NetworkTools::GetLinkPtr((*nbIt)->dest->links, mapIt->first);
-				CutLinkMessage* cuttingMessage = new CutLinkMessage(*nbIt, linkToCut, node->ownerNetwork->currentTimeSlot);
+				CutLinkMessage* cuttingMessage = new CutLinkMessage(*nbIt, linkToCut, detector->ownerNetwork->currentTimeSlot);
 				cuttingMessage->cutCarrierLink = false;
 				SendMessage(*nbIt, CallbackReceiveCutLinkMessage, cuttingMessage);
 			}

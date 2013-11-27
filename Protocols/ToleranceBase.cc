@@ -64,7 +64,7 @@ void ToleranceBase::ReceiveCutLinkMessage(Message* message)
 	cuttingMessage->status = Expired;
 }
 
-void ToleranceBase::CutLinkCoNEFromCoNMinus1(NodePtr detector, NodePtr nodeInCoNMinus1, int infectedId, vector<LinkPtr>& nodesInCoN)
+void ToleranceBase::CutLinkCoNELast(NodePtr detector, NodePtr nodeInCoNMinus1, int infectedId, vector<LinkPtr>& nodesInCoN)
 {
 	vector<LinkPtr> lstCoN = detector->commonNeighbors[nodeInCoNMinus1->id];
 	vector<LinkPtr>::iterator itCoN = lstCoN.begin();
@@ -80,6 +80,29 @@ void ToleranceBase::CutLinkCoNEFromCoNMinus1(NodePtr detector, NodePtr nodeInCoN
 		SetToBeCut(linkCoNEToCut);
 		CutLinkMessage* cuttingCoN = new CutLinkMessage(*itCoN, linkCoNEToCut, detector->ownerNetwork->currentTimeSlot);
 		cuttingCoN->cutCarrierLink = false;
+		SendMessage(*itCoN, CallbackReceiveCutLinkMessage, cuttingCoN);
+		nodesInCoN.push_back(*itCoN);
+	}
+}
+
+void ToleranceBase::CutLinkCoNEFromCoNMinus1(NodePtr detector, NodePtr nodeInCoNMinus1, int infectedId, vector<LinkPtr>& nodesInCoN)
+{
+	vector<LinkPtr> lstCoN = detector->commonNeighbors[nodeInCoNMinus1->id];
+	vector<LinkPtr>::iterator itCoN = lstCoN.begin();
+	//itCo2 is link from detector to commonNeighbor with it->dest.
+	for (; itCoN != lstCoN.end(); itCoN++)
+	{
+		if ((*itCoN)->dest->id == infectedId)
+			continue;
+		LinkPtr reversedItCoN = NetworkTools::GetReverseLink(*itCoN);
+		reversedItCoN->state = Cut;
+		// Get link from (*itCo2)->dest to (*it)->dest;
+		LinkPtr linkCoNEToCut = NetworkTools::GetLinkPtr((*itCoN)->dest->links, nodeInCoNMinus1->id);
+		if (linkCoNEToCut->state != Active) // if this link is SetToCut or Cut.
+			continue;
+		SetToBeCut(linkCoNEToCut);
+		CutLinkMessage* cuttingCoN = new CutLinkMessage(*itCoN, linkCoNEToCut, detector->ownerNetwork->currentTimeSlot);
+		cuttingCoN->cutCarrierLink = true;
 		SendMessage(*itCoN, CallbackReceiveCutLinkMessage, cuttingCoN);
 		nodesInCoN.push_back(*itCoN);
 	}

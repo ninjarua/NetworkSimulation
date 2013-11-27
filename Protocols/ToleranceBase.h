@@ -25,6 +25,7 @@ protected:
 	void SetToBeCut(LinkPtr linkToCut);
 	static void CallbackReceiveCutLinkMessage(void *ptr, Message* message);
 	void ReceiveCutLinkMessage(Message* message);
+	void CutLinkCoNELast(NodePtr detector, NodePtr nodeInCoNMinus1, int infectedId, vector<LinkPtr>& nodesInCoN);
 	void CutLinkCoNEFromCoNMinus1(NodePtr detector, NodePtr nodeInCoNMinus1, int infectedId, vector<LinkPtr>& nodesInCoN);
 public:
 	ToleranceBase();
