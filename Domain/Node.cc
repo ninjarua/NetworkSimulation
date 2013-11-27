@@ -272,11 +272,12 @@ void Node::collect2HopInformation()
 	// for each neighbors
 	{
 		NodePtr dest_i = links[i]->dest; // dest_i is the ith neighbor of current node
-		vector<LinkPtr>::iterator it_i = dest_i->links.begin();
+		vector<LinkPtr>::iterator it_i = dest_i->links.begin();	// get all links of that neighbor
 		for (; it_i != dest_i->links.end(); it_i++)
 		// for each neighbor (it_i->dest) of dest_i, check if it is neighbor of current node
 		{
 			LinkPtr commonLink = NetworkTools::GetLinkPtr(links, (*it_i)->dest->id);
+			// get link from links of current node with id from neighbor of dest_i (mean ith neighbor of current node)
 			if (commonLink != NULL)
 			// if neighbor (it_i->dest) of dest_i is also neighbor of current node
 			// -> add to commonNeighbors map of current node
