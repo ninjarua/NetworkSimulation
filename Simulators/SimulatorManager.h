@@ -11,13 +11,16 @@
 //#include <pthread.h>
 #include <boost/thread.hpp>
 #include "ByzantineSimulator.h"
+#include "SimulationArguments.h"
 
 namespace simulators
 {
 
 class SimulatorManager {
-	list<ByzantineSimulator>* listSims;
+	vector<SimulationArguments*> listArgumentSimulation;
+	int totalThreadsNeedToRun;
 public:
+	int numberCPUs;
 	SimulatorManager();
 	virtual ~SimulatorManager();
 
@@ -42,6 +45,12 @@ public:
 
 	void addOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 			string inputFolder, string outputFolder, int numberCPUs, int sampleSize, bool hubOnly);
+
+//	void addSimulationArguments(DeployingType deployingType, TypeOfTolerance toleranceType,
+//			int totalTimes, string inputFolder, string output, int sampleSize, int cpus,
+//			int hopCount=0, bool hubOnly=false);
+//	void addGridArguments(TypeOfTolerance toleranceType, int totalTimes, string inputFolder, string output,
+//			int gridSize, int cpus, int hopCount=0);
 
 	void runSimulations();
 

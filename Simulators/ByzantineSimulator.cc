@@ -19,6 +19,7 @@
 #include "C01K03Tolerance.h"
 #include "CxHopTolerance.h"
 #include "KCo1Tolerance.h"
+#include "KCo1CCo3Tolerance.h"
 #include "CCo1ETolerance.h"
 #include "KSelfCCo1ETolerance.h"
 #include "CCo2ETolerance.h"
@@ -85,6 +86,9 @@ void ByzantineSimulator::setTolerance()
 		break;
 	case CCoInfyE:
 		byzantine.tolerance = new CCoInfyETolerance();
+		break;
+	case KCo1CCo3:
+		byzantine.tolerance = new KCo1CCo3Tolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();
