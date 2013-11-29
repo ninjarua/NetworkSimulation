@@ -36,7 +36,7 @@ protected:
 	ByzantineProtocol _fault;
 
 public:
-	int timeslot;
+	//int timeslot;
 	string generateGridNetwork(int times, int size, string folder);
 	string generateTorusGridNetwork(int times, int size, string folder);
 	string generateFixedRangeNetwork(int times, int size, string folder,

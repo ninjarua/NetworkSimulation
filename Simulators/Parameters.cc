@@ -12,6 +12,23 @@ namespace simulators{
 Parameters::Parameters()
 {
 	nothingInterval = byzantineInterval = 0.01;
+	networkSize = 100;
+
+	hopCount = 0;
+	hubOnly = false;
+
+	totalTimes = 10000;
+	inputFolder = "";
+	output = "";
+
+	nothingStart = byzantineStart = 0;
+	nothingEnd = byzantineEnd = 1;
+
+	byzantineSteps = nothingSteps = 100;
+	sampleSize = 100;
+	deployingType = Small_world;
+	paramType = AllSteps;
+	toleranceType = KSelf;
 }
 
 Parameters::~Parameters()

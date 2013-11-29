@@ -21,6 +21,7 @@ SimulatorBase::SimulatorBase() {
 	generator = new NetworkGenerator();
 	network = new Network();
 	_currentTimeslot = 1;
+//	timeslot = 0;
 }
 
 SimulatorBase::~SimulatorBase() {

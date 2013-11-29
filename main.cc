@@ -20,49 +20,27 @@ using namespace simulators;
 #include <iostream>
 #include <fstream>
 
-//static int makeChange(int n, int denom) {
-//	int next_denom = 0;
-//	switch (denom) {
-//	case 25:
-//		next_denom = 10;
-//		break;
-//	case 10:
-//		next_denom = 5;
-//		break;
-//	case 5:
-//		next_denom = 1;
-//		break;
-//	case 1:
-//		return 1;
+//int BinarySearchN(int searchItem, int a[], int n)
+//{
+//	int left = 0;
+//	int right = n - 1;
+//	int mid;
+//	while (left < right)
+//	{
+//		mid = (left + right) / 2;
+//		if (a[mid] == searchItem)
+//			return mid;
+//		else if (a[mid] >= a[left] && searchItem >= a[left] && searchItem < a[mid])
+//			right = mid - 1;
+//		else if (a[mid] >= a[left] && (searchItem < a[left] || searchItem > a[mid]))
+//			left = mid + 1;
+//		else if (a[mid] <= a[left] && searchItem < a[left] && searchItem > a[mid])
+//			left = mid + 1;
+//		else if (a[mid] <= a[left] && (searchItem >= a[left] || searchItem < a[mid]))
+//			right = mid - 1;
 //	}
-//	int ways = 0;
-//	for (int i = 0; i * denom <= n; i++) {
-//		ways += makeChange(n - i * denom, next_denom);
-//	}
-//	return ways;
+//	return -1;
 //}
-
-int BinarySearchN(int searchItem, int a[], int n)
-{
-	int left = 0;
-	int right = n - 1;
-	int mid;
-	while (left < right)
-	{
-		mid = (left + right) / 2;
-		if (a[mid] == searchItem)
-			return mid;
-		else if (a[mid] >= a[left] && searchItem >= a[left] && searchItem < a[mid])
-			right = mid - 1;
-		else if (a[mid] >= a[left] && (searchItem < a[left] || searchItem > a[mid]))
-			left = mid + 1;
-		else if (a[mid] <= a[left] && searchItem < a[left] && searchItem > a[mid])
-			left = mid + 1;
-		else if (a[mid] <= a[left] && (searchItem >= a[left] || searchItem < a[mid]))
-			right = mid - 1;
-	}
-	return -1;
-}
 
 int main(int argc, char* argv[])
 {
@@ -71,7 +49,7 @@ int main(int argc, char* argv[])
 	//cout << makeChange(100, 25);
 	//srand(time(NULL)); // Set random seed for random procedure
 
-	SimulatorManager* manager = new SimulatorManager();
+//	SimulatorManager* manager = new SimulatorManager();
 //	manager->runOneStepSimulation(Small_world, CBridges, 10000, 0, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/1000",
 //			"/Users/thanhnd/Workspace/Results/Smallworld/10_5/1000/CBridges_0", 1, 100);
 
@@ -80,16 +58,16 @@ int main(int argc, char* argv[])
 //	manager->readOneStepResults(FixedRange, KxHop, "/Users/thanhnd/Workspace/server/Results/FixedRange/10/1000/K01Hop_all",
 //				"/Users/thanhnd/Workspace/server/Results/FixedRange/10/1000/K01Hop_all.out", 0, 0.01);
 
-	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
-	manager->addOneStepSimulation(Small_world, CCo1E, 1, 10000, 0.25, "", "", 100, 100);
-	manager->addSimulation(Small_world, CCo2E, 1, 10000, "", "", 50, 100);
-	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
-	manager->addOneStepSimulation(Small_world, CCo1E, 1, 10000, 0.25, "", "", 100, 100);
-	manager->addSimulation(Small_world, KSelf, 1, 10000, "", "", 50, 100);
-
-	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
-	manager->addSimulation(Small_world, KSelf, 1, 10000, "", "", 50, 100);
-	manager->runSimulationsTest(250, 1);
+//	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
+//	manager->addOneStepSimulation(Small_world, CCo1E, 1, 10000, 0.25, "", "", 100, 100);
+//	manager->addSimulation(Small_world, CCo2E, 1, 10000, "", "", 50, 100);
+//	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
+//	manager->addOneStepSimulation(Small_world, CCo1E, 1, 10000, 0.25, "", "", 100, 100);
+//	manager->addSimulation(Small_world, KSelf, 1, 10000, "", "", 50, 100);
+//
+//	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
+//	manager->addSimulation(Small_world, KSelf, 1, 10000, "", "", 50, 100);
+//	manager->runSimulationsTest(250, 1);
 //	manager->readOneStepResults(Small_world, CCo2E, "/Users/thanhnd/Workspace/server/Results/Smallworld/10_3/4000/CBridges_0",
 //				"/Users/thanhnd/Workspace/server/Results/Smallworld/10_3/4000/CBridges_0.out", 0, 0.01);
 //	manager->readOneStepResults(Small_world, KSelf, "/Users/thanhnd/Workspace/server/Results/Smallworld/10_1/4000/KSelf_0",
@@ -137,10 +115,6 @@ int main(int argc, char* argv[])
 //	sim->generateSmallworldNetwork(101, 4000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/5/5_5/4000", 5, 5, 49, 50, 0.996, 0.0001);	// 24x25, 49x50, 79x79
 //	sim->generateSmallworldNetwork(101, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/5/5_5/10000", 5, 5, 79, 79, 1.003, 0.0001);	// 24x25, 49x50, 79x79
 //	cout << endl;
-
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/1000", 7, 1000, 7);
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/1000", 7, 2000, 7);
-//	sim->generateScaleFreeNetwork(101, "/Users/thanhnd/Workspace/Results/Graphs/ScaleFree/14/1000", 7, 3000, 7);
 
 //	SimulatorManager* manager = new SimulatorManager();
 //	manager->convert2HopInformation(FixedRange, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/5/5_0/1000",

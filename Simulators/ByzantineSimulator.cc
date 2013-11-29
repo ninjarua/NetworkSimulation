@@ -242,7 +242,7 @@ string ByzantineSimulator::getResultFilename(double nothingProb, double byzantin
 	filename += "_";
 	filename += byzantine.tolerance->GetToleranceName();
 
-	char number[11];
+	char number[14];
 		sprintf(number, "_%.2f_%.2f", nothingProb, byzantineProb);
 
 	filename += number;
