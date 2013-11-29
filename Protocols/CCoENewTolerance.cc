@@ -5,21 +5,21 @@
  *      Author: thanhnd
  */
 
-#include "CCoInfyETolerance.h"
+#include "CCoENewTolerance.h"
 #include "CutLinkMessage.h"
 #include "NetworkTools.h"
 
 namespace protocols {
 
-CCoInfyETolerance::CCoInfyETolerance() {
+CCoENewTolerance::CCoENewTolerance() {
 
 }
 
-CCoInfyETolerance::~CCoInfyETolerance() {
+CCoENewTolerance::~CCoENewTolerance() {
 
 }
 
-void CCoInfyETolerance::TolerateNode(LinkPtr messageLink)
+void CCoENewTolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	CutLink(messageLink);
@@ -39,55 +39,61 @@ void CCoInfyETolerance::TolerateNode(LinkPtr messageLink)
 		srcLinkToCut->state = Cut;
 
 		// get link from (*it)->dest to messageLink->src to cut
-		LinkPtr linkToCut = NetworkTools::GetSrcLinkPtr(infected->srcLinks, (*it)->dest->id);
-		if (linkToCut->state != Cut)
+		vector<LinkPtr>::iterator subit = (*it)->dest->links.begin();
+		//LinkPtr linkToCut = NetworkTools::GetSrcLinkPtr(infected->srcLinks, (*it)->dest->id);
+		for (; subit != (*it)->dest->links.begin(); subit++)
 		{
-			SetToBeCut(linkToCut);
-			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, detector->ownerNetwork->currentTimeSlot);
-			cuttingMessage->cutCarrierLink = true;
-			SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
+			if ((*subit)->state != Cut)
+			{
+				SetToBeCut(*subit);
+				CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, *subit, detector->ownerNetwork->currentTimeSlot);
+				cuttingMessage->cutCarrierLink = true;
+				SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
+			}
 		}
 	}
 
 	// for each neighbor having id = mapIt->first (called mapIt) of messageLink->dest (detector)
 	// find neighbors that is common neighbor between detector and mapIt
 	//	but is not neighbor of messageLink->src (infected node)
-	if (detector->commonNeighbors.find(infected->id) == detector->commonNeighbors.end())
-		return;
+	vector<LinkPtr> newLinks = vector<LinkPtr>();
 	map<int, vector<LinkPtr> >::iterator mapIt = detector->commonNeighbors.begin();
 	for (; mapIt != detector->commonNeighbors.end(); mapIt++)
 	{
 		if (mapIt->first == infected->id)
 			continue;
+		bool have = false;
 		vector<LinkPtr>::iterator nbIt = mapIt->second.begin();
 		for (; nbIt != mapIt->second.end(); nbIt++)
 		{
 			// check if nbIt is neighbor of infected node or not
-			//if (!NetworkTools::ContainNode(detector->commonNeighbors[infected->id], (*nbIt)->dest))
-			// if it check having ! --> not have infected as neighbor --> !S1 --> no cut node in S1 --> CCoInfy
-			// if it check no having ! --> have infected as neighbor --> S1 --> cut links with node in S1 --> CCo2
-			//{
-			if ((*nbIt)->dest->id==infected->id)
-				continue;
-			LinkPtr linkToCut = NetworkTools::GetLinkPtr((*nbIt)->dest->links, mapIt->first);
-			if (linkToCut->state != Active)
-				continue;
-			SetToBeCut(linkToCut);
-			CutLinkMessage* cuttingMessage = new CutLinkMessage(*nbIt, linkToCut, detector->ownerNetwork->currentTimeSlot);
-			cuttingMessage->cutCarrierLink = true;
-
-			// Get reverse link of carrier link to cut
-			LinkPtr srcnbIt = NetworkTools::GetReverseLink(*nbIt);
-			srcnbIt->state = Cut;
-			SendMessage(*nbIt, CallbackReceiveCutLinkMessage, cuttingMessage);
-			//}
+			if (NetworkTools::ContainNode(detector->commonNeighbors[infected->id], (*nbIt)->dest))
+			{
+				LinkPtr linkToCut = NetworkTools::GetLinkPtr((*nbIt)->dest->links, mapIt->first);
+				SetToBeCut(linkToCut);
+				CutLinkMessage* cuttingMessage = new CutLinkMessage(*nbIt, linkToCut, detector->ownerNetwork->currentTimeSlot);
+				cuttingMessage->cutCarrierLink = true;
+				SendMessage(*nbIt, CallbackReceiveCutLinkMessage, cuttingMessage);
+				have = true;
+			}
 		}
+		if (have == true)
+		{
+			LinkPtr newLink = NetworkTools::GetLinkPtr(detector->links, mapIt->first);
+			newLinks.push_back(newLink);
+		}
+	}
+
+	vector<LinkPtr> new2Links = vector<LinkPtr>();
+	for (it = newLinks.begin(); it != newLinks.end(); it++)
+	{
+		CutLinkCoNEFromCoNMinus1(detector, (*it)->dest, infected->id, new2Links);
 	}
 }
 
-string CCoInfyETolerance::GetToleranceName()
+string CCoENewTolerance::GetToleranceName()
 {
-	return "CCoAllE";
+	return "CCoENew";
 }
 
 } /* namespace protocols */

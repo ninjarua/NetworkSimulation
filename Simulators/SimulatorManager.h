@@ -53,6 +53,7 @@ public:
 //			int gridSize, int cpus, int hopCount=0);
 
 	void runSimulations();
+	void runSimulationsTest(unsigned int size, unsigned int rank);
 
 	void readResults(DeployingType deploying, TypeOfTolerance toleranceType,
 					string inputFolder, string outputFolder, int numberCPUs);

@@ -80,10 +80,20 @@ int main(int argc, char* argv[])
 //	manager->readOneStepResults(FixedRange, KxHop, "/Users/thanhnd/Workspace/server/Results/FixedRange/10/1000/K01Hop_all",
 //				"/Users/thanhnd/Workspace/server/Results/FixedRange/10/1000/K01Hop_all.out", 0, 0.01);
 
-	manager->readOneStepResults(Small_world, CCo2E, "/Users/thanhnd/Workspace/server/Results/Smallworld/10_3/4000/CBridges_0",
-				"/Users/thanhnd/Workspace/server/Results/Smallworld/10_3/4000/CBridges_0.out", 0, 0.01);
-	manager->readOneStepResults(Small_world, KSelf, "/Users/thanhnd/Workspace/server/Results/Smallworld/10_1/4000/KSelf_0",
-				"/Users/thanhnd/Workspace/server/Results/Smallworld/10_1/4000/KSelf_0.out", 0, 0.01);
+	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
+	manager->addOneStepSimulation(Small_world, CCo1E, 1, 10000, 0.25, "", "", 100, 100);
+	manager->addSimulation(Small_world, CCo2E, 1, 10000, "", "", 50, 100);
+	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
+	manager->addOneStepSimulation(Small_world, CCo1E, 1, 10000, 0.25, "", "", 100, 100);
+	manager->addSimulation(Small_world, KSelf, 1, 10000, "", "", 50, 100);
+
+	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
+	manager->addSimulation(Small_world, KSelf, 1, 10000, "", "", 50, 100);
+	manager->runSimulationsTest(250, 1);
+//	manager->readOneStepResults(Small_world, CCo2E, "/Users/thanhnd/Workspace/server/Results/Smallworld/10_3/4000/CBridges_0",
+//				"/Users/thanhnd/Workspace/server/Results/Smallworld/10_3/4000/CBridges_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, KSelf, "/Users/thanhnd/Workspace/server/Results/Smallworld/10_1/4000/KSelf_0",
+//				"/Users/thanhnd/Workspace/server/Results/Smallworld/10_1/4000/KSelf_0.out", 0, 0.01);
 
 //	manager->readOneStepResults(Small_world, KSelf, "/Users/thanhnd/Workspace/Results/Smallworld/14_5/25/1000/K01_0",
 //				"/Users/thanhnd/Workspace/Results/Smallworld/14_5/25/1000/K01_0.out", 0, 0.01);
