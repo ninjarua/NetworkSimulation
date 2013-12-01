@@ -223,6 +223,8 @@ istringstream& operator>>(istringstream& is, Node& node)
 		{
 			srcLink = new Link(node.ownerNetwork->nodes[id], &node);
 			link1 = new Link(&node, node.ownerNetwork->nodes[id]);
+			srcLink->reverseLink = link1;
+			link1->reverseLink = srcLink;
 		}
 		else
 		{

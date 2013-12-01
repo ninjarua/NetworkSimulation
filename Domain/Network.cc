@@ -152,6 +152,8 @@ void Network::makeNeighbors(int id1, int id2)
 	//Link* link = new Link(nodes[id1], nodes[id2]);
 	LinkPtr link1 = new Link(nodes[id1], nodes[id2]);
 	LinkPtr link2 = new Link(nodes[id2], nodes[id1]);
+	link1->reverseLink = link2;
+	link2->reverseLink = link1;
 	nodes[id1]->addNeighbor(link1, link2);
 	nodes[id2]->addNeighbor(link2, link1);
 }

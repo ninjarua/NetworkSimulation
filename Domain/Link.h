@@ -17,6 +17,7 @@ public:
 	Node* src;
 	Node* dest;
 	LinkState state;
+	Link* reverseLink;
 	Link(Node* n1, Node* n2);
 	virtual ~Link();
 };

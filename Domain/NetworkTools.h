@@ -162,8 +162,8 @@ public:
 
 	static LinkPtr GetReverseLink(LinkPtr link)
 	{
-		LinkPtr srcLink = GetSrcLinkPtr(link->src->srcLinks, link->dest->id);
-		return srcLink;
+		//LinkPtr srcLink = GetSrcLinkPtr(link->src->srcLinks, link->dest->id);
+		return link->reverseLink;
 	}
 };
 }
