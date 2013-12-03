@@ -14,6 +14,8 @@ namespace deployment {
 SmallworldDeploying::SmallworldDeploying() : FixedRangeRandomDeploying()
 {
 	topology->range = 1;
+	numberOfLongEdge = 0;
+	numberOfShortEdge = 0;
 }
 
 SmallworldDeploying::SmallworldDeploying(int numberNodes, int xTerr, int yTerr, int range, int noOfShortEdge, int noOfLongEdge)
