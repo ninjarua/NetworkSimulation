@@ -49,14 +49,26 @@ int main(int argc, char* argv[])
 	//cout << makeChange(100, 25);
 	//srand(time(NULL)); // Set random seed for random procedure
 
-//	SimulatorManager* manager = new SimulatorManager();
+	SimulatorManager* manager = new SimulatorManager();
 //	manager->runOneStepSimulation(Small_world, CBridges, 10000, 0, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/1000",
 //			"/Users/thanhnd/Workspace/Results/Smallworld/10_5/1000/CBridges_0", 1, 100);
 
-//	manager->readOneStepResults(FixedRange, KxHop, "/Users/thanhnd/Workspace/server/Results/FixedRange/10/4000/K01Hop_all",
-//				"/Users/thanhnd/Workspace/server/Results/FixedRange/10/4000/K01Hop_all.out", 0, 0.01);
-//	manager->readOneStepResults(FixedRange, KxHop, "/Users/thanhnd/Workspace/server/Results/FixedRange/10/1000/K01Hop_all",
-//				"/Users/thanhnd/Workspace/server/Results/FixedRange/10/1000/K01Hop_all.out", 0, 0.01);
+//	manager->readOneStepResults(FixedRange, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_0\\10000\\CCo1E_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_0\\10000\\CCo1E_0.out", 0, 0.01);
+	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_1\\10000\\CCo1E_0",
+				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_1\\10000\\CCo1E_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_2\\10000\\CCo1E_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_2\\10000\\CCo1E_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_3\\10000\\CCo1E_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_3\\10000\\CCo1E_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_4\\10000\\CCo1E_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_4\\10000\\CCo1E_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_5\\10000\\CCo1E_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_5\\10000\\CCo1E_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_6\\10000\\CCo1E_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_6\\10000\\CCo1E_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_8\\10000\\CCo1E_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_8\\10000\\CCo1E_0.out", 0, 0.01);
 
 //	manager->addOneStepSimulation(Small_world, K1Hop, 1, 10000, 0, "", "", 100, 100);
 //	manager->addOneStepSimulation(Small_world, CCo1E, 1, 10000, 0.25, "", "", 100, 100);
@@ -80,6 +92,8 @@ int main(int argc, char* argv[])
 //	sim->generateFixedRangeNetwork(101, 1000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_0/1000", 16, 19, 1.01, 0.001);	// 16x19, 30x40, 55x56
 //	sim->generateFixedRangeNetwork(101, 4000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_0/4000", 30, 40, 0.99, 0.001);	// 16x19, 30x40, 55x56
 //	sim->generateFixedRangeNetwork(101, 10000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/10_0/10000", 55, 56, 1, 0.001);	// 16x19, 30x40, 55x56
+//	sim->generateFixedRangeNetwork(1, 1000000, "D:\\Workspace\\Programming\\results\\test\\1000000", 550, 560, 1, 0.001);	// 16x19, 30x40, 55x56
+//	sim->generateSmallworldNetwork(1, 90000, "D:\\Workspace\\Programming\\results\\test\\90000", 10, 1, 165, 170, 1.003, 0.0001);	// 16x19, 30x40, 55x56
 
 //	SimulatorBase* sim = new SimulatorBase();
 //	sim->generateFixedRangeNetwork(101, 1000, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/6/6_0/1000", 22, 23, 1.001, 0.001);	// 22x23, 45x45, 72x72

@@ -21,6 +21,7 @@ SimulatorBase::SimulatorBase() {
 	generator = new NetworkGenerator();
 	network = new Network();
 	_currentTimeslot = 1;
+	need2HopInfo = false;
 //	timeslot = 0;
 }
 
@@ -32,7 +33,7 @@ string SimulatorBase::generateFixedRangeNetwork(int times, int size, string fold
 {
 	network->transRange = range;
 	generator = new FixedRangeGenerator(size, xTerr, yTerr, range);
-	generator->generateToFiles(network, folder, times);
+	generator->generateToFiles(network, folder, times, need2HopInfo);
 	return "Success";
 }
 
@@ -41,7 +42,7 @@ string SimulatorBase::generateSmallworldNetwork(int times, int size, string fold
 {
 	network->transRange = range;
 	generator = new SmallworldGenerator(size, xTerr, yTerr, range, numberOfShortEdges, numberOfLongEdges);
-	generator->generateToFiles(network, folder, times);
+	generator->generateToFiles(network, folder, times, need2HopInfo);
 	cout << endl;
 	return "Success";
 }
@@ -49,14 +50,14 @@ string SimulatorBase::generateSmallworldNetwork(int times, int size, string fold
 string SimulatorBase::generateER_RandomNetwork(int times, int size, string folder, double prob)
 {
 	generator = new ERRandomGenerator(size, prob);
-	generator->generateToFiles(network, folder, times);
+	generator->generateToFiles(network, folder, times, need2HopInfo);
 	return "Success";
 }
 
 string SimulatorBase::generateScaleFreeNetwork(int times, string folder, int cliqueSize, int size, int edge)
 {
 	generator = new ScaleFreeGenerator(cliqueSize, edge, size);
-	generator->generateToFiles(network, folder, times);
+	generator->generateToFiles(network, folder, times, need2HopInfo);
 	return "Success";
 }
 

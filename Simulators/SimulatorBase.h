@@ -28,6 +28,7 @@ class SimulatorBase {
 public:
 	SimulatorBase();
 	virtual ~SimulatorBase();
+	bool need2HopInfo;
 protected:
 	NetworkGenerator* generator;
 	//NetworkGraphics _networkGraphics;

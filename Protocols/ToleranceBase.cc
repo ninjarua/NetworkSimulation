@@ -26,6 +26,7 @@ string ToleranceBase::GetToleranceName()
 
 void ToleranceBase::TolerateNode(LinkPtr link)
 {
+
 }
 
 void ToleranceBase::CutLink(LinkPtr linkToCut)
@@ -55,7 +56,7 @@ void ToleranceBase::ReceiveCutLinkMessage(Message* message)
 	CutLinkMessage* cuttingMessage = (CutLinkMessage*)message;
 	if (cuttingMessage->cutCarrierLink)
 		cuttingMessage->link->state = Cut;
-	if (cuttingMessage->linkToCut->state == Cut)
+	if (cuttingMessage->linkToCut->state == Cut || cuttingMessage->link->dest->state == Infected)
 	{
 		cuttingMessage->status = Expired;
 		return;
@@ -105,6 +106,35 @@ void ToleranceBase::CutLinkCoNEFromCoNMinus1(NodePtr detector, NodePtr nodeInCoN
 		cuttingCoN->cutCarrierLink = true;
 		SendMessage(*itCoN, CallbackReceiveCutLinkMessage, cuttingCoN);
 		nodesInCoN.push_back(*itCoN);
+	}
+}
+
+void ToleranceBase::CutLinkCo1(NodePtr detector, NodePtr infected)
+{
+	vector<LinkPtr> messageLinkCommonNbs = detector->commonNeighbors[infected->id];
+	vector<LinkPtr>::iterator it = messageLinkCommonNbs.begin();
+	// Cut link like in CCo1ETolerance strategy
+	for (; it != messageLinkCommonNbs.end(); it++)
+	{
+		// Get reverselink of *it to cut
+		// It is different than CCommon because the loop here on an item of the map of commonNeighbor
+		// It means that it is already common neighbor between infected (messageLink->src) and detector (messageLink->dest)
+		// (*it) will be cut in the next round after sending cuttingMessage
+		LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(*it);
+		srcLinkToCut->state = Cut;
+
+		vector<LinkPtr>::iterator subit = (*it)->dest->links.begin();
+		//LinkPtr linkToCut = NetworkTools::GetSrcLinkPtr(infected->srcLinks, (*it)->dest->id);
+		for (; subit != (*it)->dest->links.begin(); subit++)
+		{
+			if ((*subit)->state != Cut)
+			{
+				SetToBeCut(*subit);
+				CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, *subit, detector->ownerNetwork->currentTimeSlot);
+				cuttingMessage->cutCarrierLink = true;
+				SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
+			}
+		}
 	}
 }
 

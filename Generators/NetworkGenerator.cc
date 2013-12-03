@@ -81,7 +81,7 @@ string NetworkGenerator::getFilenameByDeployment(string folder, int number)
 	if (!filesystem::exists(dir))
 		filesystem::create_directory(dir);
 	filesystem::path file(folder + OS_SEP + filename);
-	//cout << file.string() << Constants::endline;
+//	cout << file.string() << Constants::endline;
 //	if (!filesystem::exists(file))
 //	{
 //		return "";
@@ -89,13 +89,15 @@ string NetworkGenerator::getFilenameByDeployment(string folder, int number)
 	return file.string();
 }
 
-string NetworkGenerator::generateToFiles(Network* network, string folder, int times)
+string NetworkGenerator::generateToFiles(Network* network, string folder, int times, bool create2HopInfo)
 {
 	for (int i = 0; i < times; i++)
 	{
 		bool hasTopology = deployment->runDeploy(network);
 		if (hasTopology)
 		{
+			if (create2HopInfo && !network->has2HopInfo)
+				network->createAdvancedInformation();
 			Logger::Write(network, getFilenameByDeployment(folder, i));
 			//if (drawNetwork)
 			network->calculateAverageDegree();

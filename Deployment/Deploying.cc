@@ -80,8 +80,8 @@ bool Deploying::runDeploy(Network* network)
 
 void Deploying::neighborInitialization(Network* network)
 {
-	int nSize = network->nodes.size();
-	for (int i = 0; i < nSize - 1; i++)
+	unsigned int nSize = network->nodes.size();
+	for (unsigned int i = 0; i < nSize - 1; i++)
 	{
 		for (unsigned int j = i + 1; j < network->nodes.size(); j++)
 		{

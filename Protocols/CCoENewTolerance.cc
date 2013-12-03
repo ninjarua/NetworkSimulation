@@ -26,32 +26,7 @@ void CCoENewTolerance::TolerateNode(LinkPtr messageLink)
 
 	NodePtr detector = messageLink->dest;
 	NodePtr infected = messageLink->src;
-	vector<LinkPtr> messageLinkCommonNbs = detector->commonNeighbors[infected->id];
-	vector<LinkPtr>::iterator it = messageLinkCommonNbs.begin();
-	// Cut link like in CCommonTolerance strategy
-	for (; it != messageLinkCommonNbs.end(); it++)
-	{
-		// Get reverselink of *it to cut
-		// It is different than CCommon because the loop here on an item of the map of commonNeighbor
-		// It means that it is already common neighbor between infected (messageLink->src) and detector (messageLink->dest)
-		// (*it) will be cut when sending cuttingMessage
-		LinkPtr srcLinkToCut = NetworkTools::GetReverseLink(*it);
-		srcLinkToCut->state = Cut;
-
-		// get link from (*it)->dest to messageLink->src to cut
-		vector<LinkPtr>::iterator subit = (*it)->dest->links.begin();
-		//LinkPtr linkToCut = NetworkTools::GetSrcLinkPtr(infected->srcLinks, (*it)->dest->id);
-		for (; subit != (*it)->dest->links.begin(); subit++)
-		{
-			if ((*subit)->state != Cut)
-			{
-				SetToBeCut(*subit);
-				CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, *subit, detector->ownerNetwork->currentTimeSlot);
-				cuttingMessage->cutCarrierLink = true;
-				SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
-			}
-		}
-	}
+	CutLinkCo1(detector, infected);
 
 	// for each neighbor having id = mapIt->first (called mapIt) of messageLink->dest (detector)
 	// find neighbors that is common neighbor between detector and mapIt
@@ -85,7 +60,7 @@ void CCoENewTolerance::TolerateNode(LinkPtr messageLink)
 	}
 
 	vector<LinkPtr> new2Links = vector<LinkPtr>();
-	for (it = newLinks.begin(); it != newLinks.end(); it++)
+	for (vector<LinkPtr>::iterator it = newLinks.begin(); it != newLinks.end(); it++)
 	{
 		CutLinkCoNEFromCoNMinus1(detector, (*it)->dest, infected->id, new2Links);
 	}
