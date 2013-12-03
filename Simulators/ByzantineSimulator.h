@@ -60,6 +60,7 @@ public:
 	void runAllStepsSimulationByThreadId();
 	void runSimulation();
 	void addingAdditionalInfo(bool using2HopInfo);
+	static void analyseNetwork(Parameters args, bool using2HopInfo);
 };
 
 } /* namespace deployment */

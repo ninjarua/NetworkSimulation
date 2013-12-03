@@ -41,6 +41,17 @@ double sum(const vector<long>& values)
 	return summation;
 }
 
+double sum(const vector<double>& values)
+{
+	double summation = 0;
+	vector<double>::const_iterator it = values.begin();
+	for (; it != values.end(); it++)
+	{
+		summation += (double)(*it);
+	}
+	return summation;
+}
+
 StatisticSummary* StatisticSummary::summarize(const vector<long>& elements)
 {
 	reset();
@@ -59,6 +70,27 @@ StatisticSummary* StatisticSummary::summarize(const vector<long>& elements)
 	}
 	variance = variance / (length - 1);
 //	median = Statistics.Median(doubleValues);
+	standardDeviation = sqrt(variance);
+	return this;
+}
+
+StatisticSummary* StatisticSummary::summarize(const vector<double>& elements)
+{
+	reset();
+	length = elements.size();
+	//list<double> doubleValues = elements.ConvertAll<double>(c => Convert.ToDouble(c));
+	summation = sum(elements);
+	// mean value
+	mean = summation / length;
+
+	// variance
+	variance = 0;
+	vector<double>::const_iterator it = elements.begin();
+	for (; it != elements.end(); it++)
+	{
+		variance += (*it - mean) * (*it - mean);
+	}
+	variance = variance / (length - 1);
 	standardDeviation = sqrt(variance);
 	return this;
 }

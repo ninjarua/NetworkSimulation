@@ -28,6 +28,7 @@ public:
 	void reset();
 	double getConfidenceInterval(double significance);
 	StatisticSummary* summarize(const vector<long>& elements);
+	StatisticSummary* summarize(const vector<double>& elements);
 };
 
 #endif /* STATISTICSUMMARY_H_ */

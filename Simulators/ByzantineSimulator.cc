@@ -177,6 +177,31 @@ void ByzantineSimulator::addingAdditionalInfo(bool using2HopInfo)
 	}
 }
 
+void ByzantineSimulator::analyseNetwork(Parameters args, bool using2HopInfo)
+{
+	setDeployment();
+	generator->switch2HopInfo(using2HopInfo);
+
+	for (int i = 0; i <= 100; i++)
+	{
+		bool result = generator->generateFromFiles(network, params.inputFolder, i);
+		if (result)
+		{
+			StatisticSummary summary = StatisticSummary();
+			vector<double> ratioList = vector<double>();
+			vector<NodePtr>::iterator it = network->nodes.begin();
+			for(;it != network->nodes.end(); it++)
+			{
+				int numberCommonNodes = (*it)->commonNeighbors.size();
+				int numberNeighbors = (*it)->links.size();
+				ratioList.push_back(((double)(numberNeighbors - numberCommonNodes)) / numberCommonNodes);
+			}
+			summary.summarize(ratioList);
+			cout << summary.mean << "\t" << summary.standardDeviation << endl;
+		}
+	}
+}
+
 void ByzantineSimulator::runSimulationByInterval()
 {
 	byzantine.report->Clear();

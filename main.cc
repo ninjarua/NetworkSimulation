@@ -53,10 +53,12 @@ int main(int argc, char* argv[])
 //	manager->runOneStepSimulation(Small_world, CBridges, 10000, 0, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/1000",
 //			"/Users/thanhnd/Workspace/Results/Smallworld/10_5/1000/CBridges_0", 1, 100);
 
+	manager->analyseNetwork(Small_world, "", "", 100, true);
+
 //	manager->readOneStepResults(FixedRange, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_0\\10000\\CCo1E_0",
 //				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_0\\10000\\CCo1E_0.out", 0, 0.01);
-	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_1\\10000\\CCo1E_0",
-				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_1\\10000\\CCo1E_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_1\\10000\\CCo1E_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_1\\10000\\CCo1E_0.out", 0, 0.01);
 //	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_2\\10000\\CCo1E_0",
 //				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_2\\10000\\CCo1E_0.out", 0, 0.01);
 //	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_3\\10000\\CCo1E_0",

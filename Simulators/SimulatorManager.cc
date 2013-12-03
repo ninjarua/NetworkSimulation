@@ -216,4 +216,12 @@ void SimulatorManager::convert2HopInformation(DeployingType deployingType, strin
 	ByzantineSimulator::callbackConvert(param, using2HopInfo);
 }
 
+void SimulatorManager::analyseNetwork(DeployingType deployingType, string inputfolder, string outputFolder, int sampleSize,
+		bool using2HopInfo)
+{
+	Parameters param;
+	param.setToConvert(deployingType, inputfolder, outputFolder, sampleSize);
+	ByzantineSimulator::analyseNetwork(param, using2HopInfo);
+}
+
 }

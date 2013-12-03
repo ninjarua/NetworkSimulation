@@ -61,7 +61,7 @@ public:
 			string inputFolder, string output, double nothingProb = 0, double intervalByz = 0.01);
 
 	void convert2HopInformation(DeployingType deployingType, string inputfolder, string outputFolder, int sampleSize, bool using2HopInfo);
-
+	void analyseNetwork(DeployingType deployingType, string inputfolder, string outputFolder, int sampleSize, bool using2HopInfo);
 };
 
 }
