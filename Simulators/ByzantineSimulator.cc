@@ -217,7 +217,9 @@ void ByzantineSimulator::analyseNetwork(bool using2HopInfo)
 			{
 				int numberCommonNodes = (*it)->commonNeighbors.size();
 				int numberNeighbors = (*it)->links.size();
-				double ratio = ((double) numberCommonNodes) / (numberNeighbors - numberCommonNodes);
+				if (numberCommonNodes == 0)
+					continue;
+				double ratio = ((double) (numberNeighbors - numberCommonNodes)) / numberCommonNodes;
 				//cout << numberCommonNodes << "\t" << numberNeighbors << "\t" << ratio << endl;
 				ratioList.push_back(ratio);
 				//cout << ratioList[ratioList.size() - 1] << endl;

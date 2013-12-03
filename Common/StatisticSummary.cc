@@ -46,11 +46,9 @@ double sumDouble(const vector<double>& values)
 {
 	double sumd = 0.0;
 	//vector<double>::const_iterator it = values.begin();
-	for (int i = 0; i < values.size(); i++)// it != values.end(); it++)
+	for (unsigned int i = 0; i < values.size(); i++)// it != values.end(); it++)
 	{
-		cout << "Value: "<< values[i] << endl;
 		sumd += values[i];
-		cout << "Sum: " << sumd << endl;
 	}
 	return sumd;
 //	return std::accumulate(values.begin(), values.end(), .0) ;
@@ -82,13 +80,10 @@ StatisticSummary* StatisticSummary::summarize(const vector<double>& elements)
 {
 	reset();
 	length = elements.size();
-//	cout << "Length: " << length << endl;
 	//list<double> doubleValues = elements.ConvertAll<double>(c => Convert.ToDouble(c));
 	summation = sumDouble(elements);
-	cout << "Sum: " << summation << endl;
 	// mean value
 	mean = summation / length;
-//	cout << mean << endl;
 	// variance
 	variance = 0;
 	vector<double>::const_iterator it = elements.begin();
@@ -98,7 +93,6 @@ StatisticSummary* StatisticSummary::summarize(const vector<double>& elements)
 	}
 	variance = variance / (length - 1);
 	standardDeviation = sqrt(variance);
-//	cout << mean << "\t" << variance << "\t" << standardDeviation << endl;
 	return this;
 }
 
