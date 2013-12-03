@@ -24,6 +24,7 @@ public:
 	long length;
 	double standardDeviation;
 	double median;
+	friend ofstream& operator<<(ofstream& os, const StatisticSummary& statisticSummary);
 
 	void reset();
 	double getConfidenceInterval(double significance);

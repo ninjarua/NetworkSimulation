@@ -20,40 +20,26 @@ using namespace simulators;
 #include <iostream>
 #include <fstream>
 
-//int BinarySearchN(int searchItem, int a[], int n)
-//{
-//	int left = 0;
-//	int right = n - 1;
-//	int mid;
-//	while (left < right)
-//	{
-//		mid = (left + right) / 2;
-//		if (a[mid] == searchItem)
-//			return mid;
-//		else if (a[mid] >= a[left] && searchItem >= a[left] && searchItem < a[mid])
-//			right = mid - 1;
-//		else if (a[mid] >= a[left] && (searchItem < a[left] || searchItem > a[mid]))
-//			left = mid + 1;
-//		else if (a[mid] <= a[left] && searchItem < a[left] && searchItem > a[mid])
-//			left = mid + 1;
-//		else if (a[mid] <= a[left] && (searchItem >= a[left] || searchItem < a[mid]))
-//			right = mid - 1;
-//	}
-//	return -1;
-//}
-
 int main(int argc, char* argv[])
 {
-//	int a[10] = {5, 6, 7, 8, 9, 0, 1, 2, 3, 4};
-//	cout << BinarySearchN(9, a, 10);
-	//cout << makeChange(100, 25);
-	//srand(time(NULL)); // Set random seed for random procedure
+//	srand(time(NULL)); // Set random seed for random procedure
 
 	SimulatorManager* manager = new SimulatorManager();
 //	manager->runOneStepSimulation(Small_world, CBridges, 10000, 0, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/1000",
 //			"/Users/thanhnd/Workspace/Results/Smallworld/10_5/1000/CBridges_0", 1, 100);
 
-	manager->analyseNetwork(Small_world, "", "", 100, true);
+	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_1/10000",
+			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_1.out", 100, true);
+	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_2/10000",
+			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_2.out", 100, true);
+	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_3/10000",
+			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_3.out", 100, true);
+	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_4/10000",
+			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_4.out", 100, true);
+	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/10000",
+			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5.out", 100, true);
+	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_10/10000",
+			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_10.out", 100, true);
 
 //	manager->readOneStepResults(FixedRange, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_0\\10000\\CCo1E_0",
 //				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_0\\10000\\CCo1E_0.out", 0, 0.01);

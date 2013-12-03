@@ -177,7 +177,30 @@ void ByzantineSimulator::addingAdditionalInfo(bool using2HopInfo)
 	}
 }
 
-void ByzantineSimulator::analyseNetwork(Parameters args, bool using2HopInfo)
+string getFilename(int id)
+{
+	string filename("graph");
+	if (id > 0)
+	{
+		char number[6];
+		sprintf(number, "_%04d", id);
+		filename = filename + number;
+	}
+	filename = filename + ".out";
+	return filename;
+}
+
+string getFilenameFullPath(string folder, int number)
+{
+	string filename("summary_" + getFilename(number));
+	filesystem::path dir(folder);
+	if (!filesystem::exists(dir))
+		filesystem::create_directory(dir);
+	filesystem::path file(folder + OS_SEP + filename);
+	return file.string();
+}
+
+void ByzantineSimulator::analyseNetwork(bool using2HopInfo)
 {
 	setDeployment();
 	generator->switch2HopInfo(using2HopInfo);
@@ -194,10 +217,15 @@ void ByzantineSimulator::analyseNetwork(Parameters args, bool using2HopInfo)
 			{
 				int numberCommonNodes = (*it)->commonNeighbors.size();
 				int numberNeighbors = (*it)->links.size();
-				ratioList.push_back(((double)(numberNeighbors - numberCommonNodes)) / numberCommonNodes);
+				double ratio = ((double) numberCommonNodes) / (numberNeighbors - numberCommonNodes);
+				//cout << numberCommonNodes << "\t" << numberNeighbors << "\t" << ratio << endl;
+				ratioList.push_back(ratio);
+				//cout << ratioList[ratioList.size() - 1] << endl;
 			}
 			summary.summarize(ratioList);
-			cout << summary.mean << "\t" << summary.standardDeviation << endl;
+//			cout << summary.mean << "\t" << summary.variance
+//					<< "\t" << summary.standardDeviation << endl;
+			Logger::Write(summary, params.output, ofstream::out | ofstream::app);
 		}
 	}
 }

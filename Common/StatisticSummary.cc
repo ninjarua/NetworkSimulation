@@ -6,6 +6,7 @@
  */
 
 #include "StatisticSummary.h"
+#include <numeric>
 
 using namespace boost::math;
 StatisticSummary::StatisticSummary() {
@@ -41,15 +42,18 @@ double sum(const vector<long>& values)
 	return summation;
 }
 
-double sum(const vector<double>& values)
+double sumDouble(const vector<double>& values)
 {
-	double summation = 0;
-	vector<double>::const_iterator it = values.begin();
-	for (; it != values.end(); it++)
+	double sumd = 0.0;
+	//vector<double>::const_iterator it = values.begin();
+	for (int i = 0; i < values.size(); i++)// it != values.end(); it++)
 	{
-		summation += (double)(*it);
+		cout << "Value: "<< values[i] << endl;
+		sumd += values[i];
+		cout << "Sum: " << sumd << endl;
 	}
-	return summation;
+	return sumd;
+//	return std::accumulate(values.begin(), values.end(), .0) ;
 }
 
 StatisticSummary* StatisticSummary::summarize(const vector<long>& elements)
@@ -78,11 +82,13 @@ StatisticSummary* StatisticSummary::summarize(const vector<double>& elements)
 {
 	reset();
 	length = elements.size();
+//	cout << "Length: " << length << endl;
 	//list<double> doubleValues = elements.ConvertAll<double>(c => Convert.ToDouble(c));
-	summation = sum(elements);
+	summation = sumDouble(elements);
+	cout << "Sum: " << summation << endl;
 	// mean value
 	mean = summation / length;
-
+//	cout << mean << endl;
 	// variance
 	variance = 0;
 	vector<double>::const_iterator it = elements.begin();
@@ -92,5 +98,13 @@ StatisticSummary* StatisticSummary::summarize(const vector<double>& elements)
 	}
 	variance = variance / (length - 1);
 	standardDeviation = sqrt(variance);
+//	cout << mean << "\t" << variance << "\t" << standardDeviation << endl;
 	return this;
+}
+
+ofstream& operator<<(ofstream& os, const StatisticSummary& statisticSummary)
+{
+	os << statisticSummary.mean << "\t" << statisticSummary.variance
+			<< "\t" << statisticSummary.standardDeviation << endl;
+	return os;
 }

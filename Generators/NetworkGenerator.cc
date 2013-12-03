@@ -10,8 +10,6 @@
 namespace generators {
 
 NetworkGenerator::NetworkGenerator() {
-	// TODO Auto-generated constructor stub
-
 }
 
 NetworkGenerator::~NetworkGenerator() {
