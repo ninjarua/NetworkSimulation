@@ -26,7 +26,6 @@ string ToleranceBase::GetToleranceName()
 
 void ToleranceBase::TolerateNode(LinkPtr link)
 {
-
 }
 
 void ToleranceBase::CutLink(LinkPtr linkToCut)

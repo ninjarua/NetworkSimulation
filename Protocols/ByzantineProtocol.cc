@@ -100,6 +100,7 @@ void ByzantineProtocol::ReceiveByzantineMessage(Message* message)
 	{
 		if (destState != Infected)
 		{
+			message->link->dest->ownerNetwork->info.numberOfDetectors++;
 			tolerance->TolerateNode(message->link);//->dest, message->link->src);
 		}
 	}
