@@ -27,6 +27,7 @@
 #include "CCo3ETolerance.h"
 #include "CCoInfyETolerance.h"
 #include "CCoENewTolerance.h"
+#include "KCoInfyTolerance.h"
 
 using namespace generators;
 
@@ -93,6 +94,9 @@ void ByzantineSimulator::setTolerance()
 		break;
 	case CCoENew:
 		byzantine.tolerance = new CCoENewTolerance();
+		break;
+	case K1Short:
+		byzantine.tolerance = new KCoInfyTolerance();
 		break;
 	default:
 		byzantine.tolerance = new ToleranceBase();
@@ -217,11 +221,13 @@ void ByzantineSimulator::analyseNetwork(bool using2HopInfo)
 			{
 				int numberCommonNodes = (*it)->commonNeighbors.size();
 				int numberNeighbors = (*it)->links.size();
-				if (numberCommonNodes == 0)
-					continue;
-				double ratio = ((double) (numberNeighbors - numberCommonNodes)) / numberCommonNodes;
-				//cout << numberCommonNodes << "\t" << numberNeighbors << "\t" << ratio << endl;
-				ratioList.push_back(ratio);
+				cout << numberCommonNodes << "\t" << numberNeighbors << endl;// << "\t" << ratio << endl;
+				if (numberCommonNodes != 0)
+				{
+					//	continue;
+					double ratio = ((double) (numberNeighbors - numberCommonNodes)) / numberCommonNodes;
+					ratioList.push_back(ratio);
+				}
 				//cout << ratioList[ratioList.size() - 1] << endl;
 			}
 			summary.summarize(ratioList);

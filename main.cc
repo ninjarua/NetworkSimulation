@@ -28,18 +28,18 @@ int main(int argc, char* argv[])
 //	manager->runOneStepSimulation(Small_world, CBridges, 10000, 0, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/1000",
 //			"/Users/thanhnd/Workspace/Results/Smallworld/10_5/1000/CBridges_0", 1, 100);
 
-	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_1/10000",
-			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_1.out", 100, true);
-	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_2/10000",
-			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_2.out", 100, true);
-	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_3/10000",
-			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_3.out", 100, true);
-	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_4/10000",
-			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_4.out", 100, true);
-	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/10000",
-			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5.out", 100, true);
-	manager->analyseNetwork(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_10/10000",
-			"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_10.out", 100, true);
+	manager->analyseNetwork(Small_world, "d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_1\\10000",
+			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_1_N.out", 100, true);
+	manager->analyseNetwork(Small_world, "d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_2\\10000",
+			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_2_N.out", 100, true);
+	manager->analyseNetwork(Small_world, "d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_3\\10000",
+			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_3_N.out", 100, true);
+	manager->analyseNetwork(Small_world, "d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_4\\10000",
+			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_4_N.out", 100, true);
+	manager->analyseNetwork(Small_world, "d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_5\\10000",
+			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_5_N.out", 100, true);
+	manager->analyseNetwork(Small_world, "d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_10\\10000",
+			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_10_N.out", 100, true);
 
 //	manager->readOneStepResults(FixedRange, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_0\\10000\\CCo1E_0",
 //				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_0\\10000\\CCo1E_0.out", 0, 0.01);

@@ -17,7 +17,8 @@ namespace protocols {
 
 enum TypeOfTolerance{ KSelf = 0, K03 = 1, K1Hop = 2, K05 = 3, K07 = 4, K08 = 5, KxHop = 6,
     CSelf = 7, C03 = 8, C05 = 9, C09 = 10, C01K03 = 11, C01K05 = 12, CxHop = 13,
-    KCo1 = 14, CCo1E = 15, KSelfCCo1E = 16, CCo2E = 17, KCo2 = 18, CCo3E = 19, CCoInfyE = 20, KCo1CCo3 = 21, CCoENew = 22 };
+    KCo1 = 14, CCo1E = 15, KSelfCCo1E = 16, CCo2E = 17, KCo2 = 18, CCo3E = 19, CCoInfyE = 20,
+    KCo1CCo3 = 21, CCoENew = 22, K1Short = 24, K2Short = 25 };
 
 class ToleranceBase : public NetworkProtocol {
 protected:
