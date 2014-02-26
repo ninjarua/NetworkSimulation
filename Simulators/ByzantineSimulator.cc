@@ -173,7 +173,7 @@ void ByzantineSimulator::addingAdditionalInfo(bool using2HopInfo)
 	generator->switch2HopInfo(using2HopInfo);
 	//setParameters(1, inputfolder, outputFolder, 0, 0, 0, 0, 0.01, 0.01, sampleSize);
 
-	for (int i = 0; i <= 100; i++)
+	for (int i = 0; i <= params.sampleSize; i++)
 	{
 		bool result = generator->generateFromFiles(network, params.inputFolder, i);
 		if (result)
