@@ -26,6 +26,8 @@ void KCoInfyTolerance::TolerateNode(LinkPtr messageLink)
 
 	NodePtr detector = messageLink->dest;
 	NodePtr infected = messageLink->src;
+	detector->state = Inactive;
+	detector->ownerNetwork->info.numberOfInactiveNodes++;
 	if (detector->commonNeighbors.find(infected->id) == detector->commonNeighbors.end())
 		return;
 	map<int, vector<LinkPtr> >::iterator mapIt = detector->commonNeighbors.begin();
@@ -38,8 +40,6 @@ void KCoInfyTolerance::TolerateNode(LinkPtr messageLink)
 		message->TTL = 0;
 		SendMessage(link, CallbackReceiveKillingMessage, message);
 	}
-	detector->state = Inactive;
-	detector->ownerNetwork->info.numberOfInactiveNodes++;
 }
 
 string KCoInfyTolerance::GetToleranceName()

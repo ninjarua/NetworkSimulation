@@ -29,30 +29,41 @@ void CxHopTolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	messageLink->state = Cut;
-	NodePtr node = messageLink->dest;
-	vector<LinkPtr>::iterator it = node->links.begin();
-	for (; it != node->links.end(); it++)
+	NodePtr detector = messageLink->dest;
+	NodePtr infected = messageLink->src;
+	vector<LinkPtr>::iterator it = detector->links.begin();
+	for (; it != detector->links.end(); it++)
 	{
 		if ((*it)->state == Cut || (*it)->dest->state == Infected || (*it)->dest->state == Inactive)
 			continue;
-		if ((*it)->dest == messageLink->src)
+		if ((*it)->dest == infected)
 			(*it)->state = Cut;
 
-		LinkPtr linkToCut = NetworkTools::GetLinkPtr(messageLink->src->links, (*it)->dest->id);
+		LinkPtr linkToCut = NetworkTools::GetLinkPtr(infected->links, (*it)->dest->id);
 		if (linkToCut != NULL)
 		{
-			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, node->ownerNetwork->currentTimeSlot);
+			CutLinkMessage* cuttingMessage = new CutLinkMessage(*it, linkToCut, detector->ownerNetwork->currentTimeSlot);
 			cuttingMessage->cutCarrierLink = true;
 			SendMessage(*it, CallbackReceiveCutLinkMessage, cuttingMessage);
 		}
 
-		Link2Hop* link2Hop = GetCommonNeighborsExcept((*it)->dest, messageLink->src, node);
-		if (link2Hop != NULL)
+		vector<LinkPtr>::iterator nbIt = (*it)->dest->links.begin();
+		for(; nbIt != (*it)->dest->links.end(); nbIt++)
 		{
-			DeactivateMessage* message = new DeactivateMessage((*it), link2Hop, node->ownerNetwork->currentTimeSlot);
-			message->TTL = 1; // is not used yet, because the receiver of deactivate message does not forward message.
-			SendMessage((*it), CallbackReceiveCutLink2HopMessage, message);
+			if (NetworkTools::ContainNode(infected->links, (*nbIt)->dest))
+			{
+				CutLink(*it);
+				break;
+			}
 		}
+
+//		Link2Hop* link2Hop = GetCommonNeighborsExcept((*it)->dest, infected, detector);
+//		if (link2Hop != NULL)
+//		{
+//			DeactivateMessage* message = new DeactivateMessage((*it), link2Hop, detector->ownerNetwork->currentTimeSlot);
+//			message->TTL = 1; // is not used yet, because the receiver of deactivate message does not forward message.
+//			SendMessage((*it), CallbackReceiveCutLink2HopMessage, message);
+//		}
 	}
 }
 
@@ -71,7 +82,8 @@ void CxHopTolerance::ReceiveCutLink2HopMessage(Message* message)
 			int mid_i = deactivateMessage->link2Hop->mids[i];
 			if (mid_i != deactivateMessage->link->src->id)
 			{
-				NetworkTools::GetLinkPtr(node->links, mid_i)->state = Cut;
+				LinkPtr linkToCut = NetworkTools::GetLinkPtr(node->links, mid_i);
+				CutLink(linkToCut);
 			}
 		}
 	}
@@ -80,8 +92,8 @@ void CxHopTolerance::ReceiveCutLink2HopMessage(Message* message)
 
 void CxHopTolerance::CallbackReceiveCutLink2HopMessage(void* ptr, Message* message)
 {
-	CxHopTolerance* ptrC1K3 = (CxHopTolerance*)ptr;
-	ptrC1K3->ReceiveCutLink2HopMessage(message);
+	CxHopTolerance* ptrCxHop = (CxHopTolerance*)ptr;
+	ptrCxHop->ReceiveCutLink2HopMessage(message);
 }
 
 // Check if there is other common neighbors betweeen n1 and n2 except the 'exception' node.

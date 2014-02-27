@@ -21,7 +21,7 @@ CCo0ETolerance::~CCo0ETolerance() {
 
 string CCo0ETolerance::GetToleranceName()
 {
-	return "CSelf";
+	return "CCo0E";
 }
 
 void CCo0ETolerance::TolerateNode(LinkPtr messageLink)
@@ -29,8 +29,7 @@ void CCo0ETolerance::TolerateNode(LinkPtr messageLink)
 	ToleranceBase::TolerateNode(messageLink);
 	messageLink->state = Cut;	// cut link with the infected node
 	NodePtr node = messageLink->dest;
-	LinkPtr linkToCut = NetworkTools::GetLinkPtr(node->links, messageLink->src->id);
-	linkToCut->state = Cut;
+	CutLink(messageLink);
 }
 
 } /* namespace generators */

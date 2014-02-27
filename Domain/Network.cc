@@ -110,6 +110,8 @@ void Network::runFloyd()
 {
 //	int cpu_size;
 //	int cpu_rank;
+	createMatrixDistance();
+	updateMatrixDistanceFromNeighbors();
 //	MPI_Comm_size(MPI_COMM_WORLD, &cpu_size);
 //	MPI_Comm_rank(MPI_COMM_WORLD, &cpu_rank);
 
@@ -268,8 +270,6 @@ void Network::calculateAverageDegree()
 
 void Network::createAdvancedInformation()
 {
-//	createMatrixDistance();
-//	updateMatrixDistanceFromNeighbors();
 //	runFloyd();
 	if (avgDegree == 0)
 		calculateAverageDegree();

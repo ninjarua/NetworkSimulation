@@ -61,16 +61,16 @@ void SimulatorManager::addOneStepSimulation(DeployingType deploying, TypeOfToler
 }
 
 void SimulatorManager::addOneStepSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, double nothingProb,
-		string outputFolder, int numberCPUs, int networkSize)
+		string outputFolder, int numberCPUs, int gridSize)
 {
-	addOneStepSimulationForGrid(toleranceType, 1, totalTimes, nothingProb, outputFolder, numberCPUs, networkSize);
+	addOneStepSimulationForGrid(toleranceType, 1, totalTimes, nothingProb, outputFolder, numberCPUs, gridSize);
 }
 
 void SimulatorManager::addOneStepSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
-		string outputFolder, int numberCPUs, int networkSize)
+		string outputFolder, int numberCPUs, int gridSize)
 {
 	listArgumentSimulation.push_back(new SimulationArguments(GridOneStep, toleranceType, totalTimes, outputFolder,
-			networkSize, numberCPUs, nothingProb, hopCount));
+			gridSize, numberCPUs, nothingProb, hopCount));
 }
 
 void SimulatorManager::addOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
@@ -78,7 +78,6 @@ void SimulatorManager::addOneStepSimulationForScaleFree(TypeOfTolerance toleranc
 {
 	listArgumentSimulation.push_back(new SimulationArguments(ScaleFreeOneStep, ScaleFree, toleranceType, totalTimes, inputFolder, outputFolder,
 			sampleSize, numberCPUs, nothingProb, hopCount, hubOnly));
-
 }
 
 void SimulatorManager::runSimulationsTest(unsigned int size, unsigned int rank)

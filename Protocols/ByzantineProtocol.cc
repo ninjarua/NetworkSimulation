@@ -82,7 +82,7 @@ void ByzantineProtocol::CallbackReceiveByzantineMessage(void* ptr, Message* mess
 void ByzantineProtocol::ReceiveByzantineMessage(Message* message)
 {
 	NodeState destState = message->link->dest->state;
-	if (destState == Infected)
+	if (destState == Infected || destState == Inactive)
 	{
 		message->status = Expired;
 		return;
@@ -102,11 +102,8 @@ void ByzantineProtocol::ReceiveByzantineMessage(Message* message)
 	}
 	else
 	{
-		if (destState != Infected)
-		{
-			message->link->dest->ownerNetwork->info.numberOfDetectors++;
-			tolerance->TolerateNode(message->link);//->dest, message->link->src);
-		}
+		message->link->dest->ownerNetwork->info.numberOfDetectors++;
+		tolerance->TolerateNode(message->link);//->dest, message->link->src);
 	}
 	message->status = Expired;
 }
@@ -146,7 +143,7 @@ void ByzantineProtocol::Finalize(Network* network)
 	statisticInfo->infections = network->info.numberOfInfectedNodes;
 	statisticInfo->inactives = network->info.numberOfInactiveNodes;
 	statisticInfo->detectors = network->info.numberOfDetectors;
-	statisticInfo->sanes = network->nodes.size() - statisticInfo->infections - statisticInfo->inactives - statisticInfo->detectors;
+	statisticInfo->sanes = network->nodes.size() - statisticInfo->infections - statisticInfo->inactives;
 	statisticInfo->lca = Network::findMaximumConnectedArea(network, &Node::isNodeState, Sane);
 	statisticInfo->degree = network->info.seedDegree;
 	statisticInfo->diameter = network->info.seedDiameter;

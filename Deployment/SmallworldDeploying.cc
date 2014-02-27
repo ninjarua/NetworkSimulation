@@ -56,13 +56,6 @@ void SmallworldDeploying::neighborInitialization(Network* network)
 	//unsigned int networkSize = network->nodes.size();
 	//vector<vector<unsigned int> > matrix;//(network->size)
 
-//	for (unsigned int i=0; i < network->size; i++)
-//	{
-//		vector<unsigned int> v_i(network->size);
-//		for (unsigned int j=0; j < network->size; j++)
-//			v_i[j] = 0;
-//		matrix.push_back(v_i);
-//	}
 	map<unsigned int, vector<unsigned int> > towardList;
 	map<unsigned int, vector<unsigned int> > backwardList;
 
@@ -94,28 +87,29 @@ void SmallworldDeploying::neighborInitialization(Network* network)
 				}
 			}
 		}
+//		cout << i << endl;
 	}
 	for (unsigned int i = 0; i < network->size; i++)
 	{
 		vector<unsigned int>::iterator itToward = towardList[i].begin();
 		vector<unsigned int>::iterator itBackward = backwardList[i].begin();
-		while (itToward != towardList[i].end() && itBackward != backwardList[i].end())
-		{
-			if ((*itToward) < (*itBackward))
-			{
-				network->makeNeighbors(i, *itToward);
-				itToward++;
-			}
-			else
-			{
-				network->makeNeighbors(i, *itBackward);
-				itBackward++;
-			}
-		}
-		for (; itToward != towardList[i].end(); itToward++)
-			network->makeNeighbors(i, *itToward);
+//		while (itToward != towardList[i].end() && itBackward != backwardList[i].end())
+//		{
+//			if ((*itToward) < (*itBackward))
+//			{
+//				network->makeNeighbors(i, *itToward);
+//				itToward++;
+//			}
+//			else
+//			{
+//				network->makeNeighbors(i, *itBackward);
+//				itBackward++;
+//			}
+//		}
 		for (; itBackward != backwardList[i].end(); itBackward++)
 			network->makeNeighbors(*itBackward, i);
+		for (; itToward != towardList[i].end(); itToward++)
+			network->makeNeighbors(i, *itToward);
 	}
 }
 

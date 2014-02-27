@@ -209,6 +209,9 @@ void ByzantineSimulator::analyseNetwork(bool using2HopInfo)
 {
 	setDeployment();
 	generator->switch2HopInfo(using2HopInfo);
+//	bool result = generator->generateFromFiles(network, params.inputFolder, 0);
+//	if (result)
+//		network->runFloyd();
 
 	for (int i = 0; i <= 100; i++)
 	{

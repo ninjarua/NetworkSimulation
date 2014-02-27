@@ -62,13 +62,13 @@ public:
 	void calculateAverageDegree();
 	void calculateCommonNeighbors();
 	void createAdvancedInformation();
+	void runFloyd();
 
 private:
 	void collect2HopInformation();
 	void createMatrixCommonNeighbors();
 	void createMatrixDistance();
 	void updateMatrixDistanceFromNeighbors();
-	void runFloyd();
 
 	static int connectedAreaSpreading(NodePtr seed, int spreadingValue,
 			bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
