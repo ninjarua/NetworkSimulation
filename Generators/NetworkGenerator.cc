@@ -10,6 +10,7 @@
 namespace generators {
 
 NetworkGenerator::NetworkGenerator() {
+	deployment = NULL;
 }
 
 NetworkGenerator::~NetworkGenerator() {

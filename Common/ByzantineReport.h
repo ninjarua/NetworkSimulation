@@ -12,6 +12,7 @@
 #include <list>
 #include <fstream>
 #include "StatisticSummary.h"
+#include "ByzantineAverage.h"
 
 class ByzantineReport {
 public:
@@ -24,29 +25,14 @@ private:
 	vector<long> numberOfNormals;
 	vector<long> numberOfSacrifices;
 	vector<long> largestConnectedAreas;
-	vector<long>	degrees;
+	vector<long> degrees;
 	vector<long> diameters;
 public:
 	//static ByzantineReport* Default();
 	long size;
 	double nothingProb;
 	double byzantineProb;
-
-	double averageOfByzantines;
-	double averageOfSacrifices;
-	double averageOfDetectors;
-	double averageOfNormals;
-	double averageOfLargestConnectedAreas;
-	double averageOfDegree;
-	double averageOfDiameter;
-
-	double ciOfByzantines;
-	double ciOfSacrifices;
-	double ciOfDetectors;
-	double ciOfNormals;
-	double ciOfLargestConnectedAreas;
-	double ciOfDegrees;
-	double ciOfDiameters;
+	ByzantineAverage average;
 
 	void Clear();
 	void addByzantineValue(long value);

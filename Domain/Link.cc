@@ -12,12 +12,13 @@ namespace domain {
 Link::Link(Node* n1, Node* n2) {
 //	if (n1->id >= n2->id)
 //	{
-		src = n1; dest = n2;
+	src = n1; dest = n2;
 //	}
 //	else
 //	{
 //		node1 = n2; node2 = n1;
 //	}
+	reverseLink = NULL;
 	state = Active;
 }
 

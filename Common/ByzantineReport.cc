@@ -8,6 +8,7 @@
 #include "ByzantineReport.h"
 
 ByzantineReport::ByzantineReport() {
+	average = ByzantineAverage(this);
 	numberOfByzantines = vector<long>();
 	numberOfDetectors = vector<long>();
 	numberOfNormals = vector<long>();
@@ -15,19 +16,12 @@ ByzantineReport::ByzantineReport() {
 	largestConnectedAreas = vector<long>();
 	degrees = vector<long>();
 	diameters = vector<long>();
+	size = 0;
+	byzantineProb = nothingProb = 0;
 }
 
 ByzantineReport::~ByzantineReport() {
-	// TODO Auto-generated destructor stub
 }
-
-//ByzantineReport* ByzantineReport::_report = NULL;
-//ByzantineReport* ByzantineReport::Default()
-//{
-//	if (_report == NULL)
-//		_report = new ByzantineReport();
-//	return _report;
-//}
 
 void ByzantineReport::Clear()
 {
@@ -79,42 +73,41 @@ ByzantineReport* ByzantineReport::summarize(double significance)
 {
 	StatisticSummary summary = StatisticSummary();
 	summary.summarize(numberOfByzantines);
-	averageOfByzantines = summary.mean;
-	ciOfByzantines = summary.getConfidenceInterval(significance);
+	average.averageOfByzantines = summary.mean;
+	average.ciOfByzantines = summary.getConfidenceInterval(significance);
 	summary.summarize(numberOfDetectors);
-	averageOfDetectors = summary.mean;
-	ciOfDetectors = summary.getConfidenceInterval(significance);
+	average.averageOfDetectors = summary.mean;
+	average.ciOfDetectors = summary.getConfidenceInterval(significance);
 	summary.summarize(numberOfSacrifices);
-	averageOfSacrifices = summary.mean;
-	ciOfSacrifices = summary.getConfidenceInterval(significance);
+	average.averageOfSacrifices = summary.mean;
+	average.ciOfSacrifices = summary.getConfidenceInterval(significance);
 	summary.summarize(numberOfNormals);
-	averageOfNormals = summary.mean;
-	ciOfNormals = summary.getConfidenceInterval(significance);
+	average.averageOfNormals = summary.mean;
+	average.ciOfNormals = summary.getConfidenceInterval(significance);
 	summary.summarize(largestConnectedAreas);
-	averageOfLargestConnectedAreas = summary.mean;
-	ciOfLargestConnectedAreas = summary.getConfidenceInterval(significance);
+	average.averageOfLargestConnectedAreas = summary.mean;
+	average.ciOfLargestConnectedAreas = summary.getConfidenceInterval(significance);
 	summary.summarize(degrees);
-	averageOfDegree = summary.mean;
-	ciOfDegrees = summary.getConfidenceInterval(significance);
+	average.averageOfDegree = summary.mean;
+	average.ciOfDegrees = summary.getConfidenceInterval(significance);
 	summary.summarize(diameters);
-	averageOfDiameter = summary.mean;
-	ciOfDiameters = summary.getConfidenceInterval(significance);
+	average.averageOfDiameter = summary.mean;
+	average.ciOfDiameters = summary.getConfidenceInterval(significance);
 	size = summary.length;
 	return this;
 }
 
 ofstream& operator<<(ofstream& ofs, const ByzantineReport& report)
 {
-	ofs << report.nothingProb << "\t" << report.byzantineProb << "\t"
-			<< report.averageOfByzantines << "\t"
-			<< report.ciOfByzantines << "\t"
-			<< report.averageOfSacrifices << "\t"
-			<< report.ciOfSacrifices << "\t"
-			<< report.averageOfDetectors << "\t"
-			<< report.ciOfDetectors << "\t"
-			<< report.averageOfNormals << "\t"
-			<< report.ciOfNormals << "\t"
-			<< report.averageOfLargestConnectedAreas << "\t"
-			<< report.ciOfLargestConnectedAreas << "\t" << report.size << "\n";
+	ofs << report.nothingProb << "\t" << report.byzantineProb << "\n";
+	for(int i=0; i < report.numberOfByzantines.size(); i++)
+	{
+		ofs << report.numberOfByzantines[i] << "\t"
+			<< report.numberOfSacrifices[i] << "\t"
+			<< report.numberOfDetectors[i] << "\t"
+			<< report.numberOfNormals[i] << "\t"
+			<< report.largestConnectedAreas[i] << "\t"
+			<< "\n";
+	}
 	return ofs;
 }

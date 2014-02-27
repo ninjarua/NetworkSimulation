@@ -10,7 +10,10 @@
 namespace protocols {
 
 ByzantineProtocol::ByzantineProtocol() {
-
+	byzantineProb = 0;
+	nothingProb = 0;
+	statisticInfo = new NetworkStatistic();
+	tolerance = NULL;
 }
 
 ByzantineProtocol::ByzantineProtocol(double byzantineP, double nothingP)
@@ -18,6 +21,7 @@ ByzantineProtocol::ByzantineProtocol(double byzantineP, double nothingP)
 	byzantineProb = byzantineP;
 	nothingProb = nothingP;
 	statisticInfo = new NetworkStatistic();
+	tolerance = NULL;
 }
 
 ByzantineProtocol::~ByzantineProtocol() {

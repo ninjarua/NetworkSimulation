@@ -162,8 +162,9 @@ ByzantineReport* ByzantineSimulator::finishReport()
 
 bool ByzantineSimulator::stopPrediction(ByzantineReport* report)
 {
-    bool averageCondition = (report->ciOfByzantines < .8)
-        && (report->ciOfNormals < 0.01 || (report->ciOfNormals < .8 && report->ciOfNormals <= report->averageOfNormals));
+    bool averageCondition = (report->average.ciOfByzantines < .8)
+        && (report->average.ciOfNormals < 0.01 ||
+        		(report->average.ciOfNormals < .8 && report->average.ciOfNormals <= report->average.averageOfNormals));
     return averageCondition;
 }
 
@@ -294,7 +295,10 @@ void ByzantineSimulator::printToFile(ByzantineReport& report, string filename)
 	if (!filesystem::exists(dir))
 		filesystem::create_directory(dir);
 	filesystem::path file(params.output + OS_SEP + filename);
-	Logger::Write(report, file.string(), ofstream::out | ofstream::app);
+	Logger::Write(report.average, file.string(), ofstream::out | ofstream::app);
+
+	filesystem::path filelog(params.output + OS_SEP + filename + ".log");
+	Logger::Write(report, filelog.string(), ofstream::out);
 }
 
 string ByzantineSimulator::getResultFilename(double nothingProb, double byzantineProb)
