@@ -29,8 +29,8 @@ public:
 	void addSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int hopCount, int totalTimes,
 			string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
 
-	void addSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, string outputFolder, int numberCPUs, int networkSize=100);
-	void addSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, string outputFolder, int numberCPUs, int networkSize=100);
+	void addSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, string outputFolder, int numberCPUs, int gridSize=100);
+	void addSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, string outputFolder, int numberCPUs, int gridSize=100);
 
 
 	void addOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
@@ -39,9 +39,9 @@ public:
 			double nothingProb, string inputFolder, string outputFolder, int numberCPUs, int sampleSize);
 
 	void addOneStepSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, double nothingProb,
-			string outputFolder, int numberCPUs, int networkSize=100);
+			string outputFolder, int numberCPUs, int gridSize=100);
 	void addOneStepSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
-			string outputFolder, int numberCPUs, int networkSize=100);
+			string outputFolder, int numberCPUs, int gridSize=100);
 
 	void addOneStepSimulationForScaleFree(TypeOfTolerance toleranceType, int hopCount, int totalTimes, double nothingProb,
 			string inputFolder, string outputFolder, int numberCPUs, int sampleSize, bool hubOnly);

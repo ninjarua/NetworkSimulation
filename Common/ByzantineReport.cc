@@ -106,8 +106,7 @@ ofstream& operator<<(ofstream& ofs, const ByzantineReport& report)
 			<< report.numberOfSacrifices[i] << "\t"
 			<< report.numberOfDetectors[i] << "\t"
 			<< report.numberOfNormals[i] << "\t"
-			<< report.largestConnectedAreas[i] << "\t"
-			<< "\n";
+			<< report.largestConnectedAreas[i] << "\n";
 	}
 	return ofs;
 }

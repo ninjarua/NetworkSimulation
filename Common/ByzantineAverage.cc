@@ -42,6 +42,6 @@ ofstream& operator<<(ofstream& ofs, const ByzantineAverage& report)
 		<< report.averageOfNormals << "\t"
 		<< report.ciOfNormals << "\t"
 		<< report.averageOfLargestConnectedAreas << "\t"
-		<< report.ciOfLargestConnectedAreas << "\t" << "\n";
+		<< report.ciOfLargestConnectedAreas << "\t" << report._report->size << "\n";
 	return ofs;
 }

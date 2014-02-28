@@ -35,16 +35,16 @@ void SimulatorManager::addSimulation(DeployingType deploying, TypeOfTolerance to
 			sampleSize, numberCPUs, 0, hopCount));
 }
 
-void SimulatorManager::addSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, string outputFolder, int numberCPUs, int networkSize)
+void SimulatorManager::addSimulationForGrid(TypeOfTolerance toleranceType, int totalTimes, string outputFolder, int numberCPUs, int gridSize)
 {
-	addSimulationForGrid(toleranceType, 1, totalTimes, outputFolder, numberCPUs, networkSize);
+	addSimulationForGrid(toleranceType, 1, totalTimes, outputFolder, numberCPUs, gridSize);
 }
 
 void SimulatorManager::addSimulationForGrid(TypeOfTolerance toleranceType, int hopCount, int totalTimes, string outputFolder,
-		int numberCPUs, int networkSize)
+		int numberCPUs, int gridSize)
 {
 	listArgumentSimulation.push_back(new SimulationArguments(GridAllSteps, toleranceType, totalTimes, outputFolder,
-			networkSize, numberCPUs, 0, hopCount));
+			gridSize, numberCPUs, 0, hopCount));
 }
 
 void SimulatorManager::addOneStepSimulation(DeployingType deploying, TypeOfTolerance toleranceType, int totalTimes,
@@ -123,7 +123,11 @@ void SimulatorManager::runSimulationsTest(unsigned int size, unsigned int rank)
 void SimulatorManager::runSimulations()
 {
 	boost::thread_group threads;
+	for (unsigned int i=0; i < listArgumentSimulation.size(); i++)
+		totalThreadsNeedToRun += listArgumentSimulation[i]->_cpus;
+	numberCPUs = 1;
 	int numberOfLoops = ceil((double)totalThreadsNeedToRun/numberCPUs);
+	cout << numberOfLoops << "\t" << totalThreadsNeedToRun << "\n";
 
 	int idxArgument = 0;
 	for (int i = 0; i < numberOfLoops; i++)
