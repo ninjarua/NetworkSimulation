@@ -300,7 +300,7 @@ void ByzantineSimulator::printToFile(ByzantineReport& report, string filename)
 	filesystem::path file(params.output + OS_SEP + filename);
 	Logger::Write(report.average, file.string(), ofstream::out | ofstream::app);
 
-	char byz[3];
+	char byz[4];
 	sprintf(byz, "%d", (int)(report.byzantineProb * 100));
 	filesystem::path filelog(params.output + OS_SEP + filename + "_" + byz + ".log");
 	Logger::Write(report, filelog.string(), ofstream::out);
