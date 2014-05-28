@@ -93,24 +93,15 @@ void SmallworldDeploying::neighborInitialization(Network* network)
 	{
 		vector<unsigned int>::iterator itToward = towardList[i].begin();
 		vector<unsigned int>::iterator itBackward = backwardList[i].begin();
-//		while (itToward != towardList[i].end() && itBackward != backwardList[i].end())
-//		{
-//			if ((*itToward) < (*itBackward))
-//			{
-//				network->makeNeighbors(i, *itToward);
-//				itToward++;
-//			}
-//			else
-//			{
-//				network->makeNeighbors(i, *itBackward);
-//				itBackward++;
-//			}
-//		}
 		for (; itBackward != backwardList[i].end(); itBackward++)
 			network->makeNeighbors(*itBackward, i);
 		for (; itToward != towardList[i].end(); itToward++)
 			network->makeNeighbors(i, *itToward);
+		backwardList[i].clear();
+		towardList[i].clear();
 	}
+	towardList.clear();
+	backwardList.clear();
 }
 
 } /* namespace domain */
