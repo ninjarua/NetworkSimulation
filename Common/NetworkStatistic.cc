@@ -30,7 +30,7 @@ void NetworkStatistic::Reset()
 
 ofstream& operator<<(ofstream& ofs, const NetworkStatistic& statistic)
 {
-	ofs << statistic.degree << Constants::tab << statistic.diameter << Constants::tab
+	ofs //<< statistic.degree << Constants::tab << statistic.diameter << Constants::tab
 		<< statistic.infections << Constants::tab << statistic.inactives << Constants::tab
 		<< statistic.detectors << Constants::tab << statistic.sanes << Constants::tab
 		<< statistic.lca << Constants::endline;

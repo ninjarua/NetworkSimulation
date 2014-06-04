@@ -32,7 +32,7 @@ void CCoENewTolerance::TolerateNode(LinkPtr messageLink)
 	// find neighbors that is common neighbor between detector and mapIt
 	//	but is not neighbor of messageLink->src (infected node)
 	vector<LinkPtr> newLinks = vector<LinkPtr>();
-	map<int, vector<LinkPtr> >::iterator mapIt = detector->commonNeighbors.begin();
+	map<long, vector<LinkPtr> >::iterator mapIt = detector->commonNeighbors.begin();
 	for (; mapIt != detector->commonNeighbors.end(); mapIt++)
 	{
 		if (mapIt->first == infected->id)

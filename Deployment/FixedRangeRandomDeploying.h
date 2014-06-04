@@ -33,7 +33,7 @@ public:
 	double getCellLength();
 
 	virtual void neighborInitialization(Network* network);
-	virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
+	virtual bool isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor);
 };
 
 } /* namespace protocols */

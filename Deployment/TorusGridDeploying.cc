@@ -6,6 +6,7 @@
  */
 
 #include "TorusGridDeploying.h"
+#include <stdlib.h>
 
 namespace deployment {
 
@@ -40,7 +41,7 @@ bool TorusGridDeploying::obtainTopology(Network* network)
     }
     for (int i = 0; i < topology->numNodes; i++)
     {
-    	NodePtr newNode(new Node(GetPosX(i), getPosY(i)));
+    	NodePtr newNode(new Node());
         network->addNode(newNode);
     }
     topology->xTerr = topology->range * (sqrt(topology->numNodes) - 1);
@@ -49,7 +50,7 @@ bool TorusGridDeploying::obtainTopology(Network* network)
     return true;
 }
 
-double TorusGridDeploying::GetPosX(int nodeSequenceId)
+double TorusGridDeploying::getPosX(int nodeSequenceId)
 {
     int sqrtNumNodes = (int)sqrt(topology->numNodes);
     return (nodeSequenceId % sqrtNumNodes) * topology->range;
@@ -61,36 +62,30 @@ double TorusGridDeploying::getPosY(int nodeSequenceId)
     return (nodeSequenceId / sqrtNumNodes) * topology->range;
 }
 
-bool TorusGridDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
+bool TorusGridDeploying::isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor)
 {
-    double Xdist = node.posX - neighbor.posX;
-    double Ydist = node.posY - neighbor.posY;
-    if ((node.posX == 0 && neighbor.posX == topology->xTerr)
-        || (node.posX == topology->xTerr && neighbor.posX == 0))
-    {
-        Xdist += topology->xTerr + topology->range;
-    }
-    if ((node.posY == 0 && neighbor.posY == topology->yTerr)
-        || (node.posY == topology->yTerr && neighbor.posY == 0))
-    {
-        Ydist += topology->yTerr + topology->range;
-    }
+	long sqrtNodes = (long)sqrt(topology->numNodes);
+	long x = node->id % sqrtNodes;
+	long nx = neighbor->id % sqrtNodes;
+	long maxX = (x > nx) ? x : nx;
+	long minX = (x < nx) ? x : nx;
+	long y = node->id / sqrtNodes;
+	long ny = neighbor->id / sqrtNodes;
+	long maxY = (y > ny) ? y : ny;
+	long minY = (y < ny) ? y : ny;
+
+	if (maxX == sqrtNodes - 1)
+		maxX = -1;
+	if (maxY == sqrtNodes - 1)
+		maxY = -1;
+
     // distance between a given pair of nodes
-    return pow((Xdist * Xdist + Ydist * Ydist), 0.5) <= network.transRange;
+    return abs(maxX - minX + maxY - minY) == 1;
 }
 
 string TorusGridDeploying::getDeployingName()
 {
 	return "TorusGrid";
-}
-
-void TorusGridDeploying::createInformationOfGraph(Network* network)
-{
-    Deploying::createInformationOfGraph(network);
-//    foreach (TorusNode node in network.GetNodes())
-//    {
-//        node.AssignNodeToPort();
-//    }
 }
 
 } /* namespace domain */

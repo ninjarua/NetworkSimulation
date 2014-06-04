@@ -38,6 +38,7 @@ private:
 
 	string getResultFilename(double nothingProb, double byzantineProb);
 	void printToFile(ByzantineReport& report, string filename);
+	void printToFile(NetworkStatistic& networkStatistic, string filename);
 
 	void addOneStepReport();
 	ByzantineReport* finishReport();

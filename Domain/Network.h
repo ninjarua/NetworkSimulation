@@ -56,19 +56,19 @@ public:
 	void addNode(NodePtr node);
 	void Reset();
 	void createEmptyNodes(int n);
-	void makeNeighbors(int id1, int id2);
+	void makeNeighbors(long id1, long id2);
 	static bool noNewMessageInNetwork(const Network& network);
 	static int findMaximumConnectedArea(Network* network, bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);
 	void calculateAverageDegree();
 	void calculateCommonNeighbors();
 	void createAdvancedInformation();
-	void runFloyd();
+//	void runFloyd();
 
 private:
 	void collect2HopInformation();
 	void createMatrixCommonNeighbors();
-	void createMatrixDistance();
-	void updateMatrixDistanceFromNeighbors();
+//	void createMatrixDistance();
+//	void updateMatrixDistanceFromNeighbors();
 
 	static int connectedAreaSpreading(NodePtr seed, int spreadingValue,
 			bool (*nodeCondition)(const Node&, const NodeState&), const NodeState& state);

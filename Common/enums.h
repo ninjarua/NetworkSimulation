@@ -9,9 +9,9 @@
 #define ENUMS_H_
 
 
-enum DeployingType { Ring = 0, TorusGrid = 1,
-					Grid = 2, ER_Random = 3,
-					FixedRange = 4, ScaleFree = 5, Small_world = 6 };
+enum DeployingType { General = 0, Ring = 1, TorusGrid = 2,
+					Grid = 3, ER_Random = 4, FixedRange = 5,
+					ScaleFree = 6, Small_world = 7 };
 
 
 #endif /* ENUMS_H_ */

@@ -33,15 +33,15 @@ ByzantineAverage::~ByzantineAverage() {
 ofstream& operator<<(ofstream& ofs, const ByzantineAverage& report)
 {
 	ofs << report._report->nothingProb << "\t" << report._report->byzantineProb << "\t"
-		<< report.averageOfByzantines << "\t"
-		<< report.ciOfByzantines << "\t"
-		<< report.averageOfSacrifices << "\t"
-		<< report.ciOfSacrifices << "\t"
-		<< report.averageOfDetectors << "\t"
-		<< report.ciOfDetectors << "\t"
-		<< report.averageOfNormals << "\t"
-		<< report.ciOfNormals << "\t"
-		<< report.averageOfLargestConnectedAreas << "\t"
-		<< report.ciOfLargestConnectedAreas << "\t" << report._report->size << "\n";
+		<< std::fixed << report.averageOfByzantines << "\t"
+		<< std::fixed << report.ciOfByzantines << "\t"
+		<< std::fixed << report.averageOfSacrifices << "\t"
+		<< std::fixed << report.ciOfSacrifices << "\t"
+		<< std::fixed << report.averageOfDetectors << "\t"
+		<< std::fixed << report.ciOfDetectors << "\t"
+		<< std::fixed << report.averageOfNormals << "\t"
+		<< std::fixed << report.ciOfNormals << "\t"
+		<< std::fixed << report.averageOfLargestConnectedAreas << "\t"
+		<< std::fixed << report.ciOfLargestConnectedAreas << "\t" << report._report->size << "\n";
 	return ofs;
 }

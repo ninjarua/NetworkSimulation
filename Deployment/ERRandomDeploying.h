@@ -18,10 +18,10 @@ public:
 	ERRandomDeploying();
 	ERRandomDeploying(int numberNodes, double probability);
 	virtual ~ERRandomDeploying();
-	virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
+	virtual bool isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor);
 
 	string getDeployingName();
-	double GetPosX(int nodeSequenceId);
+	double getPosX(int nodeSequenceId);
 	double getPosY(int nodeSequenceId);
 
 	bool obtainTopology(Network* network);

@@ -34,16 +34,6 @@ string SmallworldDeploying::getDeployingName()
 	return "Smallworld";
 }
 
-bool SmallworldDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
-{
-	// test for commit
-	double Xdist = node.posX - neighbor.posX;
-	double Ydist = node.posY - neighbor.posY;
-	// distance between a given pair of nodes
-	bool result = pow((Xdist * Xdist + Ydist * Ydist), 0.5) <= network.transRange;
-	return result;
-}
-
 bool SmallworldDeploying::isLongEdgeNeighbors(const Network& network, const Node& node, const Node& neighbor)
 {
 	double value = (double)rand() / RAND_MAX;
@@ -53,34 +43,27 @@ bool SmallworldDeploying::isLongEdgeNeighbors(const Network& network, const Node
 
 void SmallworldDeploying::neighborInitialization(Network* network)
 {
-	//unsigned int networkSize = network->nodes.size();
-	//vector<vector<unsigned int> > matrix;//(network->size)
+	map<unsigned long, vector<unsigned long> > towardList;
+	map<unsigned long, vector<unsigned long> > backwardList;
 
-	map<unsigned int, vector<unsigned int> > towardList;
-	map<unsigned int, vector<unsigned int> > backwardList;
-
-	for (unsigned int i = 0; i < network->size; i++)
+	for (unsigned long i = 0; i < network->size; i++)
 	{
 		//for (unsigned int j = i + 1; j < networkSize; j++)
-		for (unsigned int j = 0; j < network->size; j++)
+		for (unsigned long j = 0; j < network->size; j++)
 		{
 			NodePtr nodei = network->nodes[i];
 			NodePtr nodej = network->nodes[j];
 			if (i < j)
 			{
-				if (isNeighbors(*network, *nodei, *nodej)
+				if (isNeighbors(*network, nodei, nodej)
 					|| isLongEdgeNeighbors(*network, *nodei, *nodej))
 				{
-					//network->makeNeighbors(i, j);
-					//matrix[i][j] = 1;
 					towardList[i].push_back(j);
 				}
 			}
 			else if (i > j)// if (isLongEdgeNeighbors(*network, *network->nodes[i], *network->nodes[j]))
 			{
-				//LinkPtr linkPtr = NetworkTools::GetLinkPtr(network->nodes[i]->links, network->nodes[j]->id);
 				if (!Tools::Contain(towardList[j], i)
-//						&& !binary_search(backwardList[i].begin(), backwardList[i].end(), j)
 						&& isLongEdgeNeighbors(*network, *nodei, *nodej))
 				{
 					backwardList[i].push_back(j);
@@ -89,19 +72,15 @@ void SmallworldDeploying::neighborInitialization(Network* network)
 		}
 //		cout << i << endl;
 	}
-	for (unsigned int i = 0; i < network->size; i++)
+	for (unsigned long i = 0; i < network->size; i++)
 	{
-		vector<unsigned int>::iterator itToward = towardList[i].begin();
-		vector<unsigned int>::iterator itBackward = backwardList[i].begin();
+		vector<unsigned long>::iterator itToward = towardList[i].begin();
+		vector<unsigned long>::iterator itBackward = backwardList[i].begin();
 		for (; itBackward != backwardList[i].end(); itBackward++)
 			network->makeNeighbors(*itBackward, i);
 		for (; itToward != towardList[i].end(); itToward++)
 			network->makeNeighbors(i, *itToward);
-		backwardList[i].clear();
-		towardList[i].clear();
 	}
-	towardList.clear();
-	backwardList.clear();
 }
 
 } /* namespace domain */

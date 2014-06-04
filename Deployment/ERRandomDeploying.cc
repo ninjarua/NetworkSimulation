@@ -26,7 +26,7 @@ ERRandomDeploying::ERRandomDeploying(int numberNodes, double probability)
 ERRandomDeploying::~ERRandomDeploying() {
 }
 
-bool ERRandomDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
+bool ERRandomDeploying::isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor)
 {
 	return ((double)rand() / RAND_MAX) < connectedProbability;
 }
@@ -36,7 +36,7 @@ string ERRandomDeploying::getDeployingName()
 	return "Erdos_Renyi";
 }
 
-double ERRandomDeploying::GetPosX(int nodeSequenceId)
+double ERRandomDeploying::getPosX(int nodeSequenceId)
 {
 	return (double)rand()/RAND_MAX * topology->xTerr;
 }
@@ -51,7 +51,7 @@ bool ERRandomDeploying::obtainTopology(Network* network)
 	Deploying::obtainTopology(network);
 	for (int i = 0; i < topology->numNodes; i++)
 	{
-		NodePtr newNode(new Node(GetPosX(i), getPosY(i)));
+		NodePtr newNode(new Node());
 		network->addNode(newNode);
 	}
 	return true;

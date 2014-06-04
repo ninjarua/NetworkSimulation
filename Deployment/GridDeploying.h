@@ -15,7 +15,7 @@
 namespace deployment {
 
 class GridDeploying : public Deploying {
-    virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
+    virtual bool isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor);
     virtual double getPosX(int nodeSequenceId);
     virtual double getPosY(int nodeSequenceId);
 public:

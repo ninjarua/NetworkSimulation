@@ -21,10 +21,9 @@ public:
 	virtual ~TorusGridDeploying();
 
 protected:
-    virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
-    virtual double GetPosX(int nodeSequenceId);
+    virtual bool isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor);
+    virtual double getPosX(int nodeSequenceId);
     virtual double getPosY(int nodeSequenceId);
-    virtual void createInformationOfGraph(Network* network);
 public:
     string getDeployingName();
     virtual bool obtainTopology(Network* network);

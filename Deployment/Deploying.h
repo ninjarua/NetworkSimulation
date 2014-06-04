@@ -28,10 +28,9 @@ public:
 	Deploying();
 	virtual ~Deploying();
 protected:
-	virtual void createInformationOfGraph(Network* network);
-	virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
-	virtual bool isAllDistanceValid(const Network& network, const Node& node);
-	virtual bool isValidDistance(const Node& node, const Node& neighbor);
+	virtual bool isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor);
+//	virtual bool isAllDistanceValid(const Network& network, const Node& node);
+//	virtual bool isValidDistance(const Node& node, const Node& neighbor);
 	virtual double getCellLength();
 	virtual double getPosX(int nodeSequenceId);
 	virtual double getPosY(int nodeSequenceId);

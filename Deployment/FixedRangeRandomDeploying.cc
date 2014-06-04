@@ -31,7 +31,7 @@ void FixedRangeRandomDeploying::neighborInitialization(Network* network)
 	Deploying::neighborInitialization(network);
 }
 
-bool FixedRangeRandomDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
+bool FixedRangeRandomDeploying::isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor)
 {
 	return Deploying::isNeighbors(network, node, neighbor);
 }
@@ -51,7 +51,7 @@ bool FixedRangeRandomDeploying::obtainTopology(Network* network)
 	}
 	for (int i = 0; i < topology->numNodes; i++)
 	{
-		NodePtr newNode(new Node(getPosX(i), getPosY(i)));
+		NodePtr newNode(new GeneratedNode(getPosX(i), getPosY(i)));
 		network->addNode(newNode);
 	}
 	return true;

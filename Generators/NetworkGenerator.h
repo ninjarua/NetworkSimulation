@@ -24,6 +24,7 @@ class NetworkGenerator {
 protected:
 	Deploying* deployment;
 public:
+	bool specificInputFile;
 	NetworkGenerator();
 	virtual ~NetworkGenerator();
 	virtual string generateToFiles(Network* network, string folder, int times = 1, bool create2HopInfo = false);

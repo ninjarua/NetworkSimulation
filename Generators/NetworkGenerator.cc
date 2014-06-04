@@ -10,7 +10,8 @@
 namespace generators {
 
 NetworkGenerator::NetworkGenerator() {
-	deployment = NULL;
+	deployment = new Deploying();
+	specificInputFile = false;
 }
 
 NetworkGenerator::~NetworkGenerator() {
@@ -19,11 +20,11 @@ NetworkGenerator::~NetworkGenerator() {
 
 bool NetworkGenerator::generateFromFiles(Network* network, string folder, int index)
 {
-	string filename = getFilenameByDeployment(folder, index);
-	if (filename == "")
+	string filename = (specificInputFile) ? folder : getFilenameByDeployment(folder, index);
+	if (filename.empty())
 		return false;
 	ifstream f(filename.c_str(), ifstream::in);
-	//cout << filename << endl;
+	cout << "Read from file: " << filename << "\n";
 	f >> (*network);
 	if (deployment->using2HopInfo && (!network->has2HopInfo || network->diameter == 0))
 		network->createAdvancedInformation();

@@ -22,11 +22,13 @@ using namespace simulators;
 
 int main(int argc, char* argv[])
 {
-//	srand(time(NULL)); // Set random seed for random procedure
+	srand(time(NULL)); // Set random seed for random procedure
 
 	SimulatorManager* manager = new SimulatorManager();
-//	manager->runOneStepSimulation(Small_world, CBridges, 10000, 0, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/10_5/1000",
-//			"/Users/thanhnd/Workspace/Results/Smallworld/10_5/1000/CBridges_0", 1, 100);
+	manager->specificFile = true;
+	manager->addOneStepSimulation(General, KSelf, 1, 10000, 0, "d:\\Workspace\\Sample data\\kapar-midar-iff.nodes.re",
+			"d:\\Workspace\\Sample data\\kapar-midar-iff.out", 1, 1);
+	manager->runSimulations();
 
 //	manager->analyseNetwork(Small_world, "d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_1\\10000",
 //			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_1_N.out", 100, true);
@@ -40,8 +42,8 @@ int main(int argc, char* argv[])
 //			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_5_N.out", 100, true);
 //	manager->analyseNetwork(Small_world, "d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_10\\10000",
 //			"d:\\Workspace\\Programming\\results\\Graphs\\Smallworld\\10\\10_10_N.out", 100, true);
-	manager->readOneStepResults(Small_world, K1Short, "d:\\Workspace\\Programming\\results\\Smallworld\\10_1\\10000\\KCoInfy_0",
-				"d:\\Workspace\\Programming\\results\\Smallworld\\10_1\\10000\\KCoInfy_0.out", 0, 0.01);
+//	manager->readOneStepResults(Small_world, K1Short, "d:\\Workspace\\Programming\\results\\Smallworld\\10_1\\10000\\KCoInfy_0",
+//				"d:\\Workspace\\Programming\\results\\Smallworld\\10_1\\10000\\KCoInfy_0.out", 0, 0.01);
 //	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_1\\10000\\CCo1E_0",
 //				"d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_1\\10000\\CCo1E_0.out", 0, 0.01);
 //	manager->readOneStepResults(Small_world, CCo1E, "d:\\Workspace\\Programming\\results\\Smallworld\\8\\8_2\\10000\\CCo1E_0",
@@ -157,4 +159,3 @@ int main(int argc, char* argv[])
 //	manager->convert2HopInformation(Small_world, "/Users/thanhnd/Workspace/Results/Graphs/Smallworld/5/5_5/10000",
 //				"/Users/thanhnd/Workspace/Results/Graphs/Smallworld/advanced/5/5_5/10000", 100, true);
 }
-

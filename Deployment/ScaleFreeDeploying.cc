@@ -35,7 +35,7 @@ string ScaleFreeDeploying::getDeployingName()
 	return "ScaleFree";
 }
 
-bool ScaleFreeDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
+bool ScaleFreeDeploying::isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor)
 {
 	return true;
 }
@@ -87,7 +87,8 @@ void ScaleFreeDeploying::attachNewNode(Network* network, int index, unsigned lon
 			j = 0;
 			for (; p < p0 && j < index; j++)
 			{
-				p += (double)network->nodes[j]->D / totalDegree;
+				// need to find another way to generate the neighborhood
+				//p += (double)network->nodes[j]->D / totalDegree;
 			}
 			if (j <= index)
 				result = insertToSortedList(connectId, j - 1);
@@ -131,7 +132,7 @@ bool ScaleFreeDeploying::obtainTopology(Network* network)
 	Deploying::obtainTopology(network);
 	for (int i = 0; i < topology->numNodes; i++)
 	{
-		NodePtr newNode(new Node(getPosX(i), getPosY(i)));
+		NodePtr newNode(new Node());
 		network->addNode(newNode);
 	}
 	return true;

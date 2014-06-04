@@ -61,14 +61,14 @@ void ByzantineProtocol::RandomByzantine(Network* network, bool selectHub)
 {
 	int seed = rand() % network->nodes.size();
 
-	while (selectHub && network->nodes[seed]->D < (network->avgDegree * 3))
-	{
-		seed = rand() % network->nodes.size();
-	}
+//	while (selectHub && network->nodes[seed]->D < (network->avgDegree * 3))
+//	{
+//		seed = rand() % network->nodes.size();
+//	}
 	network->nodes[seed]->state = Infected;
 	network->info.seedId = seed;
-	network->info.seedDegree = network->nodes[seed]->D;
-	network->info.seedDiameter = network->nodes[seed]->diameter;
+//	network->info.seedDegree = network->nodes[seed]->D;
+//	network->info.seedDiameter = network->nodes[seed]->diameter;
 	network->info.numberOfInfectedNodes = 1;
 	//PropagateFault(network);
 }
@@ -200,7 +200,7 @@ void ByzantineProtocol::PropagateFault(Network* network)
 {
 	Node* firstInfected = network->nodes[network->info.seedId];
 	//if (Tools::Exists(firstInfected->neighbors, &Node::isNodeState, Sane))
-	Logger::Write(firstInfected->diameter, "");
+//	Logger::Write(firstInfected->diameter, "");
 	BroadcastMessage(firstInfected, CallbackReceiveByzantineMessage);
 	network->currentTimeSlot++;
 }

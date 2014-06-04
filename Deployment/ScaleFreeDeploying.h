@@ -25,7 +25,7 @@ public:
 	ScaleFreeDeploying();
 	ScaleFreeDeploying(int m0, int m, int N);
 	virtual ~ScaleFreeDeploying();
-	virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
+	virtual bool isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor);
     void neighborInitialization(Network* network);
 
 	string getDeployingName();

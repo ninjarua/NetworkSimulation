@@ -29,6 +29,7 @@ Parameters::Parameters()
 	deployingType = Small_world;
 	paramType = AllSteps;
 	toleranceType = KSelf;
+	specificInputFile = false;
 }
 
 Parameters::~Parameters()

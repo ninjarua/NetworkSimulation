@@ -30,7 +30,7 @@ void KCoInfyTolerance::TolerateNode(LinkPtr messageLink)
 	detector->ownerNetwork->info.numberOfInactiveNodes++;
 	if (detector->commonNeighbors.find(infected->id) == detector->commonNeighbors.end())
 		return;
-	map<int, vector<LinkPtr> >::iterator mapIt = detector->commonNeighbors.begin();
+	map<long, vector<LinkPtr> >::iterator mapIt = detector->commonNeighbors.begin();
 	for (; mapIt != detector->commonNeighbors.end(); mapIt++)
 	{
 		LinkPtr link = NetworkTools::GetLinkPtr(detector->links, mapIt->first);

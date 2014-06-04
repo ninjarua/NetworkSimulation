@@ -16,6 +16,7 @@ SimulatorManager::SimulatorManager() {
 	listArgumentSimulation = vector<SimulationArguments*>();
 	numberCPUs = 0;
 	totalThreadsNeedToRun = 0;
+	specificFile = false;
 }
 
 SimulatorManager::~SimulatorManager() {
@@ -128,7 +129,6 @@ void SimulatorManager::runSimulations()
 	numberCPUs = 1;
 	int numberOfLoops = ceil((double)totalThreadsNeedToRun/numberCPUs);
 	cout << numberOfLoops << "\t" << totalThreadsNeedToRun << "\n";
-
 	int idxArgument = 0;
 	for (int i = 0; i < numberOfLoops; i++)
 	{
@@ -176,6 +176,7 @@ void SimulatorManager::runSimulations()
 							simArg->_sampleSize, simArg->_hubOnly, Parameters::setOneStepRunningByThreadId);
 					break;
 				}
+				params.specificInputFile = specificFile;
 				threads.create_thread(boost::bind(ByzantineSimulator::callbackThreadOneStep, params));
 			}
 			idxArgument++;

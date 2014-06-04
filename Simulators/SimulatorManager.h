@@ -20,6 +20,7 @@ class SimulatorManager {
 	vector<SimulationArguments*> listArgumentSimulation;
 	int totalThreadsNeedToRun;
 public:
+	bool specificFile;
 	int numberCPUs;
 	SimulatorManager();
 	virtual ~SimulatorManager();

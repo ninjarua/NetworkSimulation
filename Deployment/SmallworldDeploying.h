@@ -21,7 +21,6 @@ public:
 	SmallworldDeploying(int numberNodes, int xTerr, int yTerr, int range, int noOfShortEdge, int noOfLongEdge);
 	virtual ~SmallworldDeploying();
 	string getDeployingName();
-	virtual bool isNeighbors(const Network& network, const Node& node, const Node& neighbor);
 	void neighborInitialization(Network* network);
 };
 

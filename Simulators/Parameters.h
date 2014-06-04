@@ -26,6 +26,7 @@ public:
 	ParamType paramType;
 
 	int networkSize;
+	bool specificInputFile;
 
 	int hopCount;
 	bool hubOnly;

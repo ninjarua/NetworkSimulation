@@ -9,7 +9,8 @@
 #define MESSAGE_H_
 
 #include "stdafx.h"
-#include "Node.h"
+//#include "Node.h"
+#include "GeneratedNode.h"
 #include <fstream>
 #include <iostream>
 

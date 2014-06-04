@@ -39,22 +39,13 @@ bool GridDeploying::obtainTopology(Network* network)
 	Deploying::obtainTopology(network);
 	if (topology->range < topology->d0)
 	{
-		//Logger.GetInstance().Debug("Error: value of GRID_UNIT must be greater than D0");
 		return false;
 	}
-//	int sqrtNumNodes = (int)sqrt(topology->NumNodes);
-//	if (sqrtNumNodes != sqrt(topology->NumNodes))
-//	{
-//		//Logger.GetInstance().Debug("Error: on GRID topology, NUMBER_OF_NODES should be the square of a natural number");
-//		return false;
-//	}
 	for (int i = 0; i < topology->numNodes; i++)
 	{
-		NodePtr newNode(new Node(getPosX(i), getPosY(i)));
+		NodePtr newNode(new Node());
 		network->addNode(newNode);
 	}
-//	topology->XTerr = topology->Distance * (sqrt(topology->NumNodes) - 1);
-//	topology->YTerr = topology->Distance * (sqrt(topology->NumNodes) - 1);
 	return true;
 }
 
@@ -70,12 +61,14 @@ double GridDeploying::getPosY(int nodeSequenceId)
 	return (nodeSequenceId / sqrtNumNodes) * topology->range;
 }
 
-bool GridDeploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
+bool GridDeploying::isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor)
 {
-	double Xdist = node.posX - neighbor.posX;
-	double Ydist = node.posY - neighbor.posY;
-	// distance between a given pair of nodes
-	return pow((Xdist * Xdist + Ydist * Ydist), 0.5) <= network.transRange;
+	long sqrtNodes = (long)sqrt(topology->numNodes);
+	long x = node->id % sqrtNodes;
+	long nx = neighbor->id % sqrtNodes;
+	long y = node->id / sqrtNodes;
+	long ny = neighbor->id % sqrtNodes;
+	return (abs(nx - x) + abs(ny - y)) == 1;
 }
 
 } /* namespace protocols */

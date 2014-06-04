@@ -39,28 +39,6 @@ double Deploying::getCellLength()
 	return 0;
 }
 
-bool Deploying::isValidDistance(const Node& node, const Node& neighbor)
-{
-	double Xdist, Ydist, dist;
-	Xdist = node.posX - neighbor.posX;
-	Ydist = node.posY - neighbor.posY;
-	dist = pow((Xdist * Xdist + Ydist * Ydist), 0.5);
-	return (dist >= topology->d0);
-}
-
-bool Deploying::isAllDistanceValid(const Network& network, const Node& node)
-{
-	int size = network.nodes.size();
-	for (int j = 0; j < size - 1; j = j + 1)
-	{
-		if (!isValidDistance(node, *network.nodes.at(j)))
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
 string Deploying::getDeployingName()
 {
 	return "General";
@@ -80,30 +58,40 @@ bool Deploying::runDeploy(Network* network)
 
 void Deploying::neighborInitialization(Network* network)
 {
+//	map<long, NodePtr>::iterator iti = network->nodes.begin();
+//	for (; iti != network->nodes.end(); iti++)
+//	{
+//		map<long, NodePtr>::iterator itj = iti++;
+//		iti--;
+//		if (itj == network->nodes.end())
+//			continue;
+//		for (; itj != network->nodes.end(); itj++)
+//		{
+//			if (isNeighbors(*network, iti->second, itj->second))
+//			{
+//				network->makeNeighbors(iti->second, itj->second);
+//			}
+//		}
+//	}
 	unsigned int nSize = network->nodes.size();
 	for (unsigned int i = 0; i < nSize - 1; i++)
 	{
 		for (unsigned int j = i + 1; j < network->nodes.size(); j++)
 		{
-			if (isNeighbors(*network, *network->nodes[i], *network->nodes[j]))
+			if (isNeighbors(*network, network->nodes[i], network->nodes[j]))
 			{
 				network->makeNeighbors(i, j);
 			}
 		}
 	}
-	createInformationOfGraph(network);
 }
 
-void Deploying::createInformationOfGraph(Network* network)
+bool Deploying::isNeighbors(const Network& network, const NodePtr node, const NodePtr neighbor)
 {
-
-}
-
-bool Deploying::isNeighbors(const Network& network, const Node& node, const Node& neighbor)
-{
-	// test for commit
-	double Xdist = node.posX - neighbor.posX;
-	double Ydist = node.posY - neighbor.posY;
+	GeneratedNode* gnode = dynamic_cast<GeneratedNode*>(node);
+	GeneratedNode* gnb = dynamic_cast<GeneratedNode*>(neighbor);
+	double Xdist = gnode->posX - gnb->posX;
+	double Ydist = gnode->posY - gnb->posY;
 	// distance between a given pair of nodes
 	return pow((Xdist * Xdist + Ydist * Ydist), 0.5) <= network.transRange;
 }

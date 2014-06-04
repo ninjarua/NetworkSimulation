@@ -37,7 +37,7 @@ void KCo2Tolerance::TolerateNode(LinkPtr messageLink)
 	// for each neighbor having id = mapIt->first (called mapIt) of messageLink->dest (detector)
 	// find neighbors that is common neighbor between detector and mapIt
 	// but is not neighbor of messageLink->src (infected node)
-	map<int, vector<LinkPtr> >::iterator mapIt = node->commonNeighbors.begin();
+	map<long, vector<LinkPtr> >::iterator mapIt = node->commonNeighbors.begin();
 	for (; mapIt != node->commonNeighbors.end(); mapIt++)
 	{
 		if (mapIt->first == messageLink->src->id)

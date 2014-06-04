@@ -32,6 +32,8 @@ string SimulatorBase::generateFixedRangeNetwork(int times, int size, string fold
 		float xTerr, float yTerr, float range, float d0)
 {
 	network->transRange = range;
+	if (generator != NULL)
+		delete generator;
 	generator = new FixedRangeGenerator(size, xTerr, yTerr, range);
 	generator->generateToFiles(network, folder, times, need2HopInfo);
 	return "Success";
@@ -41,6 +43,8 @@ string SimulatorBase::generateSmallworldNetwork(int times, int size, string fold
 			float xTerr, float yTerr, float range, float d0)
 {
 	network->transRange = range;
+	if (generator != NULL)
+		delete generator;
 	generator = new SmallworldGenerator(size, xTerr, yTerr, range, numberOfShortEdges, numberOfLongEdges);
 	generator->generateToFiles(network, folder, times, need2HopInfo);
 	cout << endl;
@@ -49,6 +53,8 @@ string SimulatorBase::generateSmallworldNetwork(int times, int size, string fold
 
 string SimulatorBase::generateER_RandomNetwork(int times, int size, string folder, double prob)
 {
+	if (generator != NULL)
+		delete generator;
 	generator = new ERRandomGenerator(size, prob);
 	generator->generateToFiles(network, folder, times, need2HopInfo);
 	return "Success";
@@ -56,6 +62,8 @@ string SimulatorBase::generateER_RandomNetwork(int times, int size, string folde
 
 string SimulatorBase::generateScaleFreeNetwork(int times, string folder, int cliqueSize, int size, int edge)
 {
+	if (generator != NULL)
+		delete generator;
 	generator = new ScaleFreeGenerator(cliqueSize, edge, size);
 	generator->generateToFiles(network, folder, times, need2HopInfo);
 	return "Success";
@@ -63,6 +71,8 @@ string SimulatorBase::generateScaleFreeNetwork(int times, string folder, int cli
 
 string SimulatorBase::generateGridNetwork(int times, int size, string folder)
 {
+	if (generator != NULL)
+		delete generator;
 	generator = new GridGenerator(size);
 	generator->generateToFiles(network, folder, times);
 	return "Success";
@@ -70,6 +80,8 @@ string SimulatorBase::generateGridNetwork(int times, int size, string folder)
 
 string SimulatorBase::generateTorusGridNetwork(int times, int size, string folder)
 {
+	if (generator != NULL)
+		delete generator;
 	generator = new TorusGridGenerator(size);
 	generator->generateToFiles(network, folder, times);
 	return "Success";

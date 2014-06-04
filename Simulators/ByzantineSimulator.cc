@@ -129,8 +129,10 @@ void ByzantineSimulator::setDeployment()
 		generator = new ERRandomGenerator();
 		break;
 	default:
+		generator = new NetworkGenerator();
 		break;
 	}
+	generator->specificInputFile = params.specificInputFile;
 }
 
 bool ByzantineSimulator::runSimulationStep(bool draw)
@@ -223,8 +225,8 @@ void ByzantineSimulator::analyseNetwork(bool using2HopInfo)
 			vector<NodePtr>::iterator it = network->nodes.begin();
 			for(;it != network->nodes.end(); it++)
 			{
-				int numberCommonNodes = (*it)->commonNeighbors.size();
-				int numberNeighbors = (*it)->links.size();
+				long numberCommonNodes = (*it)->commonNeighbors.size();
+				long numberNeighbors = (*it)->links.size();
 				cout << numberCommonNodes << "\t" << numberNeighbors << endl;// << "\t" << ratio << endl;
 				if (numberCommonNodes != 0)
 				{
@@ -262,19 +264,25 @@ void ByzantineSimulator::runSimulationByInterval()
 	}
 	int sampleRepeat = (predictionIt > params.sampleSize) ? (int)((double) predictionIt/params.sampleSize) : 1;
 	int count = 0;
+	int sampleId = 0;
+	bool hasTopology = false;
 	while (count < times)
 	{
-		int sampleId = 0;
+		sampleId = 0;
 		while (count < prediction)
 		{
-			bool result = generator->generateFromFiles(network, params.inputFolder, sampleId);
-			if (!result)
-				return;
+			if (!generator->specificInputFile || !hasTopology)
+			{
+				hasTopology = generator->generateFromFiles(network, params.inputFolder, sampleId);
+				if (!hasTopology)
+					return;
+			}
 			int i = 0;
 			while (i < sampleRepeat)
 			{
 				byzantine.Refresh(network, params.hubOnly); // temporary change to check with hub in ScaleFree
 				byzantine.RunFault(network);
+				printToFile(*byzantine.statisticInfo, getResultFilename(params.nothingStart, params.byzantineStart));
 				addOneStepReport();
 				count++;
 				i++;
@@ -292,6 +300,17 @@ void ByzantineSimulator::runSimulationByInterval()
 	}
 }
 
+void ByzantineSimulator::printToFile(NetworkStatistic& networkStatistic, string filename)
+{
+	filesystem::path dir(params.output);
+	if (!filesystem::exists(dir))
+		filesystem::create_directory(dir);
+	char byz[4];
+	sprintf(byz, "%d", (int)(byzantine.byzantineProb * 100));
+	filesystem::path file(params.output + OS_SEP + filename + "_" + byz + ".log");
+	Logger::Write(networkStatistic, file.string(), ofstream::out | ofstream::app);
+}
+
 void ByzantineSimulator::printToFile(ByzantineReport& report, string filename)
 {
 	filesystem::path dir(params.output);
@@ -299,11 +318,11 @@ void ByzantineSimulator::printToFile(ByzantineReport& report, string filename)
 		filesystem::create_directory(dir);
 	filesystem::path file(params.output + OS_SEP + filename);
 	Logger::Write(report.average, file.string(), ofstream::out | ofstream::app);
-
-	char byz[4];
-	sprintf(byz, "%d", (int)(report.byzantineProb * 100));
-	filesystem::path filelog(params.output + OS_SEP + filename + "_" + byz + ".log");
-	Logger::Write(report, filelog.string(), ofstream::out);
+//
+//	char byz[4];
+//	sprintf(byz, "%d", (int)(report.byzantineProb * 100));
+//	filesystem::path filelog(params.output + OS_SEP + filename + "_" + byz + ".log");
+//	Logger::Write(report, filelog.string(), ofstream::out);
 }
 
 string ByzantineSimulator::getResultFilename(double nothingProb, double byzantineProb)
@@ -320,31 +339,10 @@ string ByzantineSimulator::getResultFilename(double nothingProb, double byzantin
 	return filename;
 }
 
-//void ByzantineSimulator::setParameters(int totalTimes, string inputFolder, string outputFolder,
-//			double startingNothing, double startingByzantine,
-//			double endingNothing, double endingByzantine,
-//			double intervalByz, double intervalNothing, int sampleSize)
-//{
-//	int intervalNothingI = (int)(intervalNothing * 100);
-//	int intervalByzI = (int)(intervalByz * 100);
-//	params.totalTimes = totalTimes;
-//	params.nothingSteps = (int)(100 / intervalNothingI);
-//	params.byzantineSteps = (int)(100 / intervalByzI);
-//	params.nothingStart = (int)(round(startingNothing * 100) / intervalNothingI);
-//	params.byzantineStart = (int)(round(startingByzantine * 100) / intervalByzI);
-//	params.nothingEnd = (int)(round(endingNothing * 100) / intervalNothingI);
-//	params.byzantineEnd = (int)(round(endingByzantine * 100) / intervalByzI);
-//	params.sampleSize = sampleSize;
-//	params.inputFolder = inputFolder;
-//	params.output = outputFolder;
-//}
-
 void ByzantineSimulator::read()
 {
 	params.sampleSize = 100;
 	setTolerance();
-//	int nothingStart = (int)(round(startingNothing * 100) / (int)(intervalNothing * 100));
-//	int byzantineStart = (int)(round(startingByz * 100) / (int)(intervalByz * 100));
 
 	filesystem::path dir(params.inputFolder);
 	if (!filesystem::exists(dir))
@@ -367,12 +365,6 @@ void ByzantineSimulator::readOneStep()
 
 void ByzantineSimulator::runReaderByThreadId(bool isFirstInSlot)
 {
-//	double startingNothing1 = intervalNothing * threadId * slotSize;
-//	double endingNothing1 = startingNothing1 + ((slotSize - 1) * intervalNothing);
-//	double startingNothing2 = (99 - (endingNothing1 * 100))/100;
-//	char number[5];
-//	sprintf(number, "%d", threadId);
-//	string inputDir = resultsFolder + OS_SEP + number;
 	if (isFirstInSlot)
 		read();
 	else
@@ -392,9 +384,6 @@ void ByzantineSimulator::runOneStep(double byzantineProb, double nothingProb, in
 void ByzantineSimulator::runSimulation()
 {
 	setTolerance();
-//	setParameters(times, inputfolder, outputFolder, startingNothing, startingByzantine, endingNothing,
-//			endingByzantine, intervalByz, intervalNothing, sampleSize);
-	//double ratio = round((double) params.nothingSteps / params.byzantineSteps);
 	if (params.nothingStart == params.nothingEnd)
 	{
 		for (int j = params.byzantineStart; j <= params.byzantineEnd; j++)
@@ -406,7 +395,6 @@ void ByzantineSimulator::runSimulation()
 	else
 	{
 		for (int j = params.byzantineStart; j <= params.nothingSteps - params.nothingStart; j++)
-			// (int)((params.nothingSteps - params.nothingStart)/ratio); j++)
 			runOneStep(j * params.byzantineInterval, params.nothingStart * params.nothingInterval,
 					params.totalTimes);
 		for (int i = params.nothingStart + 1; i < params.nothingEnd && i < params.nothingSteps; i++)
@@ -416,7 +404,6 @@ void ByzantineSimulator::runSimulation()
 						params.totalTimes);
 		}
 		for (int j = 0; j <= params.byzantineEnd && j <= params.nothingSteps - params.nothingEnd; j++)
-		//(int)((params.nothingSteps - params.nothingEnd) / ratio); j++)
 			runOneStep(j * params.byzantineInterval, params.nothingEnd * params.nothingInterval,
 					params.totalTimes);
 	}
@@ -424,9 +411,6 @@ void ByzantineSimulator::runSimulation()
 
 void ByzantineSimulator::runAllStepsSimulationByThreadId()
 {
-	//char number[5];
-	//sprintf(number, "%d", params.threadId);
-	//params.output = params.output + OS_SEP + number;
 	runSimulation();
 	Parameters::compensateAllStepsRunningByThreadId(&params);
 	runSimulation();
