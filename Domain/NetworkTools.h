@@ -10,7 +10,9 @@
 
 #include "Node.h"
 #include "Tools.h"
-#include <list>
+#include <vector>
+
+using namespace std;
 
 namespace domain{
 

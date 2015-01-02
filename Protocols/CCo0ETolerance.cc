@@ -9,7 +9,7 @@
 #include "CutLinkMessage.h"
 #include "NetworkTools.h"
 
-namespace generators {
+namespace protocols {
 
 CCo0ETolerance::CCo0ETolerance() : ToleranceBase() {
 
@@ -28,7 +28,7 @@ void CCo0ETolerance::TolerateNode(LinkPtr messageLink)
 {
 	ToleranceBase::TolerateNode(messageLink);
 	messageLink->state = Cut;	// cut link with the infected node
-	NodePtr node = messageLink->dest;
+	//NodePtr node = messageLink->dest;
 	CutLink(messageLink);
 }
 

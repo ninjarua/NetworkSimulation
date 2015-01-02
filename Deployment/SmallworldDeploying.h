@@ -18,7 +18,7 @@ class SmallworldDeploying: public FixedRangeRandomDeploying {
 	bool isLongEdgeNeighbors(const Network& network, const Node& node, const Node& neighbor);
 public:
 	SmallworldDeploying();
-	SmallworldDeploying(int numberNodes, int xTerr, int yTerr, int range, int noOfShortEdge, int noOfLongEdge);
+	SmallworldDeploying(int numberNodes, int xTerr, int yTerr, int range, int noOfShortEdge, double noOfLongEdge);
 	virtual ~SmallworldDeploying();
 	string getDeployingName();
 	void neighborInitialization(Network* network);

@@ -31,8 +31,6 @@
 
 using namespace generators;
 
-#include <iostream>
-
 namespace simulators {
 
 ByzantineSimulator::ByzantineSimulator(Parameters _params) : SimulatorBase() {

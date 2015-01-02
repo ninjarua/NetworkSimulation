@@ -10,9 +10,9 @@
 
 #include "ToleranceBase.h"
 
-namespace generators {
+namespace protocols {
 
-class CCo0ETolerance: public protocols::ToleranceBase {
+class CCo0ETolerance: public ToleranceBase {
 public:
 	CCo0ETolerance();
 	virtual ~CCo0ETolerance();

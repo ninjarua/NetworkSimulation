@@ -18,7 +18,7 @@ SmallworldDeploying::SmallworldDeploying() : FixedRangeRandomDeploying()
 	numberOfShortEdge = 0;
 }
 
-SmallworldDeploying::SmallworldDeploying(int numberNodes, int xTerr, int yTerr, int range, int noOfShortEdge, int noOfLongEdge)
+SmallworldDeploying::SmallworldDeploying(int numberNodes, int xTerr, int yTerr, int range, int noOfShortEdge, double noOfLongEdge)
 	: FixedRangeRandomDeploying(numberNodes, xTerr, yTerr, range)
 {
 	numberOfLongEdge = noOfLongEdge;
